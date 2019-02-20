@@ -1891,7 +1891,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ff9fff;
+  background: #ffffc7;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2557,7 +2557,7 @@ hr {
 }
 .site-meta {
   float: left;
-  margin-left: 80px;
+  margin-left: 40px;
   line-height: normal;
 }
 @media (max-width: 767px) {
