@@ -1161,8 +1161,8 @@ pre .javascript .function {
 .brand {
   position: relative;
   display: inline-block;
-  padding: 0 40px;
-  color: #222;
+  padding: 0 10px;
+  color: #ffb6c1 !important;
   background: #222;
   border-bottom: none;
 }
@@ -1178,7 +1178,7 @@ pre .javascript .function {
 .site-title {
   display: inline-block;
   vertical-align: top;
-  line-height: 36px;
+  line-height: 50px;
   font-size: 20px;
   font-weight: normal;
   font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
@@ -1213,7 +1213,7 @@ pre .javascript .function {
 .site-nav-toggle button {
   margin-top: 2px;
   padding: 9px 10px;
-  background: transparent;
+  background: #000 !important;
   border: none;
 }
 @media (max-width: 767px) {
@@ -1253,7 +1253,8 @@ pre .javascript .function {
 .menu .menu-item a,
 .menu .menu-item span.exturl {
   display: block;
-  font-size: 13px;
+  font-size: 14px;
+  color: #ffb6c1 !important;
   line-height: inherit;
   border-bottom: 1px solid transparent;
   transition-property: border-color;
@@ -1894,7 +1895,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #0f82f1;
+  background: #0e01f9;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -1930,10 +1931,10 @@ pre .javascript .function {
   cursor: pointer;
   border-bottom: 1px solid transparent;
   font-size: 14px;
-  color: #555;
+  color: #ffb6c1 !important;
 }
 .sidebar-nav li:hover {
-  color: #f5f5f5;
+  color: #ffb6c1 !important;
 }
 .page-post-detail .sidebar-nav-toc {
   padding: 0 5px;
@@ -1942,11 +1943,11 @@ pre .javascript .function {
   margin-left: 10px;
 }
 .sidebar-nav .sidebar-nav-active {
-  color: #87daff;
-  border-bottom-color: #87daff;
+  color: #ffb6c1 !important;
+  border-bottom-color: #ffb6c1 !important;
 }
 .sidebar-nav .sidebar-nav-active:hover {
-  color: #87daff;
+  color: #ffb6c1 !important;
 }
 .sidebar-panel {
   display: none;
@@ -2538,7 +2539,7 @@ hr {
   margin-top: 80px;
 }
 .header {
-  background: url("../image/transparent.jpg");
+  background: url("../image/black.jpg");
 }
 .header-inner {
   padding: 25px 0 20px;
@@ -2560,7 +2561,7 @@ hr {
 }
 .site-meta {
   float: left;
-  margin-left: 40px;
+  margin-left: 10px;
   line-height: normal;
 }
 @media (max-width: 767px) {
@@ -2607,7 +2608,7 @@ hr {
   position: relative;
   display: block;
   height: 2px;
-  background: #222;
+  background: #ffb6c1 !important;
 }
 @media (max-width: 767px) {
   .logo-line-before i,
@@ -2849,7 +2850,7 @@ hr {
 .footer {
   margin-top: 80px;
   padding: 10px 0;
-  background: url("../image/transparent.jpg");
+  background: url("../image/black.jpg");
   color: #666;
 }
 .footer-inner {
@@ -2870,7 +2871,7 @@ hr {
   -moz-box-shadow: 0 0 5px rgba(202,203,204,0.5);
 }
 body {
-  background-image: url("https://raw.githubusercontent.com/Jiangjiang-jiang/picture/master/background.jpg");
+  background-image: url("https://raw.githubusercontent.com/Jiangjiang-jiang/picture/master/background.png");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: 50% 50%;
@@ -2885,4 +2886,12 @@ body {
 }
 #mydivshow {
   opacity: 0;
+}
+.footer-inner {
+  color: #ffb6c1;
+}
+#sidebar p,
+#sidebar span,
+#sidebar a {
+  color: #ffb6c1;
 }
