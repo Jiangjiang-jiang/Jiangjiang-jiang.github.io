@@ -1895,7 +1895,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #1a08ff;
+  background: #71ffff;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2871,7 +2871,7 @@ hr {
   -moz-box-shadow: 0 0 5px rgba(202,203,204,0.5);
 }
 body {
-  background-image: url("https://raw.githubusercontent.com/Jiangjiang-jiang/picture/master/temp.png");
+  background-image: url("https://raw.githubusercontent.com/Jiangjiang-jiang/picture/master/background.png");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: 50% 50%;
