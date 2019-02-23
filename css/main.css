@@ -1242,6 +1242,8 @@ pre .javascript .function {
 }
 .menu .menu-item {
   display: inline-block;
+  background: #696969 !important;
+  border-radius: 10px;
   margin: 0 10px;
   list-style: none;
 }
@@ -1261,10 +1263,12 @@ pre .javascript .function {
   transition-duration: 0.2s;
   transition-timing-function: ease-in-out;
   transition-delay: 0s;
+  background: #000 !important;
 }
 .menu .menu-item a:hover,
 .menu .menu-item span.exturl:hover {
   border-bottom-color: #222;
+  background: #696969 !important;
 }
 .menu .menu-item .fa {
   margin-right: 5px;
@@ -1895,7 +1899,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #71ffff;
+  background: #7a61ff;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2894,4 +2898,7 @@ body {
 #sidebar span,
 #sidebar a {
   color: #ffb6c1;
+}
+.menu-item a {
+  color: #696969 !important;
 }
