@@ -1899,7 +1899,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #0970eb;
+  background: #a4bbff;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2010,7 +2010,7 @@ pre .javascript .function {
   display: block;
 }
 .post-toc .nav .active > a {
-  color: #87daff;
+  color: $m;
   border-bottom-color: #87daff;
 }
 .post-toc .nav .active-current > a {
@@ -2898,7 +2898,4 @@ body {
 #sidebar span,
 #sidebar a {
   color: #ffb6c1;
-}
-.menu-item a {
-  color: #696969 !important;
 }
