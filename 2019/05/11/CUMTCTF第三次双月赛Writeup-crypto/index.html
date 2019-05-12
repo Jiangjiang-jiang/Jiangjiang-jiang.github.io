@@ -107,24 +107,29 @@
 
 
 
-  <meta name="description" content="数据库原理与应用(MySQL)主要包括数据库的基本概念、数据模型、关系数据库、关系数据库标准语言sql、触发器、存储过程、数据完整性、数据库安全、关系数据库理论、索引、数据库设计、事务管理、并发控制、数据库备份与恢复、数据仓库、数据挖掘及数据库新技术等">
+  <meta name="description" content="五一假期期间举行CUMT第三次双月赛，一共五道密码题，出了后三道。考虑到避免被锤17级18级同学，题目不是很难，但从实际情况来看，能全部做出来的队伍并不多。这里提供wp及一些出题思路">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数据库原理应用知识点整理">
-<meta property="og:url" content="http://yoursite.com/2019/03/01/数据库原理应用知识点整理/index.html">
+<meta property="og:title" content="CUMTCTF第三次双月赛Writeup-crypto">
+<meta property="og:url" content="http://yoursite.com/2019/05/11/CUMTCTF第三次双月赛Writeup-crypto/index.html">
 <meta property="og:site_name" content="姜姜酱的博客">
-<meta property="og:description" content="数据库原理与应用(MySQL)主要包括数据库的基本概念、数据模型、关系数据库、关系数据库标准语言sql、触发器、存储过程、数据完整性、数据库安全、关系数据库理论、索引、数据库设计、事务管理、并发控制、数据库备份与恢复、数据仓库、数据挖掘及数据库新技术等">
+<meta property="og:description" content="五一假期期间举行CUMT第三次双月赛，一共五道密码题，出了后三道。考虑到避免被锤17级18级同学，题目不是很难，但从实际情况来看，能全部做出来的队伍并不多。这里提供wp及一些出题思路">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-26T14:36:52.773Z">
+<meta property="og:image" content="https://i.loli.net/2019/05/12/5cd80419c7fe8.png">
+<meta property="og:image" content="https://i.loli.net/2019/05/12/5cd8097cb7c33.png">
+<meta property="og:image" content="https://i.loli.net/2019/05/12/5cd81571e30b6.png">
+<meta property="og:image" content="https://i.loli.net/2019/05/12/5cd81ef436e39.png">
+<meta property="og:updated_time" content="2019-05-12T13:43:36.683Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="数据库原理应用知识点整理">
-<meta name="twitter:description" content="数据库原理与应用(MySQL)主要包括数据库的基本概念、数据模型、关系数据库、关系数据库标准语言sql、触发器、存储过程、数据完整性、数据库安全、关系数据库理论、索引、数据库设计、事务管理、并发控制、数据库备份与恢复、数据仓库、数据挖掘及数据库新技术等">
+<meta name="twitter:title" content="CUMTCTF第三次双月赛Writeup-crypto">
+<meta name="twitter:description" content="五一假期期间举行CUMT第三次双月赛，一共五道密码题，出了后三道。考虑到避免被锤17级18级同学，题目不是很难，但从实际情况来看，能全部做出来的队伍并不多。这里提供wp及一些出题思路">
+<meta name="twitter:image" content="https://i.loli.net/2019/05/12/5cd80419c7fe8.png">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/03/01/数据库原理应用知识点整理/">
+  <link rel="canonical" href="http://yoursite.com/2019/05/11/CUMTCTF第三次双月赛Writeup-crypto/">
 
 
 
@@ -134,7 +139,7 @@
   };
 </script>
 
-  <title>数据库原理应用知识点整理 | 姜姜酱的博客</title>
+  <title>CUMTCTF第三次双月赛Writeup-crypto | 姜姜酱的博客</title>
   
 
 
@@ -375,7 +380,7 @@
   
 	
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/01/数据库原理应用知识点整理/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/11/CUMTCTF第三次双月赛Writeup-crypto/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="姜姜酱">
@@ -392,7 +397,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">数据库原理应用知识点整理
+          <h1 class="post-title" itemprop="name headline">CUMTCTF第三次双月赛Writeup-crypto
 
               
             
@@ -418,7 +423,7 @@
                 
               
 
-              <time title="创建时间：2019-03-01 21:08:00" itemprop="dateCreated datePublished" datetime="2019-03-01T21:08:00+08:00">2019-03-01</time>
+              <time title="创建时间：2019-05-11 21:02:20" itemprop="dateCreated datePublished" datetime="2019-05-11T21:02:20+08:00">2019-05-11</time>
             
 
             
@@ -435,11 +440,29 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-26 22:36:52" itemprop="dateModified" datetime="2019-04-26T22:36:52+08:00">2019-04-26</time>
+                <time title="修改时间：2019-05-12 21:43:36" itemprop="dateModified" datetime="2019-05-12T21:43:36+08:00">2019-05-12</time>
               
             
           </span>
 
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/CRYPTO/" itemprop="url" rel="index"><span itemprop="name">CRYPTO</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -467,58 +490,30 @@
       
 
       
-        <p>数据库原理与应用(MySQL)主要包括数据库的基本概念、数据模型、关系数据库、关系数据库标准语言sql、触发器、存储过程、数据完整性、数据库安全、关系数据库理论、索引、数据库设计、事务管理、并发控制、数据库备份与恢复、数据仓库、数据挖掘及数据库新技术等<br><a id="more"></a></p>
-<h2 id="第一章-绪论"><a href="#第一章-绪论" class="headerlink" title="第一章 绪论"></a>第一章 绪论</h2><h3 id="数据库、数据库管理系统和数据库系统"><a href="#数据库、数据库管理系统和数据库系统" class="headerlink" title="数据库、数据库管理系统和数据库系统"></a>数据库、数据库管理系统和数据库系统</h3><h4 id="数据库（DB）"><a href="#数据库（DB）" class="headerlink" title="数据库（DB）"></a>数据库（DB）</h4><p>定义：是<strong>长期</strong>存储在计算机内、有<strong>组织</strong>的、可<strong>共享</strong>的<strong>大量</strong>数据集合<br>特点：具有一定数据模型组织；可共享；冗余度小；数据独立性高；易扩展</p>
-<h4 id="数据库管理系统（DBMS）"><a href="#数据库管理系统（DBMS）" class="headerlink" title="数据库管理系统（DBMS）"></a>数据库管理系统（DBMS）</h4><p>定义：是位于用户和OS之间的一层数据管理<strong>软件</strong><br>功能：数据定义；数据操纵；数据库运行管理；数据库建立和维护</p>
-<h4 id="数据库系统（DBS）"><a href="#数据库系统（DBS）" class="headerlink" title="数据库系统（DBS）"></a>数据库系统（DBS）</h4><p>构成：硬件、软件、数据库、用户</p>
-<pre><code>从属关系：数据库应用系统 &gt; 数据库系统 &gt; 数据库 or DBA
-</code></pre><h3 id="数据库系统产生与发展"><a href="#数据库系统产生与发展" class="headerlink" title="数据库系统产生与发展"></a>数据库系统产生与发展</h3><h4 id="人工管理阶段"><a href="#人工管理阶段" class="headerlink" title="人工管理阶段"></a>人工管理阶段</h4><ul>
-<li>数据的管理者：应用程序，但数据不保存</li>
-<li>数据面向的对象：某一应用程序，<strong>数据集与应用程序一一对应</strong></li>
-<li>数据的独立性：数据不独立，完全依赖于程序</li>
-<li>数据的共享程度：数据无共享、冗余度大</li>
-<li>数据的结构化：<strong>无结构</strong></li>
-<li>数据控制能力：应用程序自己控制</li>
-</ul>
-<h4 id="文件系统阶段"><a href="#文件系统阶段" class="headerlink" title="文件系统阶段"></a>文件系统阶段</h4><ul>
-<li>数据的管理者：文件系统，数据可以长期保存</li>
-<li>数据面向的对象：某一应用程序，<strong>文件和应用程序对应同一个存取方法</strong></li>
-<li>数据的独立性：独立性差</li>
-<li>数据的共享程度：共享性差，冗余度大</li>
-<li>数据的结构化：记录（最小存取单位）内有结构，整体无结构</li>
-<li>数据控制能力：应用程序自己控制</li>
-</ul>
-<h4 id="数据库系统阶段"><a href="#数据库系统阶段" class="headerlink" title="数据库系统阶段"></a>数据库系统阶段</h4><ul>
-<li>数据的管理者：DBMS</li>
-<li>数据面向的对象：现实世界</li>
-<li>数据的独立性：高度统一的物理独立性和一定的逻辑独立性</li>
-<li>数据的共享程度：共享性高</li>
-<li>数据的结构化：<strong>整体数据结构化</strong></li>
-<li>数据控制能力：DBMS统一管理控制</li>
-</ul>
-<pre><code>数据库系统与其他系统的最本质区别是整体数据结构化
-</code></pre><h5 id="高共享性的好处"><a href="#高共享性的好处" class="headerlink" title="高共享性的好处"></a>高共享性的好处</h5><p>降低数据冗余度，节省存储空间<br>降低数据之间的不一致性<br>使系统更易扩充</p>
-<h5 id="数据结构化"><a href="#数据结构化" class="headerlink" title="数据结构化"></a>数据结构化</h5><p>数据结构由数据模型描述，无需程序定义和解释<br>数据可以变长<br>数据最小存取单位是数据项</p>
-<h5 id="DBMS统一控制"><a href="#DBMS统一控制" class="headerlink" title="DBMS统一控制"></a>DBMS统一控制</h5><p>并发控制<br>数据库恢复</p>
-<h3 id="数据模型"><a href="#数据模型" class="headerlink" title="数据模型"></a>数据模型</h3><p>数据模型分为三种：<br>概念数据模型（用户E-R模型）、逻辑数据模型（计算机）、物理数据模型（计算机底层）</p>
-<p>其中逻辑数据模型主要分为三种：<br>层次模型、网状模型、关系模型（二维表）</p>
-<p>对客观事物的抽象过程分两步：<br>现实世界中的客观对象&nbsp;&nbsp;&nbsp;—&gt;&nbsp;&nbsp;&nbsp;概念模型<br>概念模型&nbsp;&nbsp;&nbsp;—&gt;&nbsp;&nbsp;&nbsp;DBMS支持的数据模型</p>
-<h4 id="概念-数据-模型"><a href="#概念-数据-模型" class="headerlink" title="概念(数据)模型"></a>概念(数据)模型</h4><p>相当于现实世界到机器世界的建模（E-R方法）</p>
-<h5 id="组成要素"><a href="#组成要素" class="headerlink" title="组成要素"></a>组成要素</h5><p>实体、属性、码（key）、域（某一属性的取值范围）、实体型（实体名+属性名抽象的同类实体）、实体集（同型实体集合）、联系（仅在实体与实体之间）</p>
-<h5 id="画E-R图步骤"><a href="#画E-R图步骤" class="headerlink" title="画E-R图步骤"></a>画E-R图步骤</h5><p>实体集 + 属性<br>实体集间的联系<br>实体集间联系的特殊属性</p>
-<h4 id="逻辑-数据-模型"><a href="#逻辑-数据-模型" class="headerlink" title="逻辑(数据)模型"></a>逻辑(数据)模型</h4><h5 id="组成要素-1"><a href="#组成要素-1" class="headerlink" title="组成要素"></a>组成要素</h5><p>数据结构、数据操作、完整性约束条件</p>
-<p>数据结构（静态）：对象类型的集合<br>数据操作（动态）：对实例值的有关操作规则<br>数据约束条件（实体完整性、参照完整性）：一组完整性规则的集合<br>完整性规则：给定数据模型中数据及联系所具有的制约和存储规则</p>
-<h5 id="层次模型"><a href="#层次模型" class="headerlink" title="层次模型"></a>层次模型</h5><p>有且只有一个根节点<br>其他节点只有一个双亲节点<br>子女记录值无法独立存在</p>
-<p>优点：性能高且高于关系模型<br>缺点：只能间接表示多对多关系，冗余大</p>
-<h5 id="网状模型"><a href="#网状模型" class="headerlink" title="网状模型"></a>网状模型</h5><p>可以有多个双亲节点<br>其他节点可以有多个双亲节点<br>两个实体可以有多种关系</p>
-<p>优点：能更直接表达实体间的关系；存取效率高<br>缺点：只能间接表示多对多关系</p>
-<h5 id="关系模型（-）"><a href="#关系模型（-）" class="headerlink" title="关系模型（*）"></a>关系模型（*）</h5><h3 id="数据库系统结构"><a href="#数据库系统结构" class="headerlink" title="数据库系统结构"></a>数据库系统结构</h3><p>数据库系统的三级模式结构：外模式、（概念）模式、内模式<br>数据库系统两级映像：外模式/模式映像、模式/内模式映像</p>
-<h4 id="外模式"><a href="#外模式" class="headerlink" title="外模式"></a>外模式</h4><p>又称子模式、用户模式、视图。介于模式和应用之间，用户与数据库间的接口，数据库用户能够看见和使用的<strong>局部数据逻辑结构描述</strong></p>
-<h4 id="模式"><a href="#模式" class="headerlink" title="模式"></a>模式</h4><p>按照统一观点构造对数据库<strong>全局逻辑结构描述</strong></p>
-<h4 id="内模式"><a href="#内模式" class="headerlink" title="内模式"></a>内模式</h4><p>又称存储模式。对数据库物理结构和存储方法的描述，是数据在数据库内部的表达方式</p>
-<h4 id="外模式-模式映像"><a href="#外模式-模式映像" class="headerlink" title="外模式/模式映像"></a>外模式/模式映像</h4><p>定义外模式和模式之间的映像关系，保证逻辑独立性</p>
-<h4 id="模式-内模式映像"><a href="#模式-内模式映像" class="headerlink" title="模式/内模式映像"></a>模式/内模式映像</h4><p>定义数据库全局逻辑结构和存储结构之间的映像关系，保证物理独立性</p>
-<h3 id="数据库管理系统"><a href="#数据库管理系统" class="headerlink" title="数据库管理系统"></a>数据库管理系统</h3><h3 id="数据库应用系统常见的几种结构"><a href="#数据库应用系统常见的几种结构" class="headerlink" title="数据库应用系统常见的几种结构"></a>数据库应用系统常见的几种结构</h3><p>（未完）</p>
+        <p>五一假期期间举行CUMT第三次双月赛，一共五道密码题，出了后三道。考虑到<del>避免被锤</del>17级18级同学，题目不是很难，但从实际情况来看，能全部做出来的队伍并不多。这里提供wp及一些出题思路<br><a id="more"></a></p>
+<h2 id="古典密码签到"><a href="#古典密码签到" class="headerlink" title="古典密码签到"></a>古典密码签到</h2><p><strong>题目</strong><br>6A757474616967796B68706D6A7972656361<br>key=63756D74</p>
+<p><strong>分析</strong><br>在密文中发现6数字最多 —&gt; ascii码中的16进制，转化密钥和密文<br>具有密钥的古典密码 —&gt; 维吉尼亚</p>
+<p><strong>解密脚本</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line">m = <span class="string">'6A757474616967796B68706D6A7972656361'</span></span><br><span class="line">c = <span class="string">'63756D74'</span></span><br><span class="line">m = binascii.a2b_hex(m)</span><br><span class="line">c = binascii.a2b_hex(c)</span><br><span class="line">print(m)</span><br><span class="line">print(c)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;hahayoufindtheflag&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="现代密码签到"><a href="#现代密码签到" class="headerlink" title="现代密码签到"></a>现代密码签到</h2><p><strong>题目</strong><br>zSLWE5Fk7Sg3mlltw9l2N7dhuADvk2HvWYU=<br>key=WTNWdGRHWnNZV2M9<br><strong>分析</strong><br>一时半会儿没看出这是个什么玩意儿…<br>key尝试两次base64发现是cumtflag<br>使用的是RC4对称密码加密，utf8编码，在线解密网站进行解密<a href="http://tool.chacuo.net/cryptrc4" target="_blank" rel="noopener">RC4解密</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;CumT_D0uB13_MooN_cTf&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="easyxor"><a href="#easyxor" class="headerlink" title="easyxor"></a>easyxor</h2><p>出题的时候觉得不是很难，但题目放出一天后发现没有队伍做出，于是直接放出了关键一步的提示<br><strong>题目</strong><br>enc.py<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> libnum</span><br><span class="line">flag = <span class="string">'flag&#123;**************************&#125;'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crypt</span><span class="params">(n)</span>:</span></span><br><span class="line">    msg = libnum.s2n(n)</span><br><span class="line">    k = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> bin(msg)[<span class="number">2</span>:]:</span><br><span class="line">        k = k &lt;&lt; <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> int(i):</span><br><span class="line">            k = k ^ msg</span><br><span class="line">        <span class="keyword">if</span> k &gt;&gt; <span class="number">256</span>:</span><br><span class="line">            k = k ^ <span class="number">0x10000000000000000000000000000000000000000000000000000000000000365L</span></span><br><span class="line">    <span class="keyword">return</span> str(k)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> crypt(flag).encode(<span class="string">'base64'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>cipher.txt<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MTEzNDkzNzQwMjcwNDkyMDg3MzgxNjE5MzYxMTAyMzExNjM1MTc3NTU0ODM0NTI2OTMyMTY0MDkw</span><br><span class="line">MjgyNjM1ODU4NDE5MDczNjU1Njcw</span><br></pre></td></tr></table></figure></p>
+<p><strong>分析</strong><br>代码里同时有移位和异或容易被迷惑，但实际上解密过程只要利用crypt继续进行加密，再根据flag关键字进行爆破，稍微更改下代码就可以了</p>
+<p><strong>解密脚本</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crypt</span><span class="params">(msg)</span>:</span></span><br><span class="line">    k = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> bin(msg)[<span class="number">2</span>:]:</span><br><span class="line">        k = k &lt;&lt; <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> int(i):</span><br><span class="line">            k = k ^ msg</span><br><span class="line">        <span class="keyword">if</span> k &gt;&gt; <span class="number">256</span>:</span><br><span class="line">            k = k ^ <span class="number">0x10000000000000000000000000000000000000000000000000000000000000365L</span></span><br><span class="line">    <span class="keyword">return</span> k</span><br><span class="line"></span><br><span class="line">flag = int(base64.b64decode(<span class="string">'MTEzNDkzNzQwMjcwNDkyMDg3MzgxNjE5MzYxMTAyMzExNjM1MTc3NTU0ODM0NTI2OTMyMTY0MDkwMjgyNjM1ODU4NDE5MDczNjU1Njcw'</span>))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10000000</span>):</span><br><span class="line">    flag = crypt(flag)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">'666c6167'</span> == str(hex(flag))[<span class="number">2</span>:<span class="number">10</span>]:</span><br><span class="line">        <span class="keyword">print</span> i</span><br><span class="line">        <span class="keyword">print</span> hex(flag)[<span class="number">2</span>:<span class="number">-1</span>].decode(<span class="string">'hex'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>即可得到flag<br><img src="https://i.loli.net/2019/05/12/5cd80419c7fe8.png" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;ec33f669d2d659e2bc27dbffdf&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="encode"><a href="#encode" class="headerlink" title="encode"></a>encode</h2><p>这个算是签到难度的题目，是adworld上的原题<del>主要是懒</del>，目的是想让还没怎么用过python的同学尝试写一下脚本&amp;知道pyc是可以反编译（好吧室友说她是手算出来的…）<br><strong>题目</strong><br>1.pyc<br>运行出来是这样的<br><img src="https://i.loli.net/2019/05/12/5cd8097cb7c33.png" alt=""><br><strong>分析</strong><br>作为脚本语言，只要拿到了pyc或者pyo相当于就拿到了源码。因此对pyc文件进行反编译，使用uncompyle6或者在线反编译<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install uncompyle6</span><br><span class="line">uncompyle6 crypto11.pyc</span><br></pre></td></tr></table></figure></p>
+<p>反编译代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">import base64</span><br><span class="line"></span><br><span class="line">def encode1(ans):</span><br><span class="line">    s = &apos;&apos;</span><br><span class="line">    for i in ans:</span><br><span class="line">        x = ord(i) ^ 36</span><br><span class="line">        x = x + 25</span><br><span class="line">        s += chr(x)</span><br><span class="line"></span><br><span class="line">    return s</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def encode2(ans):</span><br><span class="line">    s = &apos;&apos;</span><br><span class="line">    for i in ans:</span><br><span class="line">        x = ord(i) + 36</span><br><span class="line">        x = x ^ 36</span><br><span class="line">        s += chr(x)</span><br><span class="line"></span><br><span class="line">    return s</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def encode3(ans):</span><br><span class="line">    return base64.b32encode(ans)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">flag = &apos; &apos;</span><br><span class="line">print &apos;Please Input your flag:&apos;</span><br><span class="line">flag = raw_input()</span><br><span class="line">final = &apos;UC7KOWVXWVNKNIC2XCXKHKK2W5NLBKNOUOSK3LNNVWW3E===&apos;</span><br><span class="line">if encode3(encode2(encode1(flag))) == final:</span><br><span class="line">    print &apos;correct&apos;</span><br><span class="line">else:</span><br><span class="line">    print &apos;wrong&apos;</span><br></pre></td></tr></table></figure></p>
+<p>代码逻辑很清晰，三层加密一层一层逆运算<br><strong>解密脚本</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decode1</span><span class="params">(ans)</span>:</span></span><br><span class="line">	s = <span class="string">''</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> ans:</span><br><span class="line">		i = chr((ord(i)<span class="number">-25</span>)^<span class="number">36</span>)</span><br><span class="line">		s += i</span><br><span class="line">	<span class="keyword">return</span> s</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decode2</span><span class="params">(ans)</span>:</span></span><br><span class="line">	s = <span class="string">''</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> ans:</span><br><span class="line">		i = chr((ord(i)^<span class="number">36</span>) - <span class="number">36</span>)</span><br><span class="line">		s += i</span><br><span class="line">	<span class="keyword">return</span> s</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decode3</span><span class="params">(ans)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> base64.b32decode(ans)</span><br><span class="line"></span><br><span class="line">flag = <span class="string">'LOQ2NJFYU5YH2WTUU5VHJIDXLJNVW2LQO52WS2L6PVUVW2TQLJNVSWLJUBN3E==='</span></span><br><span class="line"></span><br><span class="line">flag = decode3(flag)</span><br><span class="line">flag = decode2(flag)</span><br><span class="line">flag = decode1(flag)</span><br><span class="line"><span class="keyword">print</span> flag</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;b38e7b57c2eff432044984f53efdd4cf&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h2><p>考察RSA基本攻击方法及openssl证书格式，掌握基本openssl命令<br><strong>题目</strong><br>public.pem<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-----BEGIN PUBLIC KEY-----</span><br><span class="line">MIIBIDANBgkqhkiG9w0BAQEFAAOCAQ0AMIIBCAKBgQKBPJR+6zDQPEK6ZY+xAdHS</span><br><span class="line">/Sw69BJG2IrKGOMQ7mk6vdpFlR0F2ZuqiYy6MEXG+KDv9yCrayeV0Yw+JwoNozIB</span><br><span class="line">rTl74KXVk84FHmn6iYQceqtGjcb2frmkID0SBXgNBti1CNUOe/v6GeyXl0j3JPmn</span><br><span class="line">B1wy9BldH3vSS9FJr6DGIwKBgQGtbGUOVzO5qyoOMo+/bdqnxqA4NHjUciH+GDaU</span><br><span class="line">yKgjp4X47PFyHYc6HI0tyMmjxmo/nUXV7MTGVnk2lYoLuuSM8aNWyBgCdGf0bVxw</span><br><span class="line">UtmMyDqr6Z7GL6djTSiUtWIyi0duMsGrPPxOTfZRkbVgj/r0OopZIDbc+zDxHsNU</span><br><span class="line">wl2PXQ==</span><br><span class="line">-----END PUBLIC KEY-----</span><br></pre></td></tr></table></figure></p>
+<p>flag.enc<br>flag.enc是使用公钥加密后的文件，需要私钥文件进行解密，Notepad打开后是乱码</p>
+<p><strong>分析</strong><br>读取公钥命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rsa -pubin -text -modulus -in public.pem</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://i.loli.net/2019/05/12/5cd81571e30b6.png" alt=""><br>明显e太大了，可知是wiener’s attack<br>在github上找到脚本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/pablocelayes/rsa-wiener-attack</span><br></pre></td></tr></table></figure></p>
+<p>解出d = 6355806618953128975353025351520924428881476657739441224888205915909580172245<br>需要自己写私钥证书对flag.enc进行解密<br><strong>解密脚本</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> Crypto.PublicKey <span class="keyword">import</span> RSA</span><br><span class="line"> </span><br><span class="line">keypair = RSA.generate(<span class="number">1024</span>)</span><br><span class="line"></span><br><span class="line">keypair.d = <span class="number">6355806618953128975353025351520924428881476657739441224888205915909580172245</span></span><br><span class="line"></span><br><span class="line">keypair.n = <span class="number">450291682463471937994633961909225780739111573469355415549857153062096131780128537301094125311530341986868085649051979562164031270810233409398782674315229431165863308524798327389365660506329953669670981402058028057030562557523161350542930244129458811144567026261446438510035529368985188386448812933930064856611</span></span><br><span class="line"></span><br><span class="line">keypair.e = <span class="number">301551378389245888888469054776006575695350293556518354997081808339383084975027769316897489065835176847359431297124389026295666786219073195887657189709948336725694600924636831531927842364420562594497676000153230959659757547215533979542050631538309935222397525529633209216686332769439565646119704647425991741277</span> </span><br><span class="line"></span><br><span class="line">private = open(<span class="string">'private.pem'</span>,<span class="string">'w'</span>)</span><br><span class="line">private.write(keypair.exportKey())</span><br><span class="line">private.close()</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rsautl -decrypt -in flag.enc -inkey private.pem -out flag.txt</span><br></pre></td></tr></table></figure>
+<p>采用私钥文件private.pem来解密文件flag.enc，结果保存到flag.txt中<br>解得flag<br><img src="https://i.loli.net/2019/05/12/5cd81ef436e39.png" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;62fe8a611728ca62b6a7cba837abacae&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>出题总结</strong><br>事实上当 $ \mathrm{p\geq 1024 bits\wedge q\geq 1024 bits} $ 时，n便不能被yafu和在线网站分解了,因此使用随机函数生成符合位数的p和q很重要</p>
+<p>另附生成公钥代码<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> Crypto.PublicKey <span class="keyword">import</span> RSA</span><br><span class="line"> </span><br><span class="line">keypair = RSA.generate(<span class="number">1024</span>)</span><br><span class="line"></span><br><span class="line">keypair.n = <span class="number">450291682463471937994633961909225780739111573469355415549857153062096131780128537301094125311530341986868085649051979562164031270810233409398782674315229431165863308524798327389365660506329953669670981402058028057030562557523161350542930244129458811144567026261446438510035529368985188386448812933930064856611</span></span><br><span class="line">keypair.e = <span class="number">301551378389245888888469054776006575695350293556518354997081808339383084975027769316897489065835176847359431297124389026295666786219073195887657189709948336725694600924636831531927842364420562594497676000153230959659757547215533979542050631538309935222397525529633209216686332769439565646119704647425991741277</span> </span><br><span class="line"></span><br><span class="line">public = open(<span class="string">'public.pem'</span>,<span class="string">'w'</span>)</span><br><span class="line">public.write(keypair.publickey().exportKey())</span><br><span class="line">public.close()</span><br></pre></td></tr></table></figure></p>
 
       
 
@@ -559,8 +554,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/26/实验吧密码学wp/" rel="next" title="实验吧密码学wp">
-                <i class="fa fa-chevron-left"></i> 实验吧密码学wp
+              <a href="/2019/04/25/给hexo主题添加背景及更改字体颜色（next的Mist主题）/" rel="next" title="给hexo主题添加背景及更改字体颜色（next的Mist主题）">
+                <i class="fa fa-chevron-left"></i> 给hexo主题添加背景及更改字体颜色（next的Mist主题）
               </a>
             
           </div>
@@ -568,10 +563,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/04/25/CTF密码学总结/" rel="prev" title="CTF密码学方法总结">
-                CTF密码学方法总结 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -714,7 +705,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一章-绪论"><span class="nav-number">1.</span> <span class="nav-text">第一章 绪论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库、数据库管理系统和数据库系统"><span class="nav-number">1.1.</span> <span class="nav-text">数据库、数据库管理系统和数据库系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库（DB）"><span class="nav-number">1.1.1.</span> <span class="nav-text">数据库（DB）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库管理系统（DBMS）"><span class="nav-number">1.1.2.</span> <span class="nav-text">数据库管理系统（DBMS）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库系统（DBS）"><span class="nav-number">1.1.3.</span> <span class="nav-text">数据库系统（DBS）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库系统产生与发展"><span class="nav-number">1.2.</span> <span class="nav-text">数据库系统产生与发展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#人工管理阶段"><span class="nav-number">1.2.1.</span> <span class="nav-text">人工管理阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件系统阶段"><span class="nav-number">1.2.2.</span> <span class="nav-text">文件系统阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库系统阶段"><span class="nav-number">1.2.3.</span> <span class="nav-text">数据库系统阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#高共享性的好处"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">高共享性的好处</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据结构化"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">数据结构化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#DBMS统一控制"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">DBMS统一控制</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据模型"><span class="nav-number">1.3.</span> <span class="nav-text">数据模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#概念-数据-模型"><span class="nav-number">1.3.1.</span> <span class="nav-text">概念(数据)模型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#组成要素"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">组成要素</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#画E-R图步骤"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">画E-R图步骤</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#逻辑-数据-模型"><span class="nav-number">1.3.2.</span> <span class="nav-text">逻辑(数据)模型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#组成要素-1"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">组成要素</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#层次模型"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">层次模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#网状模型"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">网状模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#关系模型（-）"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">关系模型（*）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库系统结构"><span class="nav-number">1.4.</span> <span class="nav-text">数据库系统结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#外模式"><span class="nav-number">1.4.1.</span> <span class="nav-text">外模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模式"><span class="nav-number">1.4.2.</span> <span class="nav-text">模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内模式"><span class="nav-number">1.4.3.</span> <span class="nav-text">内模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#外模式-模式映像"><span class="nav-number">1.4.4.</span> <span class="nav-text">外模式/模式映像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模式-内模式映像"><span class="nav-number">1.4.5.</span> <span class="nav-text">模式/内模式映像</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库管理系统"><span class="nav-number">1.5.</span> <span class="nav-text">数据库管理系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库应用系统常见的几种结构"><span class="nav-number">1.6.</span> <span class="nav-text">数据库应用系统常见的几种结构</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#古典密码签到"><span class="nav-number">1.</span> <span class="nav-text">古典密码签到</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#现代密码签到"><span class="nav-number">2.</span> <span class="nav-text">现代密码签到</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#easyxor"><span class="nav-number">3.</span> <span class="nav-text">easyxor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#encode"><span class="nav-number">4.</span> <span class="nav-text">encode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA"><span class="nav-number">5.</span> <span class="nav-text">RSA</span></a></li></ol></div>
             
 
           </div>
@@ -1202,6 +1193,43 @@
   
   
 
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
   
 
 
