@@ -118,7 +118,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/05/12/5cd8097cb7c33.png">
 <meta property="og:image" content="https://i.loli.net/2019/05/12/5cd81571e30b6.png">
 <meta property="og:image" content="https://i.loli.net/2019/05/12/5cd81ef436e39.png">
-<meta property="og:updated_time" content="2019-05-12T15:54:33.720Z">
+<meta property="og:updated_time" content="2019-08-25T07:59:35.407Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CUMTCTF第三次双月赛Writeup-crypto">
 <meta name="twitter:description" content="五一假期期间举行CUMT第三次双月赛，一共五道密码题，我出的是后三道题。考虑到避免被锤17级18级同学，题目不是很难，但从实际情况来看，能全部做出来的队伍并不多。这里提供wp及一些出题思路">
@@ -440,7 +440,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-05-12 23:54:33" itemprop="dateModified" datetime="2019-05-12T23:54:33+08:00">2019-05-12</time>
+                <time title="修改时间：2019-08-25 15:59:35" itemprop="dateModified" datetime="2019-08-25T15:59:35+08:00">2019-08-25</time>
               
             
           </span>
@@ -519,7 +519,7 @@
 <p><strong>解密脚本</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> Crypto.PublicKey <span class="keyword">import</span> RSA</span><br><span class="line"> </span><br><span class="line">keypair = RSA.generate(<span class="number">1024</span>)</span><br><span class="line"></span><br><span class="line">keypair.d = <span class="number">6355806618953128975353025351520924428881476657739441224888205915909580172245</span></span><br><span class="line"></span><br><span class="line">keypair.n = <span class="number">450291682463471937994633961909225780739111573469355415549857153062096131780128537301094125311530341986868085649051979562164031270810233409398782674315229431165863308524798327389365660506329953669670981402058028057030562557523161350542930244129458811144567026261446438510035529368985188386448812933930064856611</span></span><br><span class="line"></span><br><span class="line">keypair.e = <span class="number">301551378389245888888469054776006575695350293556518354997081808339383084975027769316897489065835176847359431297124389026295666786219073195887657189709948336725694600924636831531927842364420562594497676000153230959659757547215533979542050631538309935222397525529633209216686332769439565646119704647425991741277</span> </span><br><span class="line"></span><br><span class="line">private = open(<span class="string">'private.pem'</span>,<span class="string">'w'</span>)</span><br><span class="line">private.write(keypair.exportKey())</span><br><span class="line">private.close()</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl rsautl -decrypt -in flag.enc -inkey private.pem -out flag.txt</span><br></pre></td></tr></table></figure>
 <p>采用私钥文件private.pem来解密文件flag.enc，结果保存到flag.txt中<br>解得flag<br><img src="https://i.loli.net/2019/05/12/5cd81ef436e39.png" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;62fe8a611728ca62b6a7cba837abacae&#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong>出题总结</strong><br>事实上当 $ \mathrm{p\geq 1024 bits\wedge q\geq 1024 bits} $ 时，n便不能被yafu和在线网站分解了,因此使用随机函数生成符合位数的p和q很重要</p>
+<p><strong>出题总结</strong><br>事实上当 $\small \mathrm{p\geq 1024 bits\wedge q\geq 1024 bits} $ 时，n便不能被yafu和在线网站分解了,因此使用随机函数生成符合位数的p和q很重要</p>
 <p>另附生成公钥代码<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> Crypto.PublicKey <span class="keyword">import</span> RSA</span><br><span class="line"> </span><br><span class="line">keypair = RSA.generate(<span class="number">1024</span>)</span><br><span class="line"></span><br><span class="line">keypair.n = <span class="number">450291682463471937994633961909225780739111573469355415549857153062096131780128537301094125311530341986868085649051979562164031270810233409398782674315229431165863308524798327389365660506329953669670981402058028057030562557523161350542930244129458811144567026261446438510035529368985188386448812933930064856611</span></span><br><span class="line">keypair.e = <span class="number">301551378389245888888469054776006575695350293556518354997081808339383084975027769316897489065835176847359431297124389026295666786219073195887657189709948336725694600924636831531927842364420562594497676000153230959659757547215533979542050631538309935222397525529633209216686332769439565646119704647425991741277</span> </span><br><span class="line"></span><br><span class="line">public = open(<span class="string">'public.pem'</span>,<span class="string">'w'</span>)</span><br><span class="line">public.write(keypair.publickey().exportKey())</span><br><span class="line">public.close()</span><br></pre></td></tr></table></figure></p>
 
       
@@ -570,6 +570,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/19/2019全国密码学数学挑战赛(赛题一)/" rel="prev" title="2019全国密码学数学挑战赛(赛题一)">
+                2019全国密码学数学挑战赛(赛题一) <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -653,7 +657,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -672,9 +676,7 @@
                     
                       
                     
-                      
-                    
-                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-count">3</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
