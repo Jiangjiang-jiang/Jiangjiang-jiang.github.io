@@ -1899,7 +1899,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ffb567;
+  background: #1cd98f;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2878,12 +2878,12 @@ body {
   background-image: url("https://raw.githubusercontent.com/Jiangjiang-jiang/picture/master/background.png");
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-position: 50% 50%;
-  background-size: 100% 100%;
+  background-position: center;
+  background-size: auto;
 }
 .main-inner {
   margin-top: 60px;
-  padding: 60px 60px 60px 60px;
+  padding: 60px 30px 60px 30px;
   background: #fff;
   opacity: 0.95;
   min-height: 500px;
@@ -2906,4 +2906,45 @@ body {
   -ms-transform: translateY(78%);
   -o-transform: translateY(78%);
   transform: translateY(78%);
+}
+@media (min-width: 1600px) {
+  .container .header-inner,
+  .container .main-inner {
+    width: $main-desktop;
+  }
+}
+@media (max-width: 767px) {
+  .menu {
+    margin: 10px auto;
+    padding: 0;
+  }
+  .site-meta {
+    margin-left: 0;
+  }
+  .site-meta .site-title {
+    line-height: 28px;
+  }
+  .header-inner {
+    width: auto;
+    margin-bottom: 50px;
+    padding: 10px 10px 0;
+  }
+  .header-inner .site-brand-wrapper {
+    margin-bottom: 10px;
+    content: " ";
+    display: table;
+    clear: both;
+    width: 100%;
+  }
+  .container .main-inner {
+    width: auto;
+    margin-top: 0;
+    padding: 30px 5px 30px 5px;
+  }
+  .github-corner {
+    display: none;
+  }
+  .copy-path {
+    display: none;
+  }
 }
