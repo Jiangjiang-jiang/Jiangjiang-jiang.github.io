@@ -96,17 +96,17 @@
 
 
 
-  <meta name="description" content="2020/12/26">
+  <meta name="description" content="题目链接">
 <meta property="og:type" content="article">
 <meta property="og:title" content="BMZCTF2020 re &amp; crypto writeup">
 <meta property="og:url" content="http://yoursite.com/2020/12/28/BMZCTF2020/index.html">
 <meta property="og:site_name" content="姜姜酱的博客">
-<meta property="og:description" content="2020/12/26">
+<meta property="og:description" content="题目链接">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-12-30T13:24:36.117Z">
+<meta property="og:updated_time" content="2020-12-30T13:55:29.596Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="BMZCTF2020 re &amp; crypto writeup">
-<meta name="twitter:description" content="2020/12/26">
+<meta name="twitter:description" content="题目链接">
 
 
 
@@ -425,7 +425,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/crypto/" itemprop="url" rel="index"><span itemprop="name">crypto</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a></span>
 
                 
                 
@@ -458,7 +458,7 @@
       
 
       
-        <p>2020/12/26</p>
+        <p><a href="https://share.weiyun.com/9Bz96oYq" target="_blank" rel="noopener">题目链接</a></p>
 <a id="more"></a>
 <h2 id="RE"><a href="#RE" class="headerlink" title="RE"></a>RE</h2><h3 id="re1"><a href="#re1" class="headerlink" title="re1"></a>re1</h3><p>64位程序，IDA查看。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> __<span class="function">cdecl <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> **argv, <span class="keyword">const</span> <span class="keyword">char</span> **envp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> v4[<span class="number">30</span>]; <span class="comment">// [rsp+0h] [rbp-90h]</span></span><br><span class="line">  <span class="keyword">int</span> v5; <span class="comment">// [rsp+78h] [rbp-18h]</span></span><br><span class="line">  <span class="keyword">int</span> m; <span class="comment">// [rsp+7Ch] [rbp-14h]</span></span><br><span class="line">  <span class="keyword">int</span> l; <span class="comment">// [rsp+80h] [rbp-10h]</span></span><br><span class="line">  <span class="keyword">int</span> k; <span class="comment">// [rsp+84h] [rbp-Ch]</span></span><br><span class="line">  <span class="keyword">int</span> j; <span class="comment">// [rsp+88h] [rbp-8h]</span></span><br><span class="line">  <span class="keyword">int</span> i; <span class="comment">// [rsp+8Ch] [rbp-4h]</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">"Hello,Reverser,Lets play a game (T_T)"</span>);</span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt;= <span class="number">27</span>; ++i )</span><br><span class="line">    v4[i] = getchar();</span><br><span class="line">  getchar();</span><br><span class="line">  <span class="keyword">for</span> ( j = <span class="number">0</span>; j &lt;= <span class="number">27</span>; ++j )</span><br><span class="line">  &#123;</span><br><span class="line">    v4[j] ^= <span class="number">0x1A2B3C</span>u;</span><br><span class="line">    encrypt_jump(<span class="number">0x1A2B3C</span>u);</span><br><span class="line">  &#125;</span><br><span class="line">  v5 = <span class="number">0x1A2B0C</span>;</span><br><span class="line">  <span class="keyword">for</span> ( k = <span class="number">0</span>; k &lt;= <span class="number">27</span>; ++k )</span><br><span class="line">  &#123;</span><br><span class="line">    v4[k] %= v5;</span><br><span class="line">    encrypt_jump(v5);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> ( l = <span class="number">0</span>; l &lt;= <span class="number">27</span>; ++l )</span><br><span class="line">  &#123;</span><br><span class="line">    v4[l] ^= <span class="number">0x4D5E6F</span>u;</span><br><span class="line">    encrypt_jump(<span class="number">0x4D5E6F</span>u);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> ( m = <span class="number">0</span>; m &lt;= <span class="number">27</span>; ++m )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( bytes_0318912x[m] != v4[m] )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">puts</span>(<span class="string">"Sorry~"</span>);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">"Congratulations!"</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -640,7 +640,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">2</span>
+                      
+                    
+                    <span class="site-state-item-count">3</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
