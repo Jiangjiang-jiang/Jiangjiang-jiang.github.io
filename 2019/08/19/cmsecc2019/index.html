@@ -96,12 +96,12 @@
 
 
 
-  <meta name="description" content="“天融信杯”第四届全国高校数学挑战赛初赛及复赛。">
+  <meta name="description" content="“天融信杯”第四届全国高校数学挑战赛初赛赛区选拔后，决赛于2019年8月5日-8月8日在烟台大学举行。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2019全国密码学数学挑战赛(赛题一)">
-<meta property="og:url" content="http://yoursite.com/2019/08/19/2019全国密码学数学挑战赛(赛题一)/index.html">
+<meta property="og:url" content="http://yoursite.com/2019/08/19/cmsecc2019/index.html">
 <meta property="og:site_name" content="姜姜酱的博客">
-<meta property="og:description" content="“天融信杯”第四届全国高校数学挑战赛初赛及复赛。">
+<meta property="og:description" content="“天融信杯”第四届全国高校数学挑战赛初赛赛区选拔后，决赛于2019年8月5日-8月8日在烟台大学举行。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://i.loli.net/2019/08/25/eAz5tfy94SYQJwD.png">
 <meta property="og:image" content="https://i.loli.net/2019/08/26/WVSrdT5atfwPBs7.png">
@@ -109,10 +109,10 @@
 <meta property="og:image" content="https://i.loli.net/2019/08/27/NJaLbfHdeyRnzrX.png">
 <meta property="og:image" content="https://i.loli.net/2019/08/27/WTlKO5mx8tFzhPo.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/08/27/qTUr87Pphsal9d6.jpg">
-<meta property="og:updated_time" content="2020-12-30T13:27:29.822Z">
+<meta property="og:updated_time" content="2020-12-28T13:28:37.138Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2019全国密码学数学挑战赛(赛题一)">
-<meta name="twitter:description" content="“天融信杯”第四届全国高校数学挑战赛初赛及复赛。">
+<meta name="twitter:description" content="“天融信杯”第四届全国高校数学挑战赛初赛赛区选拔后，决赛于2019年8月5日-8月8日在烟台大学举行。">
 <meta name="twitter:image" content="https://i.loli.net/2019/08/25/eAz5tfy94SYQJwD.png">
 
 
@@ -120,7 +120,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/08/19/2019全国密码学数学挑战赛(赛题一)/">
+  <link rel="canonical" href="http://yoursite.com/2019/08/19/cmsecc2019/">
 
 
 
@@ -371,7 +371,7 @@
   
 	
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/19/2019全国密码学数学挑战赛(赛题一)/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/19/cmsecc2019/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="姜姜酱">
@@ -465,7 +465,7 @@
       
 
       
-        <p>“天融信杯”第四届全国高校数学挑战赛初赛及复赛。<br><a id="more"></a><br>第一次参加全国密码学竞赛，题目有三道，<del>自作主张</del>选择了第一道，于是走上了实力坑队友的路。<br>今年及历年题目：<a href="http://cmsecc.com" target="_blank" rel="noopener">竞赛官网地址</a></p>
+        <p>“天融信杯”第四届全国高校数学挑战赛初赛赛区选拔后，决赛于2019年8月5日-8月8日在烟台大学举行。<br><a id="more"></a><br>第一次参加全国密码学竞赛，题目有三道，<del>自作主张</del>选择了第一道，于是走上了实力坑队友的路。<br>今年及历年题目：<a href="http://cmsecc.com" target="_blank" rel="noopener">竞赛官网地址</a></p>
 <p>由于LaTeX数学公式较多，有时可能出现无法加载的情况，可以多刷新几次。</p>
 <h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>&emsp;&emsp;题目文档里的描述很清晰，要我们解决的就是椭圆曲线上的离散对数问题(ECDLP)。ECDLP问题是椭圆曲线密码的核心技术问题，到目前为止，基于椭圆曲线有限域上的离散对数问题还没有真正有效的算法，是现代密码学中最具挑战性的问题之一。</p>
 <h3 id="ECC基本原理"><a href="#ECC基本原理" class="headerlink" title="ECC基本原理"></a>ECC基本原理</h3><p>&emsp;&emsp;设$\mathsf{\scriptsize F_{p}}$表示具有$\mathsf{\scriptsize p}$个元素的有限域，其中$\mathsf{\scriptsize p&gt;3}$是一个素数。$\mathsf{\scriptsize F_{p}}$上的椭圆曲线$\mathsf{\scriptsize E}$是一个点集合$\mathsf{\scriptsize E/F_{p}=  \left \{ \left ( x,y \right )\mid y^{2}= x^{2}+ax+b,\, a,\, b,\, x,\, y\in \scriptsize F_{p} \right \}\scriptsize \bigcup\left \{ \infty  \right \}}$，其中$\mathsf{\scriptsize \infty}$表示无穷远点，$\mathsf{\scriptsize 4a^{2}+27b^{2}\neq 0(mod\, p)}$<br>&emsp;&emsp;设$\mathsf{\scriptsize P= \small \left ( x_{1},\, y_{1} \right )}$,$\mathsf{\scriptsize Q=\small \left ( x_{2},\, y_{2} \right )\in \scriptsize E/F_{p}}$,在$\mathsf{\scriptsize E}$上定义$\mathsf{\scriptsize “+”}$运算$\mathsf{\scriptsize P+Q=R}$，$\mathsf{\scriptsize R=\small \left ( x_{3},\, y_{3} \right )\in \scriptsize E/F_{p}}$是过$\mathsf{\scriptsize P,\, Q}$的直线与曲线另一交点关于x轴的对称点(当$\mathsf{\scriptsize P=Q}$时，$\mathsf{\scriptsize R}$是$\mathsf{\scriptsize P}$点的切线与曲线的另一交点关于x的对称点).<br><img src="https://i.loli.net/2019/08/25/eAz5tfy94SYQJwD.png" width="600" height="400" alt="1.jpg" align="center/"></p>
@@ -701,8 +701,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/04/25/hexo_next_color/" rel="next" title="给hexo主题添加背景及更改字体颜色（next的Mist主题）">
-                <i class="fa fa-chevron-left"></i> 给hexo主题添加背景及更改字体颜色（next的Mist主题）
+              <a href="/2019/08/19/2019全国密码学数学挑战赛(赛题一)/" rel="next" title="2019全国密码学数学挑战赛(赛题一)">
+                <i class="fa fa-chevron-left"></i> 2019全国密码学数学挑战赛(赛题一)
               </a>
             
           </div>
@@ -711,8 +711,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/08/19/cmsecc2019/" rel="prev" title="2019全国密码学数学挑战赛(赛题一)">
-                2019全国密码学数学挑战赛(赛题一) <i class="fa fa-chevron-right"></i>
+              <a href="/2020/12/28/BMZCTF2020/" rel="prev" title="BMZCTF2020 re & crypto writeup">
+                BMZCTF2020 re & crypto writeup <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
