@@ -103,7 +103,7 @@
 <meta property="og:site_name" content="姜姜酱的博客">
 <meta property="og:description" content="部分wp">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-01-09T16:29:55.326Z">
+<meta property="og:updated_time" content="2021-01-09T16:34:00.882Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2021华为计算AI安全冬令营crypto writeup">
 <meta name="twitter:description" content="部分wp">
@@ -460,12 +460,14 @@
       
         <p>部分wp</p>
 <a id="more"></a>
-<h2 id="1这道题目叫啥忘记了"><a href="#1这道题目叫啥忘记了" class="headerlink" title="1这道题目叫啥忘记了"></a>1这道题目叫啥忘记了</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">密钥：VklHRU5FUkU=</span><br><span class="line"></span><br><span class="line">密文：HHCKPDQEGUFXFCKHBZXXVQAAHZYHVDSYBQEHXRUHHCEXXSADBGEXZRCHBYEHTBAEH4GJEMFS</span><br></pre></td></tr></table></figure>
+<h2 id="古典美"><a href="#古典美" class="headerlink" title="古典美"></a>古典美</h2><p>密钥：VklHRU5FUkU=</p>
+<p>密文：</p>
+<p>HHCKPDQEGUFXFCKHBZXXVQAAHZYHVDSYBQEHXRUHHCEXXSADBGEXZRCHBYEHTBAEH4GJEMFS</p>
 <p>密钥用base64解码：VIGENERE，作为维吉尼亚的密钥。</p>
 <p>解密密文得到：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MZWGCZZALMZTSYTDGRRTIMJWMRSDIZBUGIYDKNDDMUYTKOJZGYYTMNLDGQYDGXJAM4YDAZBB</span><br></pre></td></tr></table></figure>
+<p>MZWGCZZALMZTSYTDGRRTIMJWMRSDIZBUGIYDKNDDMUYTKOJZGYYTMNLDGQYDGXJAM4YDAZBB</p>
 <p>只有A-Z和数字，因此采用base32解码： flag [39bc4c416dd4d42054ce15996165c403] g00d! </p>
-<h2 id="2这道题目叫啥也忘记了"><a href="#2这道题目叫啥也忘记了" class="headerlink" title="2这道题目叫啥也忘记了"></a>2这道题目叫啥也忘记了</h2><p>题目考察的点是在RSA中，如果已知公钥对(e, n)对应的私钥对(d, n)，有办法分解出p, q的值。参考<a href="https://www.di-mgt.com.au/rsa_factorize_n.html" target="_blank" rel="noopener">https://www.di-mgt.com.au/rsa_factorize_n.html</a></p>
+<h2 id="忘记题目"><a href="#忘记题目" class="headerlink" title="(忘记题目)"></a>(忘记题目)</h2><p>题目考察的点是在RSA中，如果已知公钥对(e, n)对应的私钥对(d, n)，有办法分解出p, q的值。参考<a href="https://www.di-mgt.com.au/rsa_factorize_n.html" target="_blank" rel="noopener">https://www.di-mgt.com.au/rsa_factorize_n.html</a></p>
 <p>这道题首先第一部分用正常的d解密就好：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line">d1=<span class="number">0x7d12e57b1aa157038ebe5c45b56256270671e6984b0dcdf10a2ea07ce480143240c9a3e1c60870e499306a717073f157476aa88e99a7bdf1e2a4adf8ce21025cc6c05035c4a1d7e3b6f061464872e65118384999f0154f3c1761fa68d4685126b7fc98f4c2cdc41c98aa4e099a868a89099dd2170664647efca2c8d8e06a2e49</span></span><br><span class="line">e1=<span class="number">0x10001</span></span><br><span class="line">n1=<span class="number">0x96ed2727e4446e26c84552a9a19640c7d720c9b6e661cfcfec03463e92a9d0b228ddc9847c0daa137a19db67294626c535fe71c388f6ea3eb8cb5dbf09a84374eb021c9297a29394cf77da157c1b8be77b09a4fcbe54bf3dc93d33539e842766ad8e38369093ddc034ac32583a48e299a4d8b31b606b1729298ee136664b8b77</span></span><br><span class="line">c1=<span class="number">0x6c435db37217bc4da3f225a8f1a0501e03a97d2cbc4fa249df051ed66c1559b68885f4fa181bdd9e98242441f463dbbc1c26d1eea2c5774a0a905b366c8775bce8e52182dc32a93647c9b8842b74abc434e5b84eeae679a3b19cb7a1ef6ae8f65d22ce6ab438a16119805eee83408a68207bbdfde5181a8bd8b4794c711d33c4</span></span><br><span class="line">m1=pow(c1, d1, n1)</span><br><span class="line">long_to_bytes(m1)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 'flag part one is :2295b774c4467c9a'</span></span><br></pre></td></tr></table></figure>
 <p>再由e,d,n分解出p,q。</p>
@@ -687,7 +689,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1这道题目叫啥忘记了"><span class="nav-number">1.</span> <span class="nav-text">1这道题目叫啥忘记了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2这道题目叫啥也忘记了"><span class="nav-number">2.</span> <span class="nav-text">2这道题目叫啥也忘记了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA-upgrade"><span class="nav-number">3.</span> <span class="nav-text">RSA_upgrade</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#古典美"><span class="nav-number">1.</span> <span class="nav-text">古典美</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#忘记题目"><span class="nav-number">2.</span> <span class="nav-text">(忘记题目)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA-upgrade"><span class="nav-number">3.</span> <span class="nav-text">RSA_upgrade</span></a></li></ol></div>
             
 
           </div>
