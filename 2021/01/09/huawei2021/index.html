@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="部分wp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2021华为计算AI安全冬令营crypto writeup">
+<meta property="og:url" content="http://yoursite.com/2021/01/09/huawei2021/index.html">
+<meta property="og:site_name" content="姜姜酱的博客">
+<meta property="og:description" content="部分wp">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-01-09T16:20:45.713Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2021华为计算AI安全冬令营crypto writeup">
+<meta name="twitter:description" content="部分wp">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/01/09/huawei2021/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>2021华为计算AI安全冬令营crypto writeup | 姜姜酱的博客</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0a3d5f5625415746246872fefe2c1f97";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">姜姜酱的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-resources">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/resources" rel="section"><i class="menu-item-icon fa fa-fw fa-download"></i> <br>工具链接</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+	
+<a href="https://github.com/Jiangjiang-jiang" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#FFB6C1; color:#222; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+	
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/09/huawei2021/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="姜姜酱">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/portrait.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="姜姜酱的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">2021华为计算AI安全冬令营crypto writeup
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2021-01-09 23:12:50" itemprop="dateCreated datePublished" datetime="2021-01-09T23:12:50+08:00">2021-01-09</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+      
+      
+
+      
+        <p>部分wp</p>
+<a id="more"></a>
+<h2 id="1这道题目叫啥忘记了"><a href="#1这道题目叫啥忘记了" class="headerlink" title="1这道题目叫啥忘记了"></a>1这道题目叫啥忘记了</h2><p>密钥：VklHRU5FUkU=；</p>
+<p>密文：HHCKPDQEGUFXFCKHBZXXVQAAHZYHVDSYBQEHXRUHHCEXXSADBGEXZRCHBYEHTBAEH4GJEMFS</p>
+<p>密钥用base64解码：VIGENERE，作为维吉尼亚的密钥。</p>
+<p>解密密文得到：MZWGCZZALMZTSYTDGRRTIMJWMRSDIZBUGIYDKNDDMUYTKOJZGYYTMNLDGQYDGXJAM4YDAZBB</p>
+<p>只有A-Z和数字，因此采用base32解码： flag [39bc4c416dd4d42054ce15996165c403] g00d! </p>
+<h2 id="2这道题目叫啥也忘记了"><a href="#2这道题目叫啥也忘记了" class="headerlink" title="2这道题目叫啥也忘记了"></a>2这道题目叫啥也忘记了</h2><p>题目考察的点是在RSA中，如果已知公钥对(e, n)对应的私钥对(d, n)，有办法分解出p, q的值。参考<a href="https://www.di-mgt.com.au/rsa_factorize_n.html" target="_blank" rel="noopener">https://www.di-mgt.com.au/rsa_factorize_n.html</a></p>
+<p>这道题首先第一部分用正常的d解密就好：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line">d1=<span class="number">0x7d12e57b1aa157038ebe5c45b56256270671e6984b0dcdf10a2ea07ce480143240c9a3e1c60870e499306a717073f157476aa88e99a7bdf1e2a4adf8ce21025cc6c05035c4a1d7e3b6f061464872e65118384999f0154f3c1761fa68d4685126b7fc98f4c2cdc41c98aa4e099a868a89099dd2170664647efca2c8d8e06a2e49</span></span><br><span class="line">e1=<span class="number">0x10001</span></span><br><span class="line">n1=<span class="number">0x96ed2727e4446e26c84552a9a19640c7d720c9b6e661cfcfec03463e92a9d0b228ddc9847c0daa137a19db67294626c535fe71c388f6ea3eb8cb5dbf09a84374eb021c9297a29394cf77da157c1b8be77b09a4fcbe54bf3dc93d33539e842766ad8e38369093ddc034ac32583a48e299a4d8b31b606b1729298ee136664b8b77</span></span><br><span class="line">c1=<span class="number">0x6c435db37217bc4da3f225a8f1a0501e03a97d2cbc4fa249df051ed66c1559b68885f4fa181bdd9e98242441f463dbbc1c26d1eea2c5774a0a905b366c8775bce8e52182dc32a93647c9b8842b74abc434e5b84eeae679a3b19cb7a1ef6ae8f65d22ce6ab438a16119805eee83408a68207bbdfde5181a8bd8b4794c711d33c4</span></span><br><span class="line">m1=pow(c1, d1, n1)</span><br><span class="line">long_to_bytes(m1)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 'flag part one is :2295b774c4467c9a'</span></span><br></pre></td></tr></table></figure>
+<p>再由e,d,n分解出p,q。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.math.BigInteger;</span><br><span class="line"><span class="keyword">import</span> java.util.Random;</span><br><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">KnownEDN</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> BigInteger[] attack(BigInteger e, BigInteger d, BigInteger n) &#123;</span><br><span class="line">        BigInteger[] result = <span class="keyword">new</span> BigInteger[<span class="number">2</span>];</span><br><span class="line">        BigInteger k = d.multiply(e).subtract(BigInteger.ONE);</span><br><span class="line">        Random random = <span class="keyword">new</span> Random();</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            BigInteger g = <span class="keyword">new</span> BigInteger(n.bitLength(), random);</span><br><span class="line">            <span class="keyword">while</span> (g.compareTo(BigInteger.ONE) &lt;= <span class="number">0</span> || g.compareTo(n) &gt;= <span class="number">0</span>)</span><br><span class="line">                g = <span class="keyword">new</span> BigInteger(n.bitLength(), random);</span><br><span class="line">            BigInteger k1 = k;</span><br><span class="line">            <span class="keyword">while</span> (k1.mod(BigInteger.TWO).equals(BigInteger.ZERO)) &#123;</span><br><span class="line">                k1 = k1.shiftRight(<span class="number">1</span>);</span><br><span class="line">                BigInteger x = g.modPow(k1, n);</span><br><span class="line">                result[<span class="number">0</span>] = x.subtract(BigInteger.ONE).gcd(n);</span><br><span class="line">                <span class="keyword">if</span> (x.compareTo(BigInteger.ONE) &gt; <span class="number">0</span> &amp;&amp; result[<span class="number">0</span>].compareTo(BigInteger.ONE) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                    result[<span class="number">1</span>] = n.divide(result[<span class="number">0</span>]);</span><br><span class="line">                    <span class="keyword">return</span> result;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        BigInteger e = <span class="keyword">new</span> BigInteger(<span class="string">"65537"</span>);</span><br><span class="line">        BigInteger d = <span class="keyword">new</span></span><br><span class="line">        BigInteger(<span class="string">"87829819124646652739812957863722412015634891260772294325995961099107534010712036077168547772778499478512604716421195336244466016654383871260966997679029170319388738640308348628385235411655710226519739834339519380578327359429189610559253693055613763347244887191660768249285720137254760097622936841830552710729"</span>);</span><br><span class="line">        BigInteger n = <span class="keyword">new</span></span><br><span class="line">        BigInteger(<span class="string">"105984107381045601823003108385313761784328476156897016317924496005453968007586579300498888169700143991517014514556827875595249016469561521069948889302177015514105662236342493793950683120435606323771328483886206142440957804487985287339927632655132795619465387151256885471251176082064948939517064310791867173751"</span>);</span><br><span class="line">        BigInteger[] pq = attack(e, d, n);</span><br><span class="line">        System.out.println(<span class="string">"p:\n"</span> + pq[<span class="number">0</span>] + <span class="string">"\nq:\n"</span> + pq[<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从而得到p,q的值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"></span><br><span class="line">p = <span class="number">7989817345872802916258824633068986429227729563110196898659568255235293257271203068952971618219681106634429039565231866429796385557747877260629666332312643</span></span><br><span class="line">q = <span class="number">13264897405419718100411551025228233248810511685104073408647554593159408298020238756835088759200259612491893289998541138751171701279712972233358298687021757</span></span><br><span class="line">c2 = <span class="number">0x8cb5d8861e5838f41910d6eaf142a8d47b92e0c6b1b1e9e25896f7169644bbb726ccfdc82ba50932fbc45f00c53dda42f8efc358a5108cde8aaa9f38b493aa3417c9522924f06847ba4a3dd26f005a610f7633877fbe89e090df5cb3a7a5ebae0fbe72eabb339b21fa2ddd33844a5cb53e39491fc472721ed676ae07b33c8d6e</span></span><br><span class="line">phi = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">e = <span class="number">0x3f1</span></span><br><span class="line">d = gmpy2.invert(e, phi)</span><br><span class="line">m = pow(c2, d, p*q)</span><br><span class="line">print(long_to_bytes(m))</span><br><span class="line"></span><br><span class="line"><span class="comment"># flag part two is :ca5c600783b9bde0</span></span><br></pre></td></tr></table></figure>
+<p>两部分连接起来就是flag的值。</p>
+<h2 id="RSA-upgrade"><a href="#RSA-upgrade" class="headerlink" title="RSA_upgrade"></a>RSA_upgrade</h2><p>题目代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> sympy <span class="keyword">import</span> nextprime</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> *</span><br><span class="line">flag = <span class="string">b'DASCTF&#123;********************************&#125;'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lcg</span><span class="params">(seed,params)</span>:</span></span><br><span class="line">    (m,c,n)=params</span><br><span class="line">    s = seed % n</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        s = (m * s + c) % n</span><br><span class="line">        <span class="keyword">yield</span> s</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">seed = getPrime(<span class="number">128</span>)</span><br><span class="line">m = getPrime(<span class="number">128</span>)</span><br><span class="line">c = getPrime(<span class="number">128</span>)</span><br><span class="line">n = getPrime(<span class="number">129</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">key_stream = lcg(seed,(m,c,n))</span><br><span class="line">num=[]</span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">6</span>):</span><br><span class="line">	num.append(next(key_stream))</span><br><span class="line"></span><br><span class="line">secret =  next(key_stream)</span><br><span class="line"></span><br><span class="line">e = nextprime(secret)</span><br><span class="line">p = getPrime(<span class="number">1024</span>)</span><br><span class="line">q = getPrime(<span class="number">1024</span>)</span><br><span class="line">r = getPrime(<span class="number">1024</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">flag = bytes_to_long(flag)</span><br><span class="line">flag ^= flag &gt;&gt; <span class="number">10</span></span><br><span class="line">print(p)</span><br><span class="line">print(p*q*r)</span><br><span class="line">print(pow(flag,e,p*q*r))</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">num = [<span class="number">58605992502479537155943965904595921273</span>, <span class="number">525605798656979919420608964379033982804</span>, <span class="number">607738431135489138748992347244318940466</span>, <span class="number">631747898536603358381419028993140907216</span>, <span class="number">13450658701001781564543219325486287717</span>, <span class="number">407826262741495712819054543462943222370</span>]</span><br><span class="line">p = <span class="number">138092450043978032187397495330379791355629274237204650898232878263413301988536751004632087169676028049236253598677819980191406826529664613957150122788435561338344715937422320958238628877093605040078776555586363593650646481242888908171897232624141894446324625781720275455534977357099473212936612966142541689717</span></span><br><span class="line">newN = <span class="number">3373500409784821814490131118443028295231446638918191872866826078664586857545499510115664725311697632345156866795088640886074708893049896293408277232121045205172588091316164743124173177747110069553394872128870505076277498830601152723565030932360665298864122468812389923295873644041292977470736981439616767671752225297169001703767163460419431015014012924743881828753765788455996503018031103917461875346904941302752301152097427368052588291798732671143344833211267818507324812463058368199324367285019651028003000765054679485233317767201747568717493732406861626561470103436488978595267326521876995116542475030869904228103019888619123275263009931569375612626796485751453790231029224398879558668919940829341599982045260085645733137064910612640851525128951165660322666651603943749615559507563880191545144231282875004494643666234781231448702811026047613232622993307630737999918058511598922102840862761604680588858313364100914751476403</span></span><br><span class="line">c = <span class="number">40522976224675404992818282038409183193065303107530049168092540620105120083552580372904554927069109321998620410524986748598618388761467715127564839742806614159382512978830563949967053562802375030363283879451081474764301602860367140250483857874335594802704634427276762179861996608105102610424633434334897307449739846880323406404392707133580686043181007091235341464802410874449708870610192494627811013526751435468963111672237058189288520084494533786573065843704621915085789731723587760910378534773137633519620193203450046994466154848079413319979993890764583887936777316159487010002407093187269512820453207591173395762513970799972839858119501585885277954258269483363133460240339866272358522431904252286259542327658731232568465990008278265227086114042064326334937705758042097987623388556184022737180944807660792992413039097516526454455063218161704505837882378018400687043158628503465274374703624257222504948612055237771581019005</span></span><br></pre></td></tr></table></figure>
+<p>典型的m,c,n未知时候的LCG。首先求出m,c,n及seed的值，有多个可能的值，代回原来的lcg函数比对生成的6个值。具体公式推导见 <a href="https://blog.csdn.net/superprintf/article/details/108964563" target="_blank" rel="noopener">https://blog.csdn.net/superprintf/article/details/108964563</a> (写的真不错)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gcd</span><span class="params">(a,b)</span>:</span> </span><br><span class="line">    <span class="keyword">if</span>(b == <span class="number">0</span>): </span><br><span class="line">        <span class="keyword">return</span> a </span><br><span class="line">    <span class="keyword">else</span>: </span><br><span class="line">        <span class="keyword">return</span> gcd(b,a % b) </span><br><span class="line"></span><br><span class="line">s =  [<span class="number">58605992502479537155943965904595921273</span>, <span class="number">525605798656979919420608964379033982804</span>, <span class="number">607738431135489138748992347244318940466</span>, <span class="number">631747898536603358381419028993140907216</span>, <span class="number">13450658701001781564543219325486287717</span>, <span class="number">407826262741495712819054543462943222370</span>]</span><br><span class="line">t = []</span><br><span class="line">all_n = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">6</span>):</span><br><span class="line">    t.append(s[i] - s[i - <span class="number">1</span>]) </span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>):</span><br><span class="line">    all_n.append(gcd((t[i + <span class="number">1</span>] * t[i - <span class="number">1</span>] - t[i] * t[i]), (t[i + <span class="number">2</span>] * t[i] - t[i + <span class="number">1</span>] * t[i + <span class="number">1</span>]))) </span><br><span class="line"></span><br><span class="line">MMI = <span class="keyword">lambda</span> A, n, s=<span class="number">1</span>, t=<span class="number">0</span>, N=<span class="number">0</span>: (n &lt; <span class="number">2</span> <span class="keyword">and</span> t % N <span class="keyword">or</span> MMI(n, A % n, t, s - A // n * t, N <span class="keyword">or</span> n), <span class="number">-1</span>)[n &lt; <span class="number">1</span>]</span><br><span class="line"><span class="keyword">for</span> n <span class="keyword">in</span> all_n:</span><br><span class="line">    n = abs(n)</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    m = (s[<span class="number">2</span>] - s[<span class="number">1</span>]) * MMI((s[<span class="number">1</span>] - s[<span class="number">0</span>]), n) % n</span><br><span class="line">    ani = MMI(m,n)</span><br><span class="line">    c = (s[<span class="number">1</span>] - m * s[<span class="number">0</span>]) % n</span><br><span class="line">    seed = (ani * (s[<span class="number">0</span>] - c)) % n</span><br><span class="line">    print(<span class="string">"n = "</span>,n)</span><br><span class="line">    print(<span class="string">"m = "</span>,m)</span><br><span class="line">    print(<span class="string">"c = "</span>,c)</span><br><span class="line">    print(<span class="string">"seed = "</span>,seed)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># n =  658483278832814360413959491304994965751</span></span><br><span class="line"><span class="comment"># m =  304895213771629215412875483024241040557</span></span><br><span class="line"><span class="comment"># c =  332633353219222389093389121471714482887</span></span><br><span class="line"><span class="comment"># seed =  233122372118782757817692638408531340431</span></span><br></pre></td></tr></table></figure>
+<p>e是lcg的第7个值的下一质数，这样就能得出e。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> sympy <span class="keyword">import</span> nextprime</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">n =  <span class="number">658483278832814360413959491304994965751</span></span><br><span class="line">m =  <span class="number">304895213771629215412875483024241040557</span></span><br><span class="line">c =  <span class="number">332633353219222389093389121471714482887</span></span><br><span class="line">seed =  <span class="number">233122372118782757817692638408531340431</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lcg</span><span class="params">(seed,params)</span>:</span></span><br><span class="line">    (m,c,n)=params</span><br><span class="line">    s = seed % n</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        s = (m * s + c) % n</span><br><span class="line">        <span class="keyword">yield</span> s</span><br><span class="line"></span><br><span class="line">key_stream = lcg(seed,(m,c,n))</span><br><span class="line">num=[]</span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">6</span>):</span><br><span class="line">	num.append(next(key_stream))</span><br><span class="line"></span><br><span class="line">secret =  next(key_stream)</span><br><span class="line">e = nextprime(secret)</span><br><span class="line"></span><br><span class="line"><span class="comment"># e = 176683449265430137948016253982177600477</span></span><br></pre></td></tr></table></figure>
+<p>然后发现是三质数的RSA。这里有个坑，跟BMZCTF2020里一样。不需要知道q,r的值，利用phi(p)=p-1就可以得到d的值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line">p = <span class="number">138092450043978032187397495330379791355629274237204650898232878263413301988536751004632087169676028049236253598677819980191406826529664613957150122788435561338344715937422320958238628877093605040078776555586363593650646481242888908171897232624141894446324625781720275455534977357099473212936612966142541689717</span></span><br><span class="line">c = <span class="number">40522976224675404992818282038409183193065303107530049168092540620105120083552580372904554927069109321998620410524986748598618388761467715127564839742806614159382512978830563949967053562802375030363283879451081474764301602860367140250483857874335594802704634427276762179861996608105102610424633434334897307449739846880323406404392707133580686043181007091235341464802410874449708870610192494627811013526751435468963111672237058189288520084494533786573065843704621915085789731723587760910378534773137633519620193203450046994466154848079413319979993890764583887936777316159487010002407093187269512820453207591173395762513970799972839858119501585885277954258269483363133460240339866272358522431904252286259542327658731232568465990008278265227086114042064326334937705758042097987623388556184022737180944807660792992413039097516526454455063218161704505837882378018400687043158628503465274374703624257222504948612055237771581019005</span></span><br><span class="line">phi = p - <span class="number">1</span></span><br><span class="line">e = <span class="number">176683449265430137948016253982177600477</span></span><br><span class="line">d = gmpy2.invert(e, phi)</span><br><span class="line">m = pow(c, d, p)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 569987504250336203008383799281952855095298052417061158522700484233183317916824291767569080757872</span></span><br></pre></td></tr></table></figure>
+<p>有了明文，但最后还剩一个坑，就是flag ^= flag &gt;&gt; 10。当时做到这里其实已经凌乱了，手动比对着每10个二进制异或恢复的flag值…以后再补代码吧。恢复出来的二进制：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line">flag = <span class="number">0b1000100010000010101001101000011010101000100011001111011011000100011000100111001001110010011100100111000011001100110001000110101011000010110001101100100001100010011100100110111011001010011010000110100001100010011000000110010001110010110001000110011001101110110001001100011001100100011010000110110011001000011011101111101</span></span><br><span class="line">print(long_to_bytes(flag))</span><br><span class="line"></span><br><span class="line"><span class="comment"># DASCTF&#123;b19998fb5acd197e441029b37bc246d7&#125;</span></span><br></pre></td></tr></table></figure>
+<p>到下午居然还拿了一血…乐极生悲后面就再也没做出题。结束后才发现剩下的两道crypto并不难。前15名能免费进冬令营，我排在23，要去还得交3000块钱，又菜又穷告辞。虽然我也很想去广州<del>玩</del>学习。</p>
+
+      
+
+    </div>
+
+    
+
+    
+    
+    
+    
+
+    
+      
+    
+    
+
+    
+	  <div>
+	
+		<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+            -------------end ♥-------------
+        </div>
+    
+</div>
+	
+	  </div>
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/12/28/BMZCTF2020/" rel="next" title="BMZCTF2020 re & crypto writeup">
+                <i class="fa fa-chevron-left"></i> BMZCTF2020 re & crypto writeup
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+ 
+  
+  
+  
+  </article>
+
+  </div>
+ 
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/portrait.jpg" alt="姜姜酱">
+            
+              <p class="site-author-name" itemprop="name">姜姜酱</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+		  <!--my custom code begin-->
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.5.0/velocity.min.js"></script>
+			<script type="text/javascript">
+				$("#sidebar").hover(function(){
+					$("#mydivshow").velocity('stop').velocity({opacity: 1});
+				},function(){
+					$("#mydivshow").velocity('stop').velocity({opacity: 0});
+				});
+			</script>
+			<div id="mydivshow" class="mydivshow">
+			<!--my custom code end-->
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.fxti.xyz" title="http://blog.fxti.xyz" rel="noopener" target="_blank">FX-Ti</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+	</div>
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1这道题目叫啥忘记了"><span class="nav-number">1.</span> <span class="nav-text">1这道题目叫啥忘记了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2这道题目叫啥也忘记了"><span class="nav-number">2.</span> <span class="nav-text">2这道题目叫啥也忘记了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RSA-upgrade"><span class="nav-number">3.</span> <span class="nav-text">RSA_upgrade</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">姜姜酱</span>
+
+  
+
+  
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.0"></script>
+
+  <script src="/js/src/motion.js?v=7.0.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.0"></script>
+<script src="/js/src/post-details.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","tagMode":true,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":100,"height":200},"mobile":{"show":false},"react":{"opacityDefault":1},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/"});</script>
+</body>
+</html>
