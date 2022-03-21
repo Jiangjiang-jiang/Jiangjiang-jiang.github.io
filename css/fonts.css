@@ -2,46 +2,78 @@
 
 @font-face
 {
-    font-family: "Montserrat";
+    font-family: "Droid Serif";
     font-style: normal;
     font-weight: 400;
     src: local(""),
-        url("../fonts/montserrat-v23-latin-regular.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */
-        url("../fonts/montserrat-v23-latin-regular.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+        url("../fonts/DroidSerif-Regular.woff") format("woff"); /* Chrome 26+, Opera 23+, Firefox 39+ */
+}
+
+@font-face
+{
+    font-family: "PingFang SC";
+    font-style: normal;
+    font-weight: 400;
+    src: local(""),
+		url("../fonts/PingFang-SC-Regular.woff") format("woff");
 }
 
 /* montserrat-600 - latin */
 
 @font-face
 {
-    font-family: "Montserrat";
+    font-family: "Droid Serif";
     font-style: normal;
     font-weight: 600;
     src: local(""),
-        url("../fonts/montserrat-v23-latin-600.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */
-        url("../fonts/montserrat-v23-latin-600.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+        url("../fonts/DroidSerif-Bold.woff") format("woff"); /* Chrome 26+, Opera 23+, Firefox 39+ */
+}
+
+@font-face
+{
+    font-family: "PingFang SC";
+    font-style: normal;
+    font-weight: 600;
+    src: local(""),
+		url("../fonts/PingFang-SC-Bold.woff") format("woff");
 }
 
 /* montserrat-italic - latin */
 
 @font-face
 {
-    font-family: "Montserrat";
+    font-family: "Droid Serif";
     font-style: italic;
     font-weight: 400;
     src: local(""),
-        url("../fonts/montserrat-v23-latin-italic.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */
-        url("../fonts/montserrat-v23-latin-italic.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+        url("../fonts/DroidSerif-Italic.woff") format("woff"); /* Chrome 26+, Opera 23+, Firefox 39+ */
+}
+
+@font-face
+{
+    font-family: "PingFang SC";
+    font-style: italic;
+    font-weight: 400;
+    src: local(""),
+        url("../fonts/PingFang-SC-Light.woff") format("woff"); /* Chrome 26+, Opera 23+, Firefox 39+ */
 }
 
 /* montserrat-600italic - latin */
 
 @font-face
 {
-    font-family: "Montserrat";
+    font-family: "Droid Serif";
     font-style: italic;
     font-weight: 600;
     src: local(""),
-        url("../fonts/montserrat-v23-latin-600italic.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */
-        url("../fonts/montserrat-v23-latin-600italic.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+        url("../fonts/DroidSerif-BoldItalic.woff") format("woff"); /* Chrome 26+, Opera 23+, Firefox 39+ */
+}
+
+@font-face
+{
+    font-family: "PingFang SC";
+    font-style: italic;
+    font-weight: 600;
+    src: local(""),
+        url("../fonts/NotoSerifSC-Regular.woff") format("woff"); /* Chrome 26+, Opera 23+, Firefox 39+ */
 }

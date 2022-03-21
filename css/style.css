@@ -4,7 +4,7 @@
 {
     --font-color-0: #04077e;
     --font-color-1: #000;
-    --font-color-2: #666;
+    --font-color-2: #000;
     --font-color-3: #aaa;
     --bg-color-1: #eee;
     --line-1: #ccc;
@@ -18,7 +18,7 @@ p
 
 body
 {
-    font-family: "Montserrat", "SF UI Text", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", "Helvetica Neue", Helvetica, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    font-family: "Droid Serif", "PingFang SC", "Hiragino Sans GB", "Droid Sans Fallback", "Microsoft YaHei", sans-serif;
     font-size: 16px;
     line-height: 1.75;
     letter-spacing: 0.6px;
