@@ -45,13 +45,12 @@
     <div class="post-md">
         <p>“天融信杯”第四届全国高校数学挑战赛初赛及复赛。</p>
 <span id="more"></span>
-<p>第一次参加全国密码学竞赛，题目有三道，<s>自作主张</s>选择了第一道，于是走上了实力坑队友的路。<br>
-今年及历年题目：<a target="_blank" rel="noopener" href="http://cmsecc.com">竞赛官网地址</a></p>
+<p>今年及历年题目：<a target="_blank" rel="noopener" href="http://cmsecc.com">竞赛官网地址</a></p>
 <p>由于LaTeX数学公式较多，有时可能出现无法加载的情况，可以多刷新几次。</p>
 <h2 id="题目描述">题目描述</h2>
 <p>  题目文档里的描述很清晰，要我们解决的就是椭圆曲线上的离散对数问题(ECDLP)。ECDLP问题是椭圆曲线密码的核心技术问题，到目前为止，基于椭圆曲线有限域上的离散对数问题还没有真正有效的算法，是现代密码学中最具挑战性的问题之一。</p>
 <h3 id="ECC基本原理">ECC基本原理</h3>
-<p>设$\small  \operatorname{F_{p}}$表示具有$\small  p$个元素的有限域，其中$\small  p&gt;3$是一个素数。$\small  {F_{p}}$上的椭圆曲线$\small  {E}$是一个点集合$E/F_{p}=  { ( x,y )\mid y^{2}= x^{2}+ax+b, a, b, x, y\in  F_{p} } \bigcup { \infty }$，其中$\small  {\infty}$表示无穷远点，$\small  {4a^{2}+27b^{2}\neq 0(mod p)}$</p>
+<p>设$\small  \operatorname{F_{p}}$表示具有$\small  p$个元素的有限域，其中$\small  p&gt;3$是一个素数。$\small  {F_{p}}$上的椭圆曲线$\small  {E}$是一个点集合$\small E/F_{p}=  { ( x,y )\mid y^{2}= x^{2}+ax+b, a, b, x, y\in  F_{p} } \bigcup { \infty }$，其中$\small  {\infty}$表示无穷远点，$\small  {4a^{2}+27b^{2}\neq 0(mod p)}$</p>
 <p>设$\small  {P= \small  \left ( x_{1}, y_{1} \right )}$,$\small  {Q=\small  \left ( x_{2}, y_{2} \right )\in \small  E/F_{p}}$,在$\small  {E}$上定义$\small  {“+”}$运算$\small  {P+Q=R}$，$\small  {R=\small  \left ( x_{3}, y_{3} \right )\in \small  E/F_{p}}$是过$\small  {P, Q}$的直线与曲线另一交点关于x轴的对称点(当$\small  {P=Q}$时，$\small  {R}$是$\small  {P}$点的切线与曲线的另一交点关于x的对称点).<br>
 <img src="https://i.loli.net/2019/08/25/eAz5tfy94SYQJwD.png" width="600" height="400" alt="1.jpg" align=center/></p>
 <p>上述计算可用公式表示如下：</p>
@@ -245,6 +244,7 @@ $\small  {e_{n}\left ( S,\ T \right )=1,\ \forall T \in E\left [ n \right ]\Left
 <p><strong>攻击步骤</strong>：<br>
 <img src="https://i.loli.net/2019/08/26/pTCk9ur3g6qDEw8.png" width="400" height="500" alt="1.jpg" align=center/><br>
 如果p为素数，$\small  {q=p^{m}}$，在$\small  {E\left ( F_{q} \right )}$的阶为$\small  {q+1-t}$，可将超奇异椭圆曲线$\small  {E}$分为六类：</p>
+<hr>
 <table>
 <thead>
 <tr>
@@ -279,7 +279,9 @@ $\small  {e_{n}\left ( S,\ T \right )=1,\ \forall T \in E\left [ n \right ]\Left
 </tr>
 </tbody>
 </table>
+<hr>
 <p>选取${\small  r_{1}}$时需要参照超奇异椭圆曲线的六种结构，对于超奇异椭圆曲线，点Q的选取更加简单。结构表如下：</p>
+<hr>
 <table>
 <thead>
 <tr>
@@ -342,6 +344,7 @@ $\small  {e_{n}\left ( S,\ T \right )=1,\ \forall T \in E\left [ n \right ]\Left
 </tr>
 </tbody>
 </table>
+<hr>
 <p>选择II类${\small  r_{1}=\frac{q+1}{2}}$(代码第13行)</p>
 <p><strong>实现代码(Sage script)</strong>：</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">p &#x3D; 9223372036854782251
@@ -395,16 +398,16 @@ R:&#x3D;( 47795192678737921133501161460114957836 , 16607891968641791354602995037
 <strong>核心计算</strong>：如何高效实现pollard’s rho及变体<br>
 <strong>原理</strong>：<br>
 pollard’s rho算法的主要思想是寻找模n的不同$\small  {\left ( c’,\ d’\right)}$和$\small  {\left ( c’‘,\ d’‘\right)}$，使得<br>
-$${\small  c’P+d’Q=c’‘P+d’‘Q}$$<br>
+$$\small c’P+d’Q=c’’ P+d’’ Q$$<br>
 于是<br>
-$${\small  \left ( c’-c’’ \right )P=\left ( d’‘-d’ \right )R=\left ( d’‘-d’ \right )kP}$$<br>
+$$\small \left ( c’-c’’ \right )P=\left ( d’’ -d’ \right )R=\left ( d’’ -d’ \right )kP$$<br>
 且有<br>
-$${\small  \left ( c’-c’’ \right ) \equiv \left ( d’‘-d’ \right )\left ( mod \ n \right )}$$<br>
-于是$\small  {k=\log <em>{p}R}$可以通过计算<br>
-$${\small  k=\left ( c’-c’’ \right )\left ( d’‘-d’ \right )^{-1}\ mod \ n}$$<br>
+$$\small \left ( c’-c’’ \right ) \equiv \left ( d’’ -d’ \right )\left ( mod \ n \right )$$<br>
+于是$\small k=\log_{p}R$可以通过计算<br>
+$$\small  k=\left ( c’-c’’ \right )\left ( d’’ -d’ \right )^{-1}\ mod \ n$$<br>
 来得到。<br>
 定义一个迭代函数$\small  {f:\left \langle P \right \rangle\rightarrow \left \langle P \right \rangle}$，使得给定$\small  {X \in \left \langle P \right \rangle}$和$\small  {c,\ d \in \left [ 0,\ n-1 \right ]}$且$\small  {X=cP+dR}$，容易计算和$\small  {\bar{c},\ \bar{d} \in \left [ 0,\ n-1 \right ]}$且$\small  {\bar{X}=\bar{c}P+\bar{d}Q}$。此外，函数$\small  {f}$还要具有随机性。<br>
-现在任一点$\small {X</em>{0}\in \left \langle P \right \rangle }$确定一个点序列$\small  {\left { X_{i} \right }<em>{i\geq 0}}$，其中对于$\small  {i\geq 0}$有$\small  {X</em>{i}=f\left (X_{i-1} \right )}$。因为集合$\small  {\left \langle P \right \rangle}$是有穷的，序列终将产生碰撞并进入循环；也就是说，对于$\small  {s \geq 1}$，存在最小的序列$\small  {t}$使得任意的$\small  {X_{i}=X_{t+s}}$，且对所有的$\small  {i \geq t+s}$有$\small  {X_{i}=X_{i-s}}$。这里$\small  {t}$称为序列的尾长度，$\small  {s}$称为序列的循环长度。若假设$\small  {f}$为随机函数，则序列出现首次碰撞的预计步数为$\small  {\sqrt{\frac{\pi n}{2}}}$。此外，预计的尾长度为$\small  {t\approx \sqrt{\frac{\pi n}{8}}}$，循环长度为$\small  {s\approx \sqrt{\frac{\pi n}{8}}}$。<br>
+现在任一点$\small {X_{0}\in \left \langle P \right \rangle }$确定一个点序列$\small \left { X_{i} \right }_{i \geq 0}$，其中对于$\small  {i\geq 0}$有$\small  {X_{i}=f\left (X_{i-1} \right )}$。因为集合$\small  {\left \langle P \right \rangle}$是有穷的，序列终将产生碰撞并进入循环；也就是说，对于$\small  {s \geq 1}$，存在最小的序列$\small  {t}$使得任意的$\small  {X_{i}=X_{t+s}}$，且对所有的$\small  {i \geq t+s}$有$\small  {X_{i}=X_{i-s}}$。这里$\small  {t}$称为序列的尾长度，$\small  {s}$称为序列的循环长度。若假设$\small  {f}$为随机函数，则序列出现首次碰撞的预计步数为$\small  {\sqrt{\frac{\pi n}{2}}}$。此外，预计的尾长度为$\small  {t\approx \sqrt{\frac{\pi n}{8}}}$，循环长度为$\small  {s\approx \sqrt{\frac{\pi n}{8}}}$。<br>
 一个碰撞，即对点$\small  {X_{i},\ X_{j}}$有$\small  {X_{i}=X_{j}}$且$\small  {i\neq j}$，可以用Floyd循环查找算法来计算。该算法对于$\small  {i=1,\ 2,\ 3\cdots }$计算点对$\small  {\left ( X_{i},\ X_{2i}\right )}$直到$\small  {X_{i}=X_{2i}}$。计算出新的点对以后可以将老的点对丢弃，因此其需要的存储空间近于零。预计得到$\small  {\left ( X_{i},\ X_{2i}\right )}$之前计算这些点对的次数$\small  {k}$显然满足$\small  {t\leq k\leq t+s}$。事实上，假定$\small  {f}$是随机函数，则预计值$\small  {k}$约为$\small  {1.0308\sqrt{n}}$，因此预计的椭圆曲线群运算次数约为$\small  {3\sqrt{n}}$。算法失败的概率趋近于0。<br>
 出题老师在讲解这道题时提到涉及的三个技巧：(1)高效有限域算术 (2)高效椭圆曲线算术(利用$\small  {a=3}$以及射影jacobi坐标) (3)并行化技术<br>
 高效的有限域算术和椭圆曲线算术，同样可以提高Pollard’s rho算法实现效率，利用state-of-the-art的有限域/椭圆曲线算术，可比Magma/Sage等相应实现效率高很多。</p>
@@ -417,15 +420,12 @@ E &#x3D; EllipticCurve(GF(p), [a, b])
 P &#x3D; E(7220661838117791356, 6477969291505257777)
 Q &#x3D; E(7819726923954549567, 6266868167000835108)
 print(discrete_log_rho(Q, P, ord&#x3D;P.order(), operation&#x3D;&#39;+&#39;))<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>调库侠无所畏惧。            ——鲁迅</p>
 <h2 id="计算实现环境及结果">计算实现环境及结果</h2>
 <p><strong>实现环境</strong><br>
 CPU型号：Core i5-7300HQ<br>
 内存：16G ddr4<br>
 <strong>运行结果</strong><br>
-每类曲线参数位数越多，分值越高。总分由每类曲线最高分相加。分数相同的队伍依照难度最高的挑战求解时间来排序，求解用时越少者排名越靠前。<br>
-写出代码，就到了<s>看谁买得起服务器好谁的程序挂的时间长</s>优化算法的时候，显然我们的<s>贫穷/懒/拖延/调库</s>目前知识储备不允许我们再做进一步优化。第三类曲线程序跑出第二道题结果后就没有再继续了。<br>
-计算结果如下：</p>
+每类曲线参数位数越多，分值越高。总分由每类曲线最高分相加。分数相同的队伍依照难度最高的挑战求解时间来排序，求解用时越少者排名越靠前。计算结果如下：</p>
 <img src="https://i.loli.net/2019/08/27/NJaLbfHdeyRnzrX.png" width="450" height="200" alt="3.jpg">
 &emsp;&emsp;第一类曲线运行时间比较正常，秒出答案；第二类曲线运行时间相对较短(如果资源好能再出新答案)；第三类曲线由于没有高效实现Pollard's rho算法，运行时间较长。
 <h2 id="ECC的安全性">ECC的安全性</h2>
@@ -454,37 +454,6 @@ CPU型号：Core i5-7300HQ<br>
 第三类曲线<br>
 [8] Pollard J.M,AMonte Cario method for index computation (modp).Math,Comput,32(143),918-924(1978)<br>
 [9] Bailey D.Batina L.Bernstein D.J.Birkner P,Bos J.W,et al:Breaking ECC2K-130.Cryptology ePrint Archive,Report 2009/541(2009)</p>
-<h2 id="彩蛋">彩蛋</h2>
-<p><strong>彩蛋1</strong></p>
-<p>(决赛 出发去烟台的路上)</p>
-<p>张老师发来消息：你们不要去玩，一定要注意安全。</p>
-<p>我们：嗯嗯嗯好好好</p>
-<p>(决赛后 离开烟台的路上)</p>
-<p>我们拿出小本本看看做了哪些事：</p>
-<ul>
-<li>吃了旋转小火锅</li>
-<li>吃海底捞</li>
-<li>看电影哪吒</li>
-<li>骑车兜风</li>
-<li>逛烟台大学周围商圈</li>
-<li>晚上斗地主到半夜三更</li>
-<li>大晚上轮流唱歌</li>
-<li>去海上蹬脚踏船</li>
-<li>体验一把密室逃脱/鬼屋</li>
-<li>决赛答辩</li>
-</ul>
-<p>生活非常充实，其实我们也没怎么玩，自我感觉很听老师话。</p>
-<p><strong>彩蛋2</strong></p>
-<p>初赛有一个月，然而快要截止我们才开始看题，练习时长一星期；</p>
-<p>(意外发现进了决赛…)</p>
-<p>决赛也有一个月，然而到了烟台我们才开始做ppt，练习时长一天半。<br>
-<img src="https://i.loli.net/2019/08/27/WTlKO5mx8tFzhPo.jpg" width="300" height="300" alt="4.jpg"><br>
-毕业季的时候看到学姐学长发的图，现在我觉得这图很真实。</p>
-<p><strong>总结</strong><br>
-  不管怎么说，这应该是最难忘又最开心的一次比赛，也学到了很多东西。本来还怕被评委老师怼，结果老师们人特别好，也没有为难我们，深刻体会到了专家们对本科生的宽容…明年当然是还要参加啊！<br>
-  新的学期里终于有学信息安全数学基础和密码学的课了，期待ing<br>
-(偷偷贴个合照纪念)</p>
-<center><img src="https://i.loli.net/2019/08/27/qTUr87Pphsal9d6.jpg" width="600" height="400" alt="5.jpg"><center>
 
     </div>
 
@@ -525,7 +494,6 @@ CPU型号：Core i5-7300HQ<br>
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

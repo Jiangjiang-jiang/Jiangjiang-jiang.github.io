@@ -43,12 +43,8 @@
     
 
     <div class="post-md">
-        <p>采用的是hexo + Github，next主题，自己动手更改了一下<br>
-其实要更改某一部分，只需要F12找到元素然后找到相应元素就可以啦~</p>
-<span id="more"></span>
-<p>进入正题</p>
-<h3 id="更改背景">更改背景</h3>
-<p>找到博客目录下\themes\next\source\css\_custom\custom.styl，加上以下代码：</p>
+        <p>采用的是hexo + Github，next主题，自己动手更改了一下<br>其实要更改某一部分，只需要F12找到元素然后找到相应元素就可以啦~<br><span id="more"></span><br>进入正题</p>
+<h3 id="更改背景"><a href="#更改背景" class="headerlink" title="更改背景"></a>更改背景</h3><p>找到博客目录下\themes\next\source\css\_custom\custom.styl，加上以下代码：</p>
 <pre class="line-numbers language-css" data-language="css"><code class="language-css"> <span class="token selector">body</span> <span class="token punctuation">&#123;</span>
     <span class="token property">background-image</span><span class="token punctuation">:</span><span class="token url"><span class="token function">url</span><span class="token punctuation">(</span>/images/background.png<span class="token punctuation">)</span></span><span class="token punctuation">;</span>
     <span class="token property">background-repeat</span><span class="token punctuation">:</span> no-repeat<span class="token punctuation">;</span>
@@ -58,31 +54,19 @@
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>其中url里也可以换成图床地址，如果用Github作为图床，要将地址中的blob换成raw</p>
 <p>还要注意background-size属性，可以根据自己需求设置图片比例</p>
-<h3 id="更换site-title及menu字体颜色">更换site-title及menu字体颜色</h3>
-<p>找到博客目录下theme\next\source\css\_common\components\header\site-meta.styl文件，在.brand{}里添加以下代码：</p>
-<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token property">color</span><span class="token punctuation">:</span> #ffb6c1 <span class="token important">!important</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>ffb6c1为颜色rgb代码 <a target="_blank" rel="noopener" href="http://tool.oschina.net/commons?type=3">颜色rgb查询</a><br>
-注意：此时只更改了subtitle的字体颜色，想要同时改上下的两条线的颜色还需要打开themes\next\source\css\_schemes\Mist_header.styl，更改i{}中background（或者是添加的代码…忘记了）：</p>
+<h3 id="更换site-title及menu字体颜色"><a href="#更换site-title及menu字体颜色" class="headerlink" title="更换site-title及menu字体颜色"></a>更换site-title及menu字体颜色</h3><p>找到博客目录下theme\next\source\css\_common\components\header\site-meta.styl文件，在.brand{}里添加以下代码：<br><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token property">color</span><span class="token punctuation">:</span> #ffb6c1 <span class="token important">!important</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br>ffb6c1为颜色rgb代码 <a target="_blank" rel="noopener" href="http://tool.oschina.net/commons?type=3">颜色rgb查询</a><br>注意：此时只更改了subtitle的字体颜色，想要同时改上下的两条线的颜色还需要打开themes\next\source\css\_schemes\Mist_header.styl，更改i{}中background（或者是添加的代码…忘记了）：</p>
 <pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token property">background</span><span class="token punctuation">:</span> #ffb6c1 <span class="token important">!important</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>找到博客目录下theme\next\source\css\_common\components\header\menu.styl文件，在a{}里面添加以下代码：</p>
-<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token property">color</span><span class="token punctuation">:</span> #ffb6c1 <span class="token important">!important</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h3 id="更改底部字体颜色">更改底部字体颜色</h3>
-<p>找到博客目录下theme\next\source\css\_custom\custom.styl，往里面添加以下代码：</p>
-<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.footer-inner</span> <span class="token punctuation">&#123;</span><span class="token property">color</span><span class="token punctuation">:</span> #ffb6c1<span class="token punctuation">;</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h3 id="更改侧边栏中字体颜色">更改侧边栏中字体颜色</h3>
-<p>找到博客目录下\themes\next\source\css\_custom\custom.styl，加上以下代码：</p>
-<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">#sidebar</span> <span class="token punctuation">&#123;</span>
+<p>找到博客目录下theme\next\source\css\_common\components\header\menu.styl文件，在a{}里面添加以下代码：<br><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token property">color</span><span class="token punctuation">:</span> #ffb6c1 <span class="token important">!important</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></p>
+<h3 id="更改底部字体颜色"><a href="#更改底部字体颜色" class="headerlink" title="更改底部字体颜色"></a>更改底部字体颜色</h3><p>找到博客目录下theme\next\source\css\_custom\custom.styl，往里面添加以下代码：<br><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.footer-inner</span> <span class="token punctuation">&#123;</span><span class="token property">color</span><span class="token punctuation">:</span> #ffb6c1<span class="token punctuation">;</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></p>
+<h3 id="更改侧边栏中字体颜色"><a href="#更改侧边栏中字体颜色" class="headerlink" title="更改侧边栏中字体颜色"></a>更改侧边栏中字体颜色</h3><p>找到博客目录下\themes\next\source\css\_custom\custom.styl，加上以下代码：<br><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">#sidebar</span> <span class="token punctuation">&#123;</span>
            <span class="token selector">p,span,a</span> <span class="token punctuation">&#123;</span><span class="token property">color</span><span class="token punctuation">:</span> #ffb6c1<span class="token punctuation">;</span><span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>当然，如果你想在侧边栏上换上其他图片作为背景，还可以在里面添加参数：</p>
-<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">#sidebar</span> <span class="token punctuation">&#123;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><br>当然，如果你想在侧边栏上换上其他图片作为背景，还可以在里面添加参数：<br><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">#sidebar</span> <span class="token punctuation">&#123;</span>
             <span class="token property">background</span><span class="token punctuation">:</span><span class="token url"><span class="token function">url</span><span class="token punctuation">(</span>/images/background.png<span class="token punctuation">)</span></span><span class="token punctuation">;</span>
             <span class="token property">background-size</span><span class="token punctuation">:</span> cover<span class="token punctuation">;</span>
             <span class="token property">background-position</span><span class="token punctuation">:</span>center<span class="token punctuation">;</span>
             <span class="token property">background-repeat</span><span class="token punctuation">:</span>no-repeat<span class="token punctuation">;</span>
             <span class="token selector">p,span,a</span> <span class="token punctuation">&#123;</span><span class="token property">color</span><span class="token punctuation">:</span> #ffb6c1<span class="token punctuation">;</span><span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>完成(～￣▽￣)～</p>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><br>完成(～￣▽￣)～</p>
 
     </div>
 
@@ -123,7 +107,6 @@
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
