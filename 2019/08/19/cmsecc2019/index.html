@@ -43,15 +43,13 @@
     
 
     <div class="post-md">
-        <p>“天融信杯”第四届全国高校数学挑战赛初赛及复赛。</p>
+        <p>“天融信杯”第四届全国高校数学挑战赛初赛及复赛。
 <span id="more"></span>
-<p>今年及历年题目：<a target="_blank" rel="noopener" href="http://cmsecc.com">竞赛官网地址</a></p>
+今年及历年题目：<a target="_blank" rel="noopener" href="http://cmsecc.com">竞赛官网地址</a></p>
 <p>由于LaTeX数学公式较多，有时可能出现无法加载的情况，可以多刷新几次。</p>
-<h2 id="题目描述">题目描述</h2>
-<p>  题目文档里的描述很清晰，要我们解决的就是椭圆曲线上的离散对数问题(ECDLP)。ECDLP问题是椭圆曲线密码的核心技术问题，到目前为止，基于椭圆曲线有限域上的离散对数问题还没有真正有效的算法，是现代密码学中最具挑战性的问题之一。</p>
-<h3 id="ECC基本原理">ECC基本原理</h3>
-<p>设$\small  \operatorname{F_{p}}$表示具有$\small  p$个元素的有限域，其中$\small  p&gt;3$是一个素数。$\small  {F_{p}}$上的椭圆曲线$\small  {E}$是一个点集合$\small E/F_{p}=  { ( x,y )\mid y^{2}= x^{2}+ax+b, a, b, x, y\in  F_{p} } \bigcup { \infty }$，其中$\small  {\infty}$表示无穷远点，$\small  {4a^{2}+27b^{2}\neq 0(mod p)}$</p>
-<p>设$\small  {P= \small  \left ( x_{1}, y_{1} \right )}$,$\small  {Q=\small  \left ( x_{2}, y_{2} \right )\in \small  E/F_{p}}$,在$\small  {E}$上定义$\small  {“+”}$运算$\small  {P+Q=R}$，$\small  {R=\small  \left ( x_{3}, y_{3} \right )\in \small  E/F_{p}}$是过$\small  {P, Q}$的直线与曲线另一交点关于x轴的对称点(当$\small  {P=Q}$时，$\small  {R}$是$\small  {P}$点的切线与曲线的另一交点关于x的对称点).<br>
+<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>&emsp;&emsp;题目文档里的描述很清晰，要我们解决的就是椭圆曲线上的离散对数问题(ECDLP)。ECDLP问题是椭圆曲线密码的核心技术问题，到目前为止，基于椭圆曲线有限域上的离散对数问题还没有真正有效的算法，是现代密码学中最具挑战性的问题之一。</p>
+<h3 id="ECC基本原理"><a href="#ECC基本原理" class="headerlink" title="ECC基本原理"></a>ECC基本原理</h3><p>设$\small  \operatorname{F_{p}}$表示具有$\small  p$个元素的有限域，其中$\small  p&gt;3$是一个素数。$\small  {F_{p}}$上的椭圆曲线$\small  {E}$是一个点集合$\small E/F_{p}=  \{ ( x,y )\mid y^{2}= x^{2}+ax+b, a, b, x, y\in  F_{p} \} \bigcup \{ \infty \}$，其中$\small  {\infty}$表示无穷远点，$\small  {4a^{2}+27b^{2}\neq 0(mod p)}$</p>
+<p>设$\small  {P= \small  \left ( x_{1}, y_{1} \right )}$,$\small  {Q=\small  \left ( x_{2}, y_{2} \right )\in \small  E/F_{p}}$,在$\small  {E}$上定义$\small  {“+”}$运算$\small  {P+Q=R}$，$\small  {R=\small  \left ( x_{3}, y_{3} \right )\in \small  E/F_{p}}$是过$\small  {P, Q}$的直线与曲线另一交点关于x轴的对称点(当$\small  {P=Q}$时，$\small  {R}$是$\small  {P}$点的切线与曲线的另一交点关于x的对称点).
 <img src="https://i.loli.net/2019/08/25/eAz5tfy94SYQJwD.png" width="600" height="400" alt="1.jpg" align=center/></p>
 <p>上述计算可用公式表示如下：</p>
 <ul>
@@ -63,22 +61,19 @@
 <li>$\small  {P+\infty =\infty +P=P}$;</li>
 <li>$\small  {\left ( x_{1}, y_{1} \right )+\left ( x_{1}, -y_{1} \right )=\small  \infty }$，这里${\small \left ( x_{1}, -y_{1} \right )\in \small  E/F_{p}}$。特别地，$\small  {-\infty = \infty }$。</li>
 </ul>
-<p>由此可验证$\small  {E/F_{p}}$关于上述定义的$\small  {“+”}$运算构成一个交换群，记为$\small  {E\left ( F_{p} \right )}$。<br>
-  设$\small  {P \in E \left ( F_{p} \right )}$，记$\small  {\left [ k \right ]P=P+P+\cdots +P}$(k times)，则$\small  {\left [ k \right ] \in \small  E\left ( F_{p} \right )}$，该运算称为椭圆曲线标量乘法运算。设r为最小的正整数使得$\small  {\left [ r \right ]\small  P=\infty }$，r称为$\small  {P}$的阶(order)。令$\small  {\left \langle P \right \rangle=\left { \infty, P, \left [2\right]P, \cdots \left[r-1\right]P  \right }}$，可验证$\small  {\left \langle P \right \rangle}$关于$\small  {“+”}$运算构成$\small  {E\left ( F_{p} \right )}$的一个r阶子群。<br>
-  ECDLP：给定椭圆曲线$\small  {E/F_{p}:y^{2}=x^{3}+ax+b}$，$\small  {P\in E \left ( F_{p} \right )}$，r:=order$\small  { \left ( P \right )}$，$\small  {R \in \left \langle P \right \rangle}$，计算$\small  {1\leq k\leq r}$，使得$\small  {R=\left[k\right]P}$。(可形式化记为$\small  {k=\log _{p}R  }$)</p>
-<h3 id="ECDLP问题">ECDLP问题</h3>
-<p>其中n为椭圆曲线的阶#$\small  {E \left ( F_{p}\right )}$，$\small  {P}$是椭圆曲线上一点，r为P点的阶，即子群的阶；R位于子群中，且子群与群的阶满足拉格朗日定理，即有r|n。求运算次数k($\small  {1\leq k\leq r}$)满足$\small  {R=\left[k\right]P}$。</p>
-<h2 id="解题方法">解题方法</h2>
-<p><strong>特殊算法1</strong>：SSAS攻击异常椭圆曲线(有理点群阶等于有限域大小)上的ECDLP约化到有限域加法群的DLP，从而该类ECDLP存在多项式时间算法。<br>
-<strong>特殊算法2</strong>：MOV攻击利用椭圆曲线上的双线性对映射将定义在有限域$\small  {F_{p}}$上的ECDLP归约到有限域乘法群$\small  {F_{p^{k}}}$上的离散对数问题，此方法在嵌入次数k较小时有效。椭圆曲线子群阶r的嵌入次数k，即最小的正整数满足$\small  {r\mid p^{k}-1}$。目前有许多研究证据表明，在一定假设情况下，有限域DLP存在亚指数时间算法。<br>
+<p>由此可验证$\small  {E/F_{p}}$关于上述定义的$\small  {“+”}$运算构成一个交换群，记为$\small  {E\left ( F_{p} \right )}$。
+&emsp;&emsp;设$\small  {P \in E \left ( F_{p} \right )}$，记$\small  {\left [ k \right ]P=P+P+\cdots +P}$(k times)，则$\small  {\left [ k \right ] \in \small  E\left ( F_{p} \right )}$，该运算称为椭圆曲线标量乘法运算。设r为最小的正整数使得$\small  {\left [ r \right ]\small  P=\infty }$，r称为$\small  {P}$的阶(order)。令$\small  {\left \langle P \right \rangle=\left \{ \infty, P, \left [2\right]P, \cdots \left[r-1\right]P  \right \}}$，可验证$\small  {\left \langle P \right \rangle}$关于$\small  {“+”}$运算构成$\small  {E\left ( F_{p} \right )}$的一个r阶子群。
+&emsp;&emsp;ECDLP：给定椭圆曲线$\small  {E/F_{p}:y^{2}=x^{3}+ax+b}$，$\small  {P\in E \left ( F_{p} \right )}$，r:=order$\small  { \left ( P \right )}$，$\small  {R \in \left \langle P \right \rangle}$，计算$\small  {1\leq k\leq r}$，使得$\small  {R=\left[k\right]P}$。(可形式化记为$\small  {k=\log _{p}R  }$)</p>
+<h3 id="ECDLP问题"><a href="#ECDLP问题" class="headerlink" title="ECDLP问题"></a>ECDLP问题</h3><p>其中n为椭圆曲线的阶#$\small  {E \left ( F_{p}\right )}$，$\small  {P}$是椭圆曲线上一点，r为P点的阶，即子群的阶；R位于子群中，且子群与群的阶满足拉格朗日定理，即有r|n。求运算次数k($\small  {1\leq k\leq r}$)满足$\small  {R=\left[k\right]P}$。</p>
+<h2 id="解题方法"><a href="#解题方法" class="headerlink" title="解题方法"></a>解题方法</h2><p><strong>特殊算法1</strong>：SSAS攻击异常椭圆曲线(有理点群阶等于有限域大小)上的ECDLP约化到有限域加法群的DLP，从而该类ECDLP存在多项式时间算法。
+<strong>特殊算法2</strong>：MOV攻击利用椭圆曲线上的双线性对映射将定义在有限域$\small  {F_{p}}$上的ECDLP归约到有限域乘法群$\small  {F_{p^{k}}}$上的离散对数问题，此方法在嵌入次数k较小时有效。椭圆曲线子群阶r的嵌入次数k，即最小的正整数满足$\small  {r\mid p^{k}-1}$。目前有许多研究证据表明，在一定假设情况下，有限域DLP存在亚指数时间算法。
 <strong>通用算法</strong>：如Pollard’s rho算法、Pollard’s Kangaroo算法以及小步-大步法等均可用于求解一般有限群上的离散对数问题，其时间复杂度为$\small  {O\left(\sqrt{r}\right)}$。</p>
-<p>第一类ECDLP采用SSAS攻击<br>
-第二类ECDLP采用MOV攻击<br>
-第三类ECDLP采用通用算法Pollard’s rho<br>
-问题难度：第一类ECDLP&lt;&lt;第二类ECDLP&lt;&lt;第三类ECDLP<br>
+<p>第一类ECDLP采用SSAS攻击
+第二类ECDLP采用MOV攻击
+第三类ECDLP采用通用算法Pollard’s rho
+问题难度：第一类ECDLP&lt;&lt;第二类ECDLP&lt;&lt;第三类ECDLP
 每类曲线按参数长度规模给出若干条实例，同类曲线相邻两小题计算复杂度相差约$\small  {2^{8}=256}$倍。每类曲线的第一个实例问题，均可以在很短时间内完成，可以借助完成时间大致估计后续问题所需的时间、空间。</p>
-<h2 id="第一类曲线">第一类曲线</h2>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">第一类曲线参数：
+<h2 id="第一类曲线"><a href="#第一类曲线" class="headerlink" title="第一类曲线"></a>第一类曲线</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python">第一类曲线参数：
 (1)  p:&#x3D; 211108170305887; a:&#x3D;0;b:&#x3D;7;n:&#x3D;p;r:&#x3D;p;
 P:&#x3D;( 47815642535808, 116240163507508);
 R:&#x3D;( 77983503452527, 143728424564583);
@@ -115,28 +110,20 @@ R:&#x3D;(1641844846280313158776293444944029290477363, 19163397576942111047281150
 a:&#x3D;0;b:&#x3D;5;n:&#x3D;p;r:&#x3D;p;
 P:&#x3D; (83173790821618364013911485269418053634749973470, 331912486564013055335956381322549180967694844964);
 R:&#x3D;(163008382252281273947629676562612579052560281605, 50645003441262331054159546612247657430098333396);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><strong>题目分析</strong>：根据题目中所给的n，p可知该类椭圆曲线是$\small  {F_{p}}$上的非正规椭圆曲线，即#$\small  {E\left( F_{p}\right) =p}$。<br>
-<strong>核心计算</strong>：从$\small  {E\left( F_{p}\right)}$到$\small  {F_{p}}$加法群的同构映射。<br>
+<p><strong>题目分析</strong>：根据题目中所给的n，p可知该类椭圆曲线是$\small  {F_{p}}$上的非正规椭圆曲线，即#$\small  {E\left( F_{p}\right) =p}$。
+<strong>核心计算</strong>：从$\small  {E\left( F_{p}\right)}$到$\small  {F_{p}}$加法群的同构映射。
 <strong>原理</strong>：当椭圆曲线$\small  {E\left( F_{p}\right)}$满足#$\small  {E\left( F_{p}\right) =p}$，即Frobenius轨迹$\small  {t=p+1-}$#$\small  {E\left( F_{p}\right) =1}$，在线性时间内解决ECDLP问题。</p>
 <ol>
-<li>p-adic numbers<br>
-一个p-adic数能被表示为无穷级数形式，对应一个无穷级数数列：<br>
-$${\small  c_{-n}p^{-n}+\cdots +c_{0}+c_{1}p+\cdots +c_{m}p^{m}+\cdots }$$<br>
-p-adic数构成的域为$\small  {Q_{p}}$，特别地，当p没有负数幂时，构成的域记作$\small  {Z_{p}}$。选择定义在p-adic数有限域上的椭圆曲线上的点，利用Lifts and Hensel’s Lemma提升引理映射到$\small  {Q_{p}}$上。</li>
-<li>Lifts and Hensel’s Lemma<br>
-对于多项式$\small  {f\left ( x \right )\in Z\left [ x \right ]}$，设x是f模$\small  {p^{s}}$的根且u为$\small  {f’\left( x\right) }$模p的模反元素。取x’：<br>
-$${ x’=x-uf’\left( x\right) }$$<br>
-此时满足$\small  {x’\equiv x\left ( mod\  p \right )}$，$\small  {f\left ( x’ \right )\equiv 0\left ( mod\ p^{s+1} \right )}$.完成一次提升。<br>
-将$\small  {E\left( F_{p}\right)}$中$\small  {P，\  Q}$两点映射到$\small  {E_{1}\left( Q_{p}\right)}$上两点$\small  {P’，\  Q’}$，由$\small  {E\left( F_{p}\right)}$上$\small  {Q=kP}$可知$\small  {Q’-kP’}$为$\small  {E_{1}\left( Q_{p}\right)}$上的无穷远点，即<br>
-$$\small  {Q’-kP’\in E_{1}\left( Q_{p}\right)}$$<br>
-模p下降转化为:<br>
-$$\small  {pQ’-k\left( pP’\right ) \in E_{2}\left( Q_{p}\right) }$$</li>
-<li>p-adic椭圆对数<br>
-p-adic椭圆对数$\small  {\varphi <em>{p}\left ( S \right )=-\frac{x\left ( S \right )}{y\left ( S \right )}}$提供了一个从$\small  {E</em>{1}\left( Q_{p}\right)}$到$\small  {pZ_{p}}$的同构。从而进行进一步转化:<br>
-$$\small  {\varphi <em>{p}\left( pQ’ \right) -k\varphi \left ( pP’ \right ) \in pZ</em>{p}}$$</li>
+<li>p-adic numbers
+一个p-adic数能被表示为无穷级数形式，对应一个无穷级数数列：<script type="math/tex; mode=display">{\small  c_{-n}p^{-n}+\cdots +c_{0}+c_{1}p+\cdots +c_{m}p^{m}+\cdots }</script>p-adic数构成的域为$\small  {Q_{p}}$，特别地，当p没有负数幂时，构成的域记作$\small  {Z_{p}}$。选择定义在p-adic数有限域上的椭圆曲线上的点，利用Lifts and Hensel’s Lemma提升引理映射到$\small  {Q_{p}}$上。</li>
+<li>Lifts and Hensel’s Lemma
+对于多项式$\small  {f\left ( x \right )\in Z\left [ x \right ]}$，设x是f模$\small  {p^{s}}$的根且u为$\small  {f’\left( x\right) }$模p的模反元素。取x’：<script type="math/tex; mode=display">{ x'=x-uf'\left( x\right) }</script>此时满足$\small  {x’\equiv x\left ( mod\  p \right )}$，$\small  {f\left ( x’ \right )\equiv 0\left ( mod\ p^{s+1} \right )}$.完成一次提升。
+将$\small  {E\left( F_{p}\right)}$中$\small  {P，\  Q}$两点映射到$\small  {E_{1}\left( Q_{p}\right)}$上两点$\small  {P’，\  Q’}$，由$\small  {E\left( F_{p}\right)}$上$\small  {Q=kP}$可知$\small  {Q’-kP’}$为$\small  {E_{1}\left( Q_{p}\right)}$上的无穷远点，即<script type="math/tex; mode=display">\small  {Q'-kP'\in E_{1}\left( Q_{p}\right)}</script>模p下降转化为:<script type="math/tex; mode=display">\small  {pQ'-k\left( pP'\right ) \in E_{2}\left( Q_{p}\right) }</script></li>
+<li>p-adic椭圆对数
+p-adic椭圆对数$\small  {\varphi _{p}\left ( S \right )=-\frac{x\left ( S \right )}{y\left ( S \right )}}$提供了一个从$\small  {E_{1}\left( Q_{p}\right)}$到$\small  {pZ_{p}}$的同构。从而进行进一步转化:<script type="math/tex; mode=display">\small  {\varphi _{p}\left( pQ' \right) -k\varphi \left ( pP' \right ) \in pZ_{p}}</script></li>
 </ol>
-<p><strong>攻击步骤</strong>：<br>
-<img src="https://i.loli.net/2019/08/26/WVSrdT5atfwPBs7.png" width="400" height="540" alt="2.jpg" align=left/></p>
+<p><strong>攻击步骤</strong>：
+<img src="https://i.loli.net/2019/08/26/WVSrdT5atfwPBs7.png" width="400" height="540" alt="2.jpg" align=left/>  </p>
 <p><strong>实现代码(Sage script)</strong>：</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">def SmartAttack(P,Q,p):
     E &#x3D; P.curve()
@@ -172,8 +159,7 @@ Q&#x3D;E(163008382252281273947629676562612579052560281605,5064500344126233105415
 k &#x3D; SmartAttack(P, Q, p)
 print(k)
 print(P*k &#x3D;&#x3D; Q)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="第二类曲线">第二类曲线</h2>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">第二类曲线参数：
+<h2 id="第二类曲线"><a href="#第二类曲线" class="headerlink" title="第二类曲线"></a>第二类曲线</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python">第二类曲线参数：
 (9) p:&#x3D; 140737488356467; a:&#x3D;1;b:&#x3D;0;
 n:&#x3D; 140737488356468; r:&#x3D; 35184372089117;
 P:&#x3D;( 59477512413747, 79851403980273);
@@ -220,9 +206,9 @@ P:&#x3D;(221903508784709687556506235376523499020990986034 , 28785420956859843266
 R:&#x3D;( 219270464789952726868617287704232288912801490505, 578348937880270477205296252062048509994911317888);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>题目分析</strong>：</p>
 <ol>
-<li>对于有限域$\small  {F_{q}}$上的一条椭圆曲线$\small  {E}$，其中$\small  {q}$是$\small  {p}$的幂，如果该曲线Frobenius轨迹t是p的倍数，则该曲线称为超奇异椭圆曲线，即$\small  {p \mid q+1-}$#$\small  {E\left ( F_{q} \right )}$。<br>
+<li>对于有限域$\small  {F_{q}}$上的一条椭圆曲线$\small  {E}$，其中$\small  {q}$是$\small  {p}$的幂，如果该曲线Frobenius轨迹t是p的倍数，则该曲线称为超奇异椭圆曲线，即$\small  {p \mid q+1-}$#$\small  {E\left ( F_{q} \right )}$。
 特别地，当$\small  {p}$为素数，$\small  {p \equiv 3 \left ( mod \  4 \right )}$且$\small  {a \neq 0}$时，椭圆曲线$\small  {E\left ( F_{p}\right ):y^{2}=x^{3}+ax}$是一条超奇异椭圆曲线。此时在$\small  {F_{p}}$中对称分布$\small  {p-1}$个点，再加上$\small  {\left (0,\ 0 \right )}$和$\small  {\infty}$两个附属点，可得#$\small  {E\left ( F_{p}\right )=p+1}$，即$\small  {t=0}$。</li>
-<li>计算嵌入度：满足$\small  {r\mid p^{k}-1}$的最小整数k值，作为扩域次数，同时也是椭圆曲线$\small  {E\left ( F_{q} \right )}$上一对扭转点的嵌入度。扩域次数$\small  {k \leq 6}$。<br>
+<li>计算嵌入度：满足$\small  {r\mid p^{k}-1}$的最小整数k值，作为扩域次数，同时也是椭圆曲线$\small  {E\left ( F_{q} \right )}$上一对扭转点的嵌入度。扩域次数$\small  {k \leq 6}$。
 在第二类曲线题目中$\small  {p,\ a}$均满足上述条件1，$\small  {k=2}$满足条件2，可判断为MOV攻击。</li>
 </ol>
 <p><strong>核心计算</strong>：</p>
@@ -230,21 +216,22 @@ R:&#x3D;( 219270464789952726868617287704232288912801490505, 57834893788027047720
 <li>从$\small  {E\left ( F_{q} \right )}$的$\small  {r}$阶子群到$\small  {F_{p}^{k}}$乘法群的$\small  {r}$阶单位根子群的同构映射(借助Tate配对或者Weil配对)。</li>
 <li>计算$\small  {F_{p}^{k}}$乘法群中的DLP。</li>
 </ol>
-<p><strong>原理</strong>：<br>
+<p><strong>原理</strong>：
 Weil对是一个函数$\small  {e_{n}:E\left [ n \right ] \times E\left [ n \right ] \rightarrow F_{p}}$且具有下列性质:</p>
 <ol>
-<li>$\small  {\forall S,\ S_{1},\ S_{2},\ T,\ T_{1},\ T_{2} \in E \left [ n\right ],\ }$<br>
+<li>$\small  {\forall S,\ S_{1},\ S_{2},\ T,\ T_{1},\ T_{2} \in E \left [ n\right ],\ }$
 $\small  {e_{n}\left ( S_{1}+S_{2},\ T \right )=e_{n}\left ( S_{1},\ T \right )e_{n}\left ( S_{2},\ T \right ), \ e_{n}\left ( S_{1}T_{1}+T_{2} \right )=e_{n}\left ( S,\ T_{1} \right )e_{n}\left ( S,\ T_{2} \right )}$</li>
 <li>$\small  {e_{n}\left ( S,\ S \right )=1,\ \forall S \in E\left [ n \right ]}$</li>
 <li>$\small  {e_{n}\left ( S,\ T \right )=e_{n}\left ( T,\ S \right )^{-1},\ \forall S,\ T \in E\left [ n \right ]}$</li>
-<li>$\small  {e_{n}\left ( S,\ T \right )=1,\ \forall S \in E\left [ n \right ]\Leftrightarrow T=O}$<br>
+<li>$\small  {e_{n}\left ( S,\ T \right )=1,\ \forall S \in E\left [ n \right ]\Leftrightarrow T=O}$
 $\small  {e_{n}\left ( S,\ T \right )=1,\ \forall T \in E\left [ n \right ]\Leftrightarrow S=O}$</li>
 </ol>
 <p>mov归约的核心思想是利用一个Weil对将椭圆曲线上加法群中的离散对数问题映射到一个有限域乘法群的离散对数问题上。由于在乘法群中的离散对数问题方法是一致的，因此间接解决椭圆曲线上的离散对数问题。</p>
-<p><strong>攻击步骤</strong>：<br>
-<img src="https://i.loli.net/2019/08/26/pTCk9ur3g6qDEw8.png" width="400" height="500" alt="1.jpg" align=center/><br>
+<p><strong>攻击步骤</strong>：
+<img src="https://i.loli.net/2019/08/26/pTCk9ur3g6qDEw8.png" width="400" height="500" alt="1.jpg" align=center/>
 如果p为素数，$\small  {q=p^{m}}$，在$\small  {E\left ( F_{q} \right )}$的阶为$\small  {q+1-t}$，可将超奇异椭圆曲线$\small  {E}$分为六类：</p>
 <hr>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -279,9 +266,11 @@ $\small  {e_{n}\left ( S,\ T \right )=1,\ \forall T \in E\left [ n \right ]\Left
 </tr>
 </tbody>
 </table>
+</div>
 <hr>
 <p>选取${\small  r_{1}}$时需要参照超奇异椭圆曲线的六种结构，对于超奇异椭圆曲线，点Q的选取更加简单。结构表如下：</p>
 <hr>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -290,7 +279,7 @@ $\small  {e_{n}\left ( S,\ T \right )=1,\ \forall T \in E\left [ n \right ]\Left
 <th style="text-align:center">${E\left ( F_{q}\right )}$</th>
 <th style="text-align:center">${r_{1}}$</th>
 <th style="text-align:center">${k}$</th>
-<th style="text-align:center">${E\left ( F_{q^{k}}\right )}$</th>
+<th style="text-align:center">${E\left ( F_{q^{k}}\right )}$ </th>
 </tr>
 </thead>
 <tbody>
@@ -300,7 +289,7 @@ $\small  {e_{n}\left ( S,\ T \right )=1,\ \forall T \in E\left [ n \right ]\Left
 <td style="text-align:center">循环</td>
 <td style="text-align:center">${\small  q+1}$</td>
 <td style="text-align:center">2</td>
-<td style="text-align:center">${\small  Z_{q+1}\times Z_{q+1}}$</td>
+<td style="text-align:center">${\small  Z_{q+1}\times Z_{q+1}}$ </td>
 </tr>
 <tr>
 <td style="text-align:center"><strong>II</strong></td>
@@ -308,7 +297,7 @@ $\small  {e_{n}\left ( S,\ T \right )=1,\ \forall T \in E\left [ n \right ]\Left
 <td style="text-align:center">${\small  Z_{\frac{q+1}{2}}\times Z_{2}}$</td>
 <td style="text-align:center">${\small  \frac{q+1}{2}}$</td>
 <td style="text-align:center">2</td>
-<td style="text-align:center">$\small  { Z_{q+1}\times Z_{q+1}}$</td>
+<td style="text-align:center">$\small  { Z_{q+1}\times Z_{q+1}}$ </td>
 </tr>
 <tr>
 <td style="text-align:center"><strong>III</strong></td>
@@ -324,7 +313,7 @@ $\small  {e_{n}\left ( S,\ T \right )=1,\ \forall T \in E\left [ n \right ]\Left
 <td style="text-align:center">循环</td>
 <td style="text-align:center">${\small  q+1\mp \sqrt{2q}}$</td>
 <td style="text-align:center">4</td>
-<td style="text-align:center">${\small  Z_{q^{2}+1}\times Z_{q^{2}+1}}$</td>
+<td style="text-align:center">${\small  Z_{q^{2}+1}\times Z_{q^{2}+1}}$ </td>
 </tr>
 <tr>
 <td style="text-align:center"><strong>V</strong></td>
@@ -332,7 +321,7 @@ $\small  {e_{n}\left ( S,\ T \right )=1,\ \forall T \in E\left [ n \right ]\Left
 <td style="text-align:center">循环</td>
 <td style="text-align:center">${\small  q+1\mp \sqrt{3q}}$</td>
 <td style="text-align:center">6</td>
-<td style="text-align:center">${\small  Z_{q^{3}+1}\times Z_{q^{3}+1}}$</td>
+<td style="text-align:center">${\small  Z_{q^{3}+1}\times Z_{q^{3}+1}}$ </td>
 </tr>
 <tr>
 <td style="text-align:center"><strong>VI</strong></td>
@@ -340,13 +329,14 @@ $\small  {e_{n}\left ( S,\ T \right )=1,\ \forall T \in E\left [ n \right ]\Left
 <td style="text-align:center">${\small  Z_{\sqrt{q} \mp 1}\times Z_{\sqrt{q} \mp 1}}$</td>
 <td style="text-align:center">${\small  \sqrt{q} \mp 1}$</td>
 <td style="text-align:center">1</td>
-<td style="text-align:center">${\small  E\left ( F_{q}\right )}$</td>
+<td style="text-align:center">${\small  E\left ( F_{q}\right )}$ </td>
 </tr>
 </tbody>
 </table>
+</div>
 <hr>
 <p>选择II类${\small  r_{1}=\frac{q+1}{2}}$(代码第13行)</p>
-<p><strong>实现代码(Sage script)</strong>：</p>
+<p><strong>实现代码(Sage script)</strong>：
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">p &#x3D; 9223372036854782251
 r &#x3D; 2305843009213695563
 k &#x3D; 2
@@ -362,9 +352,8 @@ R2 &#x3D; E2(phi(R1.xy()[0]),phi(R1.xy()[1]))
 Q &#x3D; int((p+1) &#x2F; 2r) * E2.random_point()
 alpha &#x3D; P2.weil_pairing(Q,r)
 beta &#x3D; R2.weil_pairing(Q,r)
-print(beta.log(alpha))<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="第三类曲线">第三类曲线</h2>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">第三类曲线参数：
+print(beta.log(alpha))<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
+<h2 id="第三类曲线"><a href="#第三类曲线" class="headerlink" title="第三类曲线"></a>第三类曲线</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python">第三类曲线参数：
 (17) p:&#x3D; 140737488355333; a:&#x3D;-3;b:&#x3D;234;
 n:&#x3D; 140737484527007;r:&#x3D;n;
 P:&#x3D; (118344265104828, 25754556069705);
@@ -394,24 +383,20 @@ R:&#x3D;( 1575178132453901115471501570466697, 538238983595050290992251454098891)
 n:&#x3D; 170141183460469231728561996679834270597; r:&#x3D;n;
 P:&#x3D;( 96152442714630401692673834213524521597 , 58626340067602219522071225434282008266);
 R:&#x3D;( 47795192678737921133501161460114957836 , 166078919686417913546029950371468891352);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><strong>题目分析</strong>：经检验题目中所给的参数没有什么问题(实际上后来出题人说是按照ECC标准严格给的参数)，因此考虑通用算法pollard’s rho。<br>
-<strong>核心计算</strong>：如何高效实现pollard’s rho及变体<br>
-<strong>原理</strong>：<br>
-pollard’s rho算法的主要思想是寻找模n的不同$\small  {\left ( c’,\ d’\right)}$和$\small  {\left ( c’‘,\ d’‘\right)}$，使得<br>
-$$\small c’P+d’Q=c’’ P+d’’ Q$$<br>
-于是<br>
-$$\small \left ( c’-c’’ \right )P=\left ( d’’ -d’ \right )R=\left ( d’’ -d’ \right )kP$$<br>
-且有<br>
-$$\small \left ( c’-c’’ \right ) \equiv \left ( d’’ -d’ \right )\left ( mod \ n \right )$$<br>
-于是$\small k=\log_{p}R$可以通过计算<br>
-$$\small  k=\left ( c’-c’’ \right )\left ( d’’ -d’ \right )^{-1}\ mod \ n$$<br>
-来得到。<br>
-定义一个迭代函数$\small  {f:\left \langle P \right \rangle\rightarrow \left \langle P \right \rangle}$，使得给定$\small  {X \in \left \langle P \right \rangle}$和$\small  {c,\ d \in \left [ 0,\ n-1 \right ]}$且$\small  {X=cP+dR}$，容易计算和$\small  {\bar{c},\ \bar{d} \in \left [ 0,\ n-1 \right ]}$且$\small  {\bar{X}=\bar{c}P+\bar{d}Q}$。此外，函数$\small  {f}$还要具有随机性。<br>
-现在任一点$\small {X_{0}\in \left \langle P \right \rangle }$确定一个点序列$\small \left { X_{i} \right }_{i \geq 0}$，其中对于$\small  {i\geq 0}$有$\small  {X_{i}=f\left (X_{i-1} \right )}$。因为集合$\small  {\left \langle P \right \rangle}$是有穷的，序列终将产生碰撞并进入循环；也就是说，对于$\small  {s \geq 1}$，存在最小的序列$\small  {t}$使得任意的$\small  {X_{i}=X_{t+s}}$，且对所有的$\small  {i \geq t+s}$有$\small  {X_{i}=X_{i-s}}$。这里$\small  {t}$称为序列的尾长度，$\small  {s}$称为序列的循环长度。若假设$\small  {f}$为随机函数，则序列出现首次碰撞的预计步数为$\small  {\sqrt{\frac{\pi n}{2}}}$。此外，预计的尾长度为$\small  {t\approx \sqrt{\frac{\pi n}{8}}}$，循环长度为$\small  {s\approx \sqrt{\frac{\pi n}{8}}}$。<br>
-一个碰撞，即对点$\small  {X_{i},\ X_{j}}$有$\small  {X_{i}=X_{j}}$且$\small  {i\neq j}$，可以用Floyd循环查找算法来计算。该算法对于$\small  {i=1,\ 2,\ 3\cdots }$计算点对$\small  {\left ( X_{i},\ X_{2i}\right )}$直到$\small  {X_{i}=X_{2i}}$。计算出新的点对以后可以将老的点对丢弃，因此其需要的存储空间近于零。预计得到$\small  {\left ( X_{i},\ X_{2i}\right )}$之前计算这些点对的次数$\small  {k}$显然满足$\small  {t\leq k\leq t+s}$。事实上，假定$\small  {f}$是随机函数，则预计值$\small  {k}$约为$\small  {1.0308\sqrt{n}}$，因此预计的椭圆曲线群运算次数约为$\small  {3\sqrt{n}}$。算法失败的概率趋近于0。<br>
-出题老师在讲解这道题时提到涉及的三个技巧：(1)高效有限域算术 (2)高效椭圆曲线算术(利用$\small  {a=3}$以及射影jacobi坐标) (3)并行化技术<br>
+<p><strong>题目分析</strong>：经检验题目中所给的参数没有什么问题(实际上后来出题人说是按照ECC标准严格给的参数)，因此考虑通用算法pollard’s rho。
+<strong>核心计算</strong>：如何高效实现pollard’s rho及变体
+<strong>原理</strong>：
+pollard’s rho算法的主要思想是寻找模n的不同$\small  {\left ( c’,\ d’\right)}$和$\small  {\left ( c’’,\ d’’\right)}$，使得</p>
+<script type="math/tex; mode=display">\small c'P+d'Q=c'' P+d'' Q</script><p>于是</p>
+<script type="math/tex; mode=display">\small \left ( c'-c'' \right )P=\left ( d'' -d' \right )R=\left ( d'' -d' \right )kP</script><p>且有</p>
+<script type="math/tex; mode=display">\small \left ( c'-c'' \right ) \equiv \left ( d'' -d' \right )\left ( mod \ n \right )</script><p>于是$\small k=\log_{p}R$可以通过计算</p>
+<script type="math/tex; mode=display">\small  k=\left ( c'-c'' \right )\left ( d'' -d' \right )^{-1}\ mod \ n</script><p>来得到。
+定义一个迭代函数$\small  {f:\left \langle P \right \rangle\rightarrow \left \langle P \right \rangle}$，使得给定$\small  {X \in \left \langle P \right \rangle}$和$\small  {c,\ d \in \left [ 0,\ n-1 \right ]}$且$\small  {X=cP+dR}$，容易计算和$\small  {\bar{c},\ \bar{d} \in \left [ 0,\ n-1 \right ]}$且$\small  {\bar{X}=\bar{c}P+\bar{d}Q}$。此外，函数$\small  {f}$还要具有随机性。
+现在任一点$\small {X_{0}\in \left \langle P \right \rangle }$确定一个点序列$\small \left \{ X_{i} \right \}_{i \geq 0}$，其中对于$\small  {i\geq 0}$有$\small  {X_{i}=f\left (X_{i-1} \right )}$。因为集合$\small  {\left \langle P \right \rangle}$是有穷的，序列终将产生碰撞并进入循环；也就是说，对于$\small  {s \geq 1}$，存在最小的序列$\small  {t}$使得任意的$\small  {X_{i}=X_{t+s}}$，且对所有的$\small  {i \geq t+s}$有$\small  {X_{i}=X_{i-s}}$。这里$\small  {t}$称为序列的尾长度，$\small  {s}$称为序列的循环长度。若假设$\small  {f}$为随机函数，则序列出现首次碰撞的预计步数为$\small  {\sqrt{\frac{\pi n}{2}}}$。此外，预计的尾长度为$\small  {t\approx \sqrt{\frac{\pi n}{8}}}$，循环长度为$\small  {s\approx \sqrt{\frac{\pi n}{8}}}$。
+一个碰撞，即对点$\small  {X_{i},\ X_{j}}$有$\small  {X_{i}=X_{j}}$且$\small  {i\neq j}$，可以用Floyd循环查找算法来计算。该算法对于$\small  {i=1,\ 2,\ 3\cdots }$计算点对$\small  {\left ( X_{i},\ X_{2i}\right )}$直到$\small  {X_{i}=X_{2i}}$。计算出新的点对以后可以将老的点对丢弃，因此其需要的存储空间近于零。预计得到$\small  {\left ( X_{i},\ X_{2i}\right )}$之前计算这些点对的次数$\small  {k}$显然满足$\small  {t\leq k\leq t+s}$。事实上，假定$\small  {f}$是随机函数，则预计值$\small  {k}$约为$\small  {1.0308\sqrt{n}}$，因此预计的椭圆曲线群运算次数约为$\small  {3\sqrt{n}}$。算法失败的概率趋近于0。
+出题老师在讲解这道题时提到涉及的三个技巧：(1)高效有限域算术&emsp;(2)高效椭圆曲线算术(利用$\small  {a=3}$以及射影jacobi坐标)&emsp;(3)并行化技术
 高效的有限域算术和椭圆曲线算术，同样可以提高Pollard’s rho算法实现效率，利用state-of-the-art的有限域/椭圆曲线算术，可比Magma/Sage等相应实现效率高很多。</p>
-<p><strong>实现代码(Sage script)</strong></p>
+<p><strong>实现代码(Sage script)</strong>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">p &#x3D; 9223372036854775837
 a &#x3D; -3
 b &#x3D; 37
@@ -419,19 +404,17 @@ r &#x3D; 9223372038068412403
 E &#x3D; EllipticCurve(GF(p), [a, b])
 P &#x3D; E(7220661838117791356, 6477969291505257777)
 Q &#x3D; E(7819726923954549567, 6266868167000835108)
-print(discrete_log_rho(Q, P, ord&#x3D;P.order(), operation&#x3D;&#39;+&#39;))<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="计算实现环境及结果">计算实现环境及结果</h2>
-<p><strong>实现环境</strong><br>
-CPU型号：Core i5-7300HQ<br>
-内存：16G ddr4<br>
-<strong>运行结果</strong><br>
+print(discrete_log_rho(Q, P, ord&#x3D;P.order(), operation&#x3D;&#39;+&#39;))<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
+<h2 id="计算实现环境及结果"><a href="#计算实现环境及结果" class="headerlink" title="计算实现环境及结果"></a>计算实现环境及结果</h2><p><strong>实现环境</strong>
+CPU型号：Core i5-7300HQ
+内存：16G ddr4
+<strong>运行结果</strong>
 每类曲线参数位数越多，分值越高。总分由每类曲线最高分相加。分数相同的队伍依照难度最高的挑战求解时间来排序，求解用时越少者排名越靠前。计算结果如下：</p>
-<img src="https://i.loli.net/2019/08/27/NJaLbfHdeyRnzrX.png" width="450" height="200" alt="3.jpg">
-&emsp;&emsp;第一类曲线运行时间比较正常，秒出答案；第二类曲线运行时间相对较短(如果资源好能再出新答案)；第三类曲线由于没有高效实现Pollard's rho算法，运行时间较长。
-<h2 id="ECC的安全性">ECC的安全性</h2>
-<p>  公钥密码体制根据其所依据的难题一般分为三类：大素数分解问题、离散对数问题、椭圆曲线上的离散对数问题。<br>
-  椭圆加密算法（ECC）是一种公钥加密体制，由Koblitz和Miller两人提出，其数学基础是利用椭圆曲线上的有理点构成阿贝尔加法群上椭圆离散对数的计算困难性。<br>
-  相对于RSA加密算法，ECC的主要优势是可以在某些情况下使用更小的密钥，但仍提供相当的或更高等级的安全，有研究表示160位的椭圆密钥与1024位的RSA密钥安全性相同ECC算法的单位安全强度高于RSA算法。ECC的另一个优势是可以定义群之间的双线性映射，基于Weil对或是Tate对，可以用于基于身份的加密。对于ECC系统，目前公认最有效的方法式Pollard’s rho算法，但它求解的破译或求解难度基本上是指数级的，只要避免使用特殊曲线，破解ECC依然很困难。<br>
+<p><img src="https://i.loli.net/2019/08/27/NJaLbfHdeyRnzrX.png" width="450" height="200" alt="3.jpg">
+&emsp;&emsp;第一类曲线运行时间比较正常，秒出答案；第二类曲线运行时间相对较短(如果资源好能再出新答案)；第三类曲线由于没有高效实现Pollard’s rho算法，运行时间较长。</p>
+<h2 id="ECC的安全性"><a href="#ECC的安全性" class="headerlink" title="ECC的安全性"></a>ECC的安全性</h2><p>&emsp;&emsp;公钥密码体制根据其所依据的难题一般分为三类：大素数分解问题、离散对数问题、椭圆曲线上的离散对数问题。
+&emsp;&emsp;椭圆加密算法（ECC）是一种公钥加密体制，由Koblitz和Miller两人提出，其数学基础是利用椭圆曲线上的有理点构成阿贝尔加法群上椭圆离散对数的计算困难性。
+&emsp;&emsp;相对于RSA加密算法，ECC的主要优势是可以在某些情况下使用更小的密钥，但仍提供相当的或更高等级的安全，有研究表示160位的椭圆密钥与1024位的RSA密钥安全性相同ECC算法的单位安全强度高于RSA算法。ECC的另一个优势是可以定义群之间的双线性映射，基于Weil对或是Tate对，可以用于基于身份的加密。对于ECC系统，目前公认最有效的方法式Pollard’s rho算法，但它求解的破译或求解难度基本上是指数级的，只要避免使用特殊曲线，破解ECC依然很困难。
 <strong>ECC选择参数标准：</strong></p>
 <ol>
 <li>为了抗击Pollard-ρ攻击，所选取椭圆曲线的阶#$\small  {E\left( F \left (p\right )\right )}$的分解式中英包含一个大的素因子，目前应不小于160bit；</li>
@@ -440,19 +423,18 @@ CPU型号：Core i5-7300HQ<br>
 <li>对于二进制域$\small  {F\left( 2^{m}\right )}$的度不宜为合数。若$\small  {m}$有小约数$\small  {l\left ( l=4\right )}$，存在比Pollard’s rho算法更快求解ECDLP的方法。</li>
 <li>选择$\small  {E\left( F_{p}\right )}$的子域$\small  {H}$，满足它的阶$\small  {|H|}$是#$\small  {E\left( F_{p}\right )}$的最大素因子$\small  {n}$，并在$\small  {H}$上实现ECC。</li>
 </ol>
-<h2 id="参考文献">参考文献</h2>
-<p><a target="_blank" rel="noopener" href="http://cmsecc.com">1</a> Richard E.Blahut.Cryptography and Secure Communication[M].Cambridge University Press and China Machine Press:China,2018:270.<br>
-[2] Darrel Hankerson,Alfred Menezes,Scott Vanstone.Guide to Elliptic Curve Cryptography[M].Spring:New York,2003:153.<br>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a target="_blank" rel="noopener" href="http://cmsecc.com">1</a> Richard E.Blahut.Cryptography and Secure Communication[M].Cambridge University Press and China Machine Press:China,2018:270.
+[2] Darrel Hankerson,Alfred Menezes,Scott Vanstone.Guide to Elliptic Curve Cryptography[M].Spring:New York,2003:153.
 [3] Peter Novotney.Weak Curves In Elliptic Curve Cryptography[J].novotney,2010,5:1-9.</p>
-<p><strong>推荐参考文献</strong><br>
-第一类曲线<br>
-[4] Smart N P,The Discrete Logarithm Problem on Elliptic Curves of Trace One[J].Journal of Cryptology,1999,12(3):193-196<br>
-[5] 祝跃飞，裴定一.求异常曲线上的DLP的一个算法[J].中国解学：2001.31(4):332-336<br>
-第二类曲线<br>
-[6] Frey.G.Ruck,H:A Remark Concerning m-divisibility and The Discrete Logarithm in The Divisor Class Group of Curves.Math.Comp,62.865-874(1994)<br>
-[7] Menezes A.J.Okamoto T.Vanstone,S.A:Reducing elliptic curve logarithms to logarithms in a finite field, IEEE trans,Inf Theory,39(5),1639-1646(1993)<br>
-第三类曲线<br>
-[8] Pollard J.M,AMonte Cario method for index computation (modp).Math,Comput,32(143),918-924(1978)<br>
+<p><strong>推荐参考文献</strong>
+第一类曲线
+[4] Smart N P,The Discrete Logarithm Problem on Elliptic Curves of Trace One[J].Journal of Cryptology,1999,12(3):193-196
+[5] 祝跃飞，裴定一.求异常曲线上的DLP的一个算法[J].中国解学：2001.31(4):332-336
+第二类曲线
+[6] Frey.G.Ruck,H:A Remark Concerning m-divisibility and The Discrete Logarithm in The Divisor Class Group of Curves.Math.Comp,62.865-874(1994)
+[7] Menezes A.J.Okamoto T.Vanstone,S.A:Reducing elliptic curve logarithms to logarithms in a finite field, IEEE trans,Inf Theory,39(5),1639-1646(1993)
+第三类曲线
+[8] Pollard J.M,AMonte Cario method for index computation (modp).Math,Comput,32(143),918-924(1978)
 [9] Bailey D.Batina L.Bernstein D.J.Birkner P,Bos J.W,et al:Breaking ECC2K-130.Cryptology ePrint Archive,Report 2009/541(2009)</p>
 
     </div>

@@ -45,16 +45,14 @@
     <div class="post-md">
         <p>crypto writeup</p>
 <span id="more"></span>
-<h2 id="古典美">古典美</h2>
-<p>密钥：VklHRU5FUkU=</p>
+<h2 id="古典美"><a href="#古典美" class="headerlink" title="古典美"></a>古典美</h2><p>密钥：VklHRU5FUkU=</p>
 <p>密文：</p>
 <p>HHCKPDQEGUFXFCKHBZXXVQAAHZYHVDSYBQEHXRUHHCEXXSADBGEXZRCHBYEHTBAEH4GJEMFS</p>
 <p>密钥用base64解码：VIGENERE，作为维吉尼亚的密钥。</p>
 <p>解密密文得到：</p>
 <p>MZWGCZZALMZTSYTDGRRTIMJWMRSDIZBUGIYDKNDDMUYTKOJZGYYTMNLDGQYDGXJAM4YDAZBB</p>
-<p>只有A-Z和数字，因此采用base32解码： flag [39bc4c416dd4d42054ce15996165c403] g00d!</p>
-<h2 id="忘记题目">(忘记题目)</h2>
-<p>题目考察的点是在RSA中，如果已知公钥对(e, n)对应的私钥对(d, n)，有办法分解出p, q的值。参考https://www.di-mgt.com.au/rsa_factorize_n.html</p>
+<p>只有A-Z和数字，因此采用base32解码： flag [39bc4c416dd4d42054ce15996165c403] g00d! </p>
+<h2 id="忘记题目"><a href="#忘记题目" class="headerlink" title="(忘记题目)"></a>(忘记题目)</h2><p>题目考察的点是在RSA中，如果已知公钥对(e, n)对应的私钥对(d, n)，有办法分解出p, q的值。参考<a target="_blank" rel="noopener" href="https://www.di-mgt.com.au/rsa_factorize_n.html">https://www.di-mgt.com.au/rsa_factorize_n.html</a></p>
 <p>这道题首先第一部分用正常的d解密就好：</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">from Crypto.Util.number import *
 d1&#x3D;0x7d12e57b1aa157038ebe5c45b56256270671e6984b0dcdf10a2ea07ce480143240c9a3e1c60870e499306a717073f157476aa88e99a7bdf1e2a4adf8ce21025cc6c05035c4a1d7e3b6f061464872e65118384999f0154f3c1761fa68d4685126b7fc98f4c2cdc41c98aa4e099a868a89099dd2170664647efca2c8d8e06a2e49
@@ -117,8 +115,7 @@ print(long_to_bytes(m))
 
 # flag part two is :ca5c600783b9bde0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>两部分连接起来就是flag的值。</p>
-<h2 id="RSA-upgrade">RSA_upgrade</h2>
-<p>题目代码：</p>
+<h2 id="RSA-upgrade"><a href="#RSA-upgrade" class="headerlink" title="RSA_upgrade"></a>RSA_upgrade</h2><p>题目代码：</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">import random
 from sympy import nextprime
 from Crypto.Util.number import *
@@ -227,7 +224,7 @@ secret &#x3D;  next(key_stream)
 e &#x3D; nextprime(secret)
 
 # e &#x3D; 176683449265430137948016253982177600477<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>发现是三质数的RSA。这里有个坑，跟BMZCTF2020里一样。因为p,q,r两两互素，所以不需要知道q,r的值，利用phi§=p-1就可以得到d的值。</p>
+<p>发现是三质数的RSA。这里有个坑，跟BMZCTF2020里一样。因为p,q,r两两互素，所以不需要知道q,r的值，利用phi(p)=p-1就可以得到d的值。</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">import gmpy2
 p &#x3D; 138092450043978032187397495330379791355629274237204650898232878263413301988536751004632087169676028049236253598677819980191406826529664613957150122788435561338344715937422320958238628877093605040078776555586363593650646481242888908171897232624141894446324625781720275455534977357099473212936612966142541689717
 c &#x3D; 40522976224675404992818282038409183193065303107530049168092540620105120083552580372904554927069109321998620410524986748598618388761467715127564839742806614159382512978830563949967053562802375030363283879451081474764301602860367140250483857874335594802704634427276762179861996608105102610424633434334897307449739846880323406404392707133580686043181007091235341464802410874449708870610192494627811013526751435468963111672237058189288520084494533786573065843704621915085789731723587760910378534773137633519620193203450046994466154848079413319979993890764583887936777316159487010002407093187269512820453207591173395762513970799972839858119501585885277954258269483363133460240339866272358522431904252286259542327658731232568465990008278265227086114042064326334937705758042097987623388556184022737180944807660792992413039097516526454455063218161704505837882378018400687043158628503465274374703624257222504948612055237771581019005
@@ -237,7 +234,7 @@ d &#x3D; gmpy2.invert(e, phi)
 m &#x3D; pow(c, d, p)
 
 # 569987504250336203008383799281952855095298052417061158522700484233183317916824291767569080757872<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>有了明文，但并不是真正的flag。明文是flag异或上flag &gt;&gt; 10的值，flag头部’DASCTF{'，但只移动了10bits，因此理论上每10bit一组交替异或，可以逆推出flag的值。</p>
+<p>有了明文，但并不是真正的flag。明文是flag异或上flag &gt;&gt; 10的值，flag头部’DASCTF{‘，但只移动了10bits，因此理论上每10bit一组交替异或，可以逆推出flag的值。</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">from Crypto.Util.number import *
 
 m &#x3D; 569987504250336203008383799281952855095298052417061158522700484233183317916824291767569080757872
@@ -261,8 +258,7 @@ for i in range(1, len(str1)):
 print(long_to_bytes(int(&#39;&#39;.join(result), 2)))
 
 # DASCTF&#123;b19998fb5acd197e441029b37bc246d7&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="rsa4">rsa4</h2>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">from Crypto.Util.number import *
+<h2 id="rsa4"><a href="#rsa4" class="headerlink" title="rsa4"></a>rsa4</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python">from Crypto.Util.number import *
 import binascii
 import gmpy2
 flag &#x3D; &#39;flag is :********************************&#39;
@@ -304,8 +300,7 @@ m &#x3D; m_part + x0
 print(long_to_bytes(m))
 
 # flag is :790ff752e38988a521c73837942b1414<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="MEET">MEET</h2>
-<p>题目代码：</p>
+<h2 id="MEET"><a href="#MEET" class="headerlink" title="MEET"></a>MEET</h2><p>题目代码：</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">from Crypto.Cipher import DES
 import random
 import base64

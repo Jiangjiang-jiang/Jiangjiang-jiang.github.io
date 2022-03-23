@@ -45,9 +45,7 @@
     <div class="post-md">
         <p><a target="_blank" rel="noopener" href="https://share.weiyun.com/9Bz96oYq">题目链接</a></p>
 <span id="more"></span>
-<h2 id="RE">RE</h2>
-<h3 id="re1">re1</h3>
-<p>64位程序，IDA查看。</p>
+<h2 id="RE"><a href="#RE" class="headerlink" title="RE"></a>RE</h2><h3 id="re1"><a href="#re1" class="headerlink" title="re1"></a>re1</h3><p>64位程序，IDA查看。</p>
 <pre class="line-numbers language-c" data-language="c"><code class="language-c">int __cdecl main(int argc, const char **argv, const char **envp)
 &#123;
   int v4[30]; &#x2F;&#x2F; [rsp+0h] [rbp-90h]
@@ -116,8 +114,7 @@ def attack():
 print(attack())
 
 # flag&#123;BMZCTF_ReUeXs3_1s_Co01&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="re2">re2</h3>
-<p>64位程序，IDA查看伪代码。</p>
+<h3 id="re2"><a href="#re2" class="headerlink" title="re2"></a>re2</h3><p>64位程序，IDA查看伪代码。</p>
 <pre class="line-numbers language-c" data-language="c"><code class="language-c">int __cdecl main(int argc, const char **argv, const char **envp)
 &#123;
   int v4[30]; &#x2F;&#x2F; [rsp+0h] [rbp-80h]
@@ -134,7 +131,7 @@ print(attack())
   else
     puts(&quot;tryyyyy again&quot;);
   return 0;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>当输入字符串v4满足Auth(v4, argv) == 1时，打印出&quot;Congratulations!~&quot;，v4为flag值。进入Auth函数，a1=v4。</p>
+<p>当输入字符串v4满足Auth(v4, argv) == 1时，打印出”Congratulations!~”，v4为flag值。进入Auth函数，a1=v4。</p>
 <pre class="line-numbers language-c" data-language="c"><code class="language-c">signed __int64 __fastcall Auth(__int64 a1)
 &#123;
   int v2[12]; &#x2F;&#x2F; [rsp+8h] [rbp-C0h]
@@ -244,8 +241,7 @@ def attack():
 print(attack())
 
 # flag&#123;Fe3l_Fear_t0_7he_Revs&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="re3">re3</h3>
-<p>apk文件解压之后dex2jar转为jar文件，jd-gui打开。可以看到有两个Activity：MainActivity.class和FlagActivity.class</p>
+<h3 id="re3"><a href="#re3" class="headerlink" title="re3"></a>re3</h3><p>apk文件解压之后dex2jar转为jar文件，jd-gui打开。可以看到有两个Activity：MainActivity.class和FlagActivity.class</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java">&#x2F;&#x2F; MainActivity.class
 package com.ctfgame.bmzctf;
 
@@ -372,9 +368,7 @@ def attack():
 print(attack())
 
 # flag&#123;Every0ne-0f-BMZCTF-1s-3he-Best&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="Crypto">Crypto</h2>
-<h3 id="Crypto-xor">Crypto_xor</h3>
-<p>hint： [‘\x00’,‘\x00’,‘\x00’] at start of xored is the best hint you get.</p>
+<h2 id="Crypto"><a href="#Crypto" class="headerlink" title="Crypto"></a>Crypto</h2><h3 id="Crypto-xor"><a href="#Crypto-xor" class="headerlink" title="Crypto_xor"></a>Crypto_xor</h3><p>hint： [‘\x00’,’\x00’,’\x00’] at start of xored is the best hint you get.</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">xored &#x3D; [&#39;\x00&#39;, &#39;\x00&#39;, &#39;\x00&#39;, &#39;\x18&#39;, &#39;C&#39;, &#39;_&#39;, &#39;\x05&#39;, &#39;E&#39;, &#39;V&#39;, &#39;T&#39;, &#39;F&#39;, &#39;U&#39;, &#39;R&#39;, &#39;B&#39;, &#39;_&#39;, &#39;U&#39;, &#39;G&#39;, &#39;_&#39;, &#39;V&#39;, &#39;\x17&#39;, &#39;V&#39;, &#39;S&#39;, &#39;@&#39;, &#39;\x03&#39;, &#39;[&#39;, &#39;C&#39;, &#39;\x02&#39;, &#39;\x07&#39;, &#39;C&#39;, &#39;Q&#39;, &#39;S&#39;, &#39;M&#39;, &#39;\x02&#39;, &#39;P&#39;, &#39;M&#39;, &#39;_&#39;, &#39;S&#39;, &#39;\x12&#39;, &#39;V&#39;, &#39;\x07&#39;, &#39;B&#39;, &#39;V&#39;, &#39;Q&#39;, &#39;\x15&#39;, &#39;S&#39;, &#39;T&#39;, &#39;\x11&#39;, &#39;_&#39;, &#39;\x05&#39;, &#39;A&#39;, &#39;P&#39;, &#39;\x02&#39;, &#39;\x17&#39;, &#39;R&#39;, &#39;Q&#39;, &#39;L&#39;, &#39;\x04&#39;, &#39;P&#39;, &#39;E&#39;, &#39;W&#39;, &#39;P&#39;, &#39;L&#39;, &#39;\x04&#39;, &#39;\x07&#39;, &#39;\x15&#39;, &#39;T&#39;, &#39;V&#39;, &#39;L&#39;, &#39;\x1b&#39;]
 s1 &#x3D; &quot;&quot;
 s2 &#x3D; &quot;&quot;
@@ -388,8 +382,7 @@ a_list &#x3D; [chr(ord(a) ^ ord(b)) for a,b in zip(s1, s2)]
 print(&quot;&quot;.join(a_list))
 
 # ctf&#123;79f107231696395c004e87dd7709d3990f0d602a57e9f56ac428b31138bda258&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="Crypto-easy-crypto">Crypto_easy_crypto</h3>
-<p>变过形的RSA。题目代码：</p>
+<h3 id="Crypto-easy-crypto"><a href="#Crypto-easy-crypto" class="headerlink" title="Crypto_easy_crypto"></a>Crypto_easy_crypto</h3><p>变过形的RSA。题目代码：</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">from Crypto.Util.number import *
 from secret import flag
 
@@ -415,10 +408,8 @@ print(&#39;enc &#x3D;&#39;, enc)
 # pubkey &#x3D; (763929224901239050077647342425144363318006219360210465113458622937882119766705458273788947718911994090187932947694326848868575500906975653763043489419853300731695950407389203582333794360159494405111004208058198680365172060235321945875374635278292661761319773173838900295933943437761251440819434675631450032782188481758975272071015244168751016874668742536151359822585793537758876078350987062972237271763834743266722655055439868971805843593929839097963319788083763, 27750416681837900468631425875797804482827864226099175414717825894823303299159277202974070903630276868248755642608884903122768656427165401563920443482151217)
 # enc &#x3D; 7579294603035135817234501131256282324240132424272000903035801073847222917306092792610406876451698121956232047031639448767323475088170357863653435096746640609325525035329328626562143049656124241263576649974820533800161432666946327226418036826146160288273175521864687122720836795596635067761146519940441817765732160382018434465776749372209181212817247187474685246156193381822044772746654690126746715728166527274933634750443478682812664022009444348448955720226579468781927776133336045525149203384137859868153077820708167146052429014790660921586958660759949399826568136755816563468739111123761288318276379025018708883521<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>加密过程$\small m^{e}\equiv c(mod\ pqr(p+q+r))$因为$\small p,q,r,p+q+r$两两互质，因此等价于4个同余式：</p>
-<p>$$<br>
-\small m^{e} \equiv c(mod\ p) \ \small m^{e} \equiv c(mod\ q) \ \small m^{e} \equiv c(mod\ r) \ \small m^{e} \equiv c(mod\ p+q+r)<br>
-$$<br>
-注意到$\small m^{e}\equiv c(mod\ p+q+r)$中$\small p+q+r$已知，由于$\small p+q+r$为素数，则有$\small (e,p+q+r)=1$，因此存在$\small d$使得$\small ed\equiv 1(mod\ p+q+r-1)$。计算d用来解密：$\small m\equiv c^{d}(mod\ p+q+r)$</p>
+<script type="math/tex; mode=display">
+\small m^{e} \equiv c(mod\ p) \\ \small m^{e} \equiv c(mod\ q) \\ \small m^{e} \equiv c(mod\ r) \\ \small m^{e} \equiv c(mod\ p+q+r)</script><p>注意到$\small m^{e}\equiv c(mod\ p+q+r)$中$\small p+q+r$已知，由于$\small p+q+r$为素数，则有$\small (e,p+q+r)=1$，因此存在$\small d$使得$\small ed\equiv 1(mod\ p+q+r-1)$。计算d用来解密：$\small m\equiv c^{d}(mod\ p+q+r)$</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">import gmpy2
 from Crypto.Util.number import *
 
