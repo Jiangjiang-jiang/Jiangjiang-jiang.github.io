@@ -84,7 +84,7 @@ c \overset{?}{=} H_0(g^s\cdot PK^{-c},m)</script><h3 id="针对CoSi的攻击"><a
 <p>考虑树只有根节点的参与方是恶意的，其余节点是诚实方的情况。由于CoSi从下往上聚合，所以现在可以假设只有两个参与方：一个是伪造签名的敌手$\mathcal{A}$，位于根节点；另一个是诚实的挑战方，位于叶子结点。</p>
 <p>攻击的大体思路是由$\mathcal{A}$开启$k-1$次并行执行，与挑战方交互在相同$m$上生成$k-1$个签名(可以看作是将$sk^\ast $嵌入到了签名Oracle中，$\mathcal{A}$访问$k-1$次签名Oracle)，利用这些信息伪造消息$m^\ast \not = m$上的签名。第$i$次执行过程如下图所示，$i\in\{1,2,…,k-1\}$。其中$P_1$是敌手$\mathcal{A}$，所拥有密钥$sk_1$，$P_2$是挑战者，虚线框内为协议正常执行的步骤，所拥有密钥$sk^\ast $。</p>
 <div align="center">
-    <img src="https://s2.loli.net/2022/10/12/PQSwd5eaWJyTEFI.png" alt="82d9f0ae7f757f333d09a9e3f9fe206.png" style="zoom:80%;" /></img>
+    <img src="https://s2.loli.net/2022/10/12/PQSwd5eaWJyTEFI.png" alt="82d9f0ae7f757f333d09a9e3f9fe206.png" width="400" height="300"" /></img>
 </div>
 
 <p>因为$\mathcal{A}$位于根节点，最终的$R$由根节点发布，所以其它节点的承诺份额对它来说没有任何意义。所以$\mathcal{A}$每次执行选择设计好的$\bar{R}$，来达到攻击的目的，思路类似于对公钥的rogue-key攻击。</p>
