@@ -59,6 +59,14 @@ var _hmt = _hmt || [];
     <ul class="archive">
         
         <li>
+            <span class="archive-date">2022.10.12</span>
+            <div class="archive-main">
+                <a class="archive-title" href="/2022/10/12/OntheSecurity/">论文笔记：On the Security of Two-Round Multi-Signatures</a>
+                <!-- <a class="read-more" href="/2022/10/12/OntheSecurity/"> ... </a> -->
+            </div>
+        </li>
+        
+        <li>
             <span class="archive-date">2022.07.17</span>
             <div class="archive-main">
                 <a class="archive-title" href="/2022/07/17/Locally/">论文笔记：Locally Verifiable Signature and Key Aggregation</a>
@@ -95,5 +103,21 @@ var _hmt = _hmt || [];
 
             </div>
         </div>
-    </body>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
 </html>
