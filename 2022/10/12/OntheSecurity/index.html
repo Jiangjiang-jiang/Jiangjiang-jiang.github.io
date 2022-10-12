@@ -65,8 +65,8 @@ var _hmt = _hmt || [];
 <p>Link: <a target="_blank" rel="noopener" href="https://eprint.iacr.org/2018/417.pdf">https://eprint.iacr.org/2018/417.pdf</a></p>
 </blockquote>
 <h3 id="CoSi多重签名"><a href="#CoSi多重签名" class="headerlink" title="CoSi多重签名"></a>CoSi多重签名</h3><p>CoSi在2016年由Syta等人提出，它仅仅是把Schnorr签名中的每一个量拆分成签名方的份额，最后由一个签名参与方统一地聚合起来发布，所以是一种plain的Schnorr多重签名方案。</p>
-<p>\ast \ast 参数生成\ast \ast ：选择$q$阶群$\mathbb{G}$，$q$为素数，$g$是$\mathbb{G}$的一个随机生成元。选择两个哈希函数$H_0,H_1:\{0,1\}^\ast \rightarrow \mathbb{Z}_q$。输出公共参数$par\leftarrow (\mathbb{G},g,q,H_0,H_1)$.</p>
-<p>\ast \ast 密钥生成\ast \ast ：CoSi的每一方都要执行密钥生成算法。参与方$P_i$随机选择私钥$sk_i\leftarrow \mathbb{Z}_q$并且计算公钥$y_i\leftarrow g^{sk_{i}}$。此外还需附上对$sk_i$知识的证明：随机选择$r_i\leftarrow \mathbb{Z}_q$，计算$c_i\leftarrow H_0(g^r,y_i)$以及$s_i\leftarrow r_i+c_i \cdot sk_i$，将$(c_i,s_i)$作为证明$\pi_i$。最终输出$pk_i\leftarrow(y_i,\pi_i)$和$sk_i$作为公私钥对。</p>
+<p><strong>参数生成</strong> ：选择$q$阶群$\mathbb{G}$，$q$为素数，$g$是$\mathbb{G}$的一个随机生成元。选择两个哈希函数$H_0,H_1:\{0,1\}^\ast \rightarrow \mathbb{Z}_q$。输出公共参数$par\leftarrow (\mathbb{G},g,q,H_0,H_1)$.</p>
+<p><strong>密钥生成</strong> ：CoSi的每一方都要执行密钥生成算法。参与方$P_i$随机选择私钥$sk_i\leftarrow \mathbb{Z}_q$并且计算公钥$y_i\leftarrow g^{sk_{i}}$。此外还需附上对$sk_i$知识的证明：随机选择$r_i\leftarrow \mathbb{Z}_q$，计算$c_i\leftarrow H_0(g^r,y_i)$以及$s_i\leftarrow r_i+c_i \cdot sk_i$，将$(c_i,s_i)$作为证明$\pi_i$。最终输出$pk_i\leftarrow(y_i,\pi_i)$和$sk_i$作为公私钥对。</p>
 <p>(注：这里对私钥知识的证明是为了防止敌手看见其它参与方生成的公钥后，自适应地选择自己的公钥，即防止rogue-key攻击)</p>
 <p><strong>分布式签名</strong></p>
 <p>为了减少各方之间的通信量，CoSi采用了树形的结构，消息由根节点向叶子结点传播，由父节点传播给它所有的子节点，或者叶子节点向根节点传播，由每一个子节点传播给它的父节点。总共分为4阶段，如下面的图所示(父节点负责聚合子节点消息，再传播给上一层，图中没有展示这一过程)。</p>
@@ -83,7 +83,10 @@ var _hmt = _hmt || [];
 c \overset{?}{=} H_0(g^s\cdot PK^{-c},m)</script><h3 id="针对CoSi的攻击"><a href="#针对CoSi的攻击" class="headerlink" title="针对CoSi的攻击"></a>针对CoSi的攻击</h3><p>从表面上看，CoSi只是简单地以分布式的方式完成了Schnorr签名，Schnorr签名安全似乎CoSi也安全。然而正如这篇论文所说，CoSi安全性存在问题，事实上CoSi的原论文中并没有给出正式的归约证明。</p>
 <p>考虑树只有根节点的参与方是恶意的，其余节点是诚实方的情况。由于CoSi从下往上聚合，所以现在可以假设只有两个参与方：一个是伪造签名的敌手$\mathcal{A}$，位于根节点；另一个是诚实的挑战方，位于叶子结点。</p>
 <p>攻击的大体思路是由$\mathcal{A}$开启$k-1$次并行执行，与挑战方交互在相同$m$上生成$k-1$个签名(可以看作是将$sk^\ast $嵌入到了签名Oracle中，$\mathcal{A}$访问$k-1$次签名Oracle)，利用这些信息伪造消息$m^\ast \not = m$上的签名。第$i$次执行过程如下图所示，$i\in\{1,2,…,k-1\}$。其中$P_1$是敌手$\mathcal{A}$，所拥有密钥$sk_1$，$P_2$是挑战者，虚线框内为协议正常执行的步骤，所拥有密钥$sk^\ast $。</p>
-<p><center><img src="https://s2.loli.net/2022/10/12/PQSwd5eaWJyTEFI.png" alt="82d9f0ae7f757f333d09a9e3f9fe206.png" style="zoom:80%;" /><center></p>
+<div align="center">
+    <img src="https://s2.loli.net/2022/10/12/PQSwd5eaWJyTEFI.png" alt="82d9f0ae7f757f333d09a9e3f9fe206.png" style="zoom:80%;" /></img>
+</div>
+
 <p>因为$\mathcal{A}$位于根节点，最终的$R$由根节点发布，所以其它节点的承诺份额对它来说没有任何意义。所以$\mathcal{A}$每次执行选择设计好的$\bar{R}$，来达到攻击的目的，思路类似于对公钥的rogue-key攻击。</p>
 <p>在Response阶段，$\mathcal{A}$获得来自挑战者$k-1$次执行的$\bar{s_i}=r_i+\bar{c_i}\cdot sk^\ast $。观察$r_i$是挑战者选择的，对$\mathcal{A}$不可见，$\bar{c_i}$是在$\mathcal{A}$的错误的$\bar{R_i}$上生成的散列值，并且满足$\bar{c_i}=H(\bar{R_i},m)$.</p>
 <p>回顾Schnorr签名$\sigma=(c,s)$的验证：</p>
