@@ -61,6 +61,11 @@ var _hmt = _hmt || [];
 <span id="more"></span>
 今年及历年题目：<a target="_blank" rel="noopener" href="http://cmsecc.com">竞赛官网地址</a></p>
 <p>由于LaTeX数学公式较多，有时可能出现无法加载的情况，可以多刷新几次。</p>
+<blockquote>
+<p>（2022.10注）</p>
+<p>这篇文章是我2019年刚上大三时所写。当时学校的密码学课还没开，只打过一点CTF，偶然看到有这个比赛，和几个同学也就报了。19年CTF题目的难度也只是RSA的一些变体，几乎没有涉及ECC和Lattice的题目，而且这比赛知名度不像现在这么高，大家也不卷，答辩的时候评委们都很照顾我们，那时也没有疫情，免费的烟台之旅特别轻松快乐。</p>
+<p>所以直到现在，那都是对我来说很意义的一段时光，尽管这篇文章在我现在看来有很多理解不到位、甚至是错误的地方，但这很大程度上是我之后选择密码学研究的一个契机。</p>
+</blockquote>
 <h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>&emsp;&emsp;题目文档里的描述很清晰，要我们解决的就是椭圆曲线上的离散对数问题(ECDLP)。ECDLP问题是椭圆曲线密码的核心技术问题，到目前为止，基于椭圆曲线有限域上的离散对数问题还没有真正有效的算法，是现代密码学中最具挑战性的问题之一。</p>
 <h3 id="ECC基本原理"><a href="#ECC基本原理" class="headerlink" title="ECC基本原理"></a>ECC基本原理</h3><p>设$\small  \operatorname{F_{p}}$表示具有$\small  p$个元素的有限域，其中$\small  p&gt;3$是一个素数。$\small  {F_{p}}$上的椭圆曲线$\small  {E}$是一个点集合$\small E/F_{p}=  \{ ( x,y )\mid y^{2}= x^{2}+ax+b, a, b, x, y\in  F_{p} \} \bigcup \{ \infty \}$，其中$\small  {\infty}$表示无穷远点，$\small  {4a^{2}+27b^{2}\neq 0(mod p)}$</p>
 <p>设$\small  {P= \small  \left ( x_{1}, y_{1} \right )}$,$\small  {Q=\small  \left ( x_{2}, y_{2} \right )\in \small  E/F_{p}}$,在$\small  {E}$上定义$\small  {“+”}$运算$\small  {P+Q=R}$，$\small  {R=\small  \left ( x_{3}, y_{3} \right )\in \small  E/F_{p}}$是过$\small  {P, Q}$的直线与曲线另一交点关于x轴的对称点(当$\small  {P=Q}$时，$\small  {R}$是$\small  {P}$点的切线与曲线的另一交点关于x的对称点).
