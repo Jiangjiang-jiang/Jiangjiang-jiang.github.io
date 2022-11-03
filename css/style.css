@@ -351,6 +351,7 @@ a
     border-left: 3px solid #B0C4DE;
     background-color: #F9F9F9;
     list-style: none;
+	overflow-x: auto;
 }
 
 .post-copyright li {
@@ -361,6 +362,7 @@ a
 	overflow-x: auto;
     overflow-y: hidden;
 }
+
 @media (max-width: 880px) {
     .paper-main {
 		width: 100%;
