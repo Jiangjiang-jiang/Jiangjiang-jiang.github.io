@@ -356,3 +356,9 @@ a
 .post-copyright li {
     line-height: 30px;
 }
+
+mobile() {
+  @media (max-width: 880px) {
+    {block}
+  }
+}
