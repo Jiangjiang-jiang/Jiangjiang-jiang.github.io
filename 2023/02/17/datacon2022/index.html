@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+	
+<!-- baidu_tongji -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?0a3d5f5625415746246872fefe2c1f97";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- End baidu_tongji -->
+
+
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <link rel="alternate icon" type="image/png" href="/img/favicon.png">
+    <title>姜姜酱 | </title>
+    
+<link rel="stylesheet" href="/css/reset.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/css/markdown.css">
+
+    
+<link rel="stylesheet" href="/css/fonts.css">
+
+<meta name="generator" content="Hexo 6.1.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
+    <body>
+        <div class="paper">
+            <div class="paper-main">
+                
+                    <div class="post-header">
+    <a class="logo" href="/">姜姜酱</a>
+    <a class="go-home" href="/">
+        <svg width="8" height="14" viewBox="0 0 8 14">
+            <path d="M7 1L1 7l6 6" stroke="#000" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+</div>
+                
+                <div class="post-main">
+
+    
+        <div class="post-main-title">
+            Datacon2022大数据安全分析竞赛软件安全赛道 Writeup
+        </div>
+        <div class="post-meta">
+            2023-02-17
+        </div>
+    
+
+    <div class="post-md">
+        <blockquote>
+<p>Datacon2022大数据安全分析竞赛软件安全赛道初赛第四名，复赛第四名</p>
+</blockquote>
+<h3 id="赛题一：Android成分分析"><a href="#赛题一：Android成分分析" class="headerlink" title="赛题一：Android成分分析"></a>赛题一：Android成分分析</h3><h4 id="比赛要求"><a href="#比赛要求" class="headerlink" title="比赛要求"></a>比赛要求</h4><p>Android成分分析题要求通过分析主办方所提供的App文件，提取出App中的安卓第三方库信息，包括库名称、库版本、库识别依据等信息。具体字段如下：</p>
+<ul>
+<li><p>sdk_name：第三方库名称；</p>
+</li>
+<li><p>sdk_path：第三方库包名路径，基于代码识别；</p>
+</li>
+<li><p>sdk_key：第三方库识别依据，基于配置文件识别；</p>
+</li>
+<li><p>sdk_verion：第三方库版本；</p>
+</li>
+<li><p>sdk_type：第三方库识别类型，code（代码）或者config（配置文件）；</p>
+</li>
+<li><p>sdk_id：第三方库用户标识。</p>
+</li>
+</ul>
+<p>第三方库用户标识一般需要开发者通过实名注册账户向服务提供商申请id和key来获取，这一类的id和key作为开发者的标识符id硬编码在App文件中。</p>
+<h4 id="主要思路"><a href="#主要思路" class="headerlink" title="主要思路"></a>主要思路</h4><p>我们的思路是首先收集现有的主流国内外SDK，提取出它们的特征，并将这些特征作为SDK的识别依据。这样，我们就可以自动生成SDK分析报告，帮助用户更好地理解它们的性质和功能。</p>
+<p><img src="https://cdn.staticaly.com/gh/Jiangjiang-jiang/picture@master/blog/datacon7.png" alt=""></p>
+<h4 id="SDK识别"><a href="#SDK识别" class="headerlink" title="SDK识别"></a>SDK识别</h4><p>整体思路是通过分析SDK的特征，对App文件中的SDK进行识别。在这个过程中，我们考虑了两种可行的识别方法，根据SDK特征可能存在的位置进行分类，这两种方法可以互相补充，从而提高识别的准确性。</p>
+<p><strong>基于代码特征的SDK识别</strong></p>
+<p>第一种方法是在App文件的代码部分进行识别，通过对代码中出现的SDK特征进行匹配来确定SDK的使用情况。</p>
+<ul>
+<li>字段：指定静态字符串存在的位置，记录该路径；</li>
+<li>函数：使用到指定静态字符串的所有方法并记录；</li>
+<li>包名：列举所有包名，记录其树形结构中存在的包含关系。</li>
+</ul>
+<p><strong>基于文本特征的SDK识别</strong></p>
+<p>第二种方法是在App文件的资源文件部分进行识别，通过扫描资源文件中的SDK特征来确定SDK的使用情况。</p>
+<ul>
+<li>AndroidManifest文件<ul>
+<li><meta-data>信息：<meta-data>节点是manifest中用来指定key-value关系的节点，通常被SDK用来记录API_KEY；</li>
+<li>4大组件的名称：Android应用程序由四大组件组成，在AndroidManifest文件中，需要公开声明这四大组件，以便于其他组件或系统能够访问它们。对于要公开的组件，需要在AndroidManifest文件中提供其名称，该名称无法被打包过程混淆。即使对应的类被优化器删除了，这些名称也会保留下来，并可以作为判断SDK是否存在的依据。</li>
+</ul>
+</li>
+<li>properties文件<ul>
+<li>这类文件由.aar包形式的SDK引入，包含了开发者在SDK中留存的版本号信息。在APK构建的过程中，这些文件会被包含在APK中。它们的字符串包含版本号信息，可以用来检测SDK的版本号。</li>
+</ul>
+</li>
+</ul>
+<h3 id="SDK特征收集"><a href="#SDK特征收集" class="headerlink" title="SDK特征收集"></a>SDK特征收集</h3><p>SDK具体收集过程：</p>
+<ul>
+<li>字段：在特定的SDK代码文件中查找包含该SDK版本字符串的字段，并把该字段路径作为识别的规则。如果出现类似于版本号的字符串，则记录所有这样可能的字段路径，以便后续定位查找。</li>
+<li><p>函数：和字段收集类似，在特定的SDK代码文件中查找包含SDK版本字符串的字段，并把该字段所属方法的路径作为识别的规则。</p>
+</li>
+<li><p>包名：通过收集SDK涉及到的所有.jar和.aar这类文件，区分出其中属于该SDK的部分。读取其中所有的类并且提取出其中的包名。</p>
+</li>
+<li><p><meta-data>:<meta-data>一般从属于<application>，有时候从属于<activity>等节点。其中名称部分如果包含了SDK的名称并且只被对应SDK使用，则可以用来作为SDK的判断依据。name部分往往是和厂商相关联的字符串（APP_ID, APP_KEY, APP_SECRET），其对应的value部分可以用来标识开发者。如：</p>
+</li>
+</ul>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta-data</span> <span class="token attr-name"><span class="token namespace">android:</span>name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>JPUSH_APPKEY<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">android:</span>value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>9f6627a3f8efaa87b929071c<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>JPUSH_APPKEY表明是极光推送SDK服务，开发者标识为<code>9f6627a3f8efaa87b929071c</code>。</p>
+<ul>
+<li>4大组件的名称：通过遍历manifest中<activity>,<service>,<receiver><provider>获取到所有APP中四大组件的名称并计入报名进行匹配处理。可以作为抗混淆情况下的可靠判断依据。如：</li>
+</ul>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>receiver</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>com.xiaomi.push.service.receivers.PingReceiver<span class="token punctuation">"</span></span> <span class="token attr-name">exported</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>false<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>intent-filter</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>action</span> <span class="token attr-name"><span class="token namespace">android:</span>name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>com.xiaomi.push.PING_TIMER<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>intent-filter</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>receiver</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>提取出包名com.xiaomi.push.service.receivers.PingReceiver与小米推送SDK服务匹配。</p>
+<ul>
+<li>properties：Google系SDK独有，其中包含组件名和版本号。Google GMS, Google Firebase均有使用，通过读取对应文件即可获得版本号。</li>
+</ul>
+<h3 id="特征数据收集"><a href="#特征数据收集" class="headerlink" title="特征数据收集"></a>特征数据收集</h3><p>特征数据收集过程：</p>
+<p><img src="https://cdn.staticaly.com/gh/Jiangjiang-jiang/picture@master/blog/datacon6.png" alt=""></p>
+<p>我们将.aar包或.jar文件输入到解析器中，并通过AndroidManifest解析模块和JVM字节码解析模块进行处理。处理后，我们会得到两个特征配置文件：Manifest.json和Identifier.json。这两个文件包含了SDK的基本信息，可以用来识别SDK的使用情况。在生成这两个文件之前，我们可以对输出的数据进行手动或自动清理，以提高数据的准确性。</p>
+<h4 id="爬取Maven-Central"><a href="#爬取Maven-Central" class="headerlink" title="爬取Maven Central"></a>爬取Maven Central</h4><p>首先编写爬虫爬取到Maven Central上的所有拓展名为.aar的安卓SDK，然后通过MvnRepository来获取这些SDK的描述信息，对英文的描述信息进行翻译，生成它们的名称。生成的名称中可能存在一些对数据进行清洗，以便更好地分析。例如，清洗前的数据：</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json">&#123;
+     &quot;sdk_pkg&quot;: &quot;net.appkraft.parallax&quot;,
+     &quot;sdk_desc&quot;: &quot;AKParallax-Android是一个图书馆项目，为ScrollView或ListView中的imageView提供视差效果&quot;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>清洗后的数据：</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json">&#123;
+     &quot;sdk_pkg&quot;: &quot;net.appkraft.parallax&quot;,
+     &quot;sdk_desc&quot;: &quot;AKParallax-Android SDK&quot;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="分析数据集中AndroidManifest"><a href="#分析数据集中AndroidManifest" class="headerlink" title="分析数据集中AndroidManifest"></a>分析数据集中AndroidManifest</h4><p>首先编写AndroidManifest解析器脚本，解析给定APK并明文输出其中的AndroidManifest内容。编写AndroidManifest解析模块，解析出AndroidManifest中的内容在服务器上解析2000个APK之后，统计出能够解析的AndroidManifest中<meta-data>和四大组件的名称：  </p>
+<p>  <img src="https://cdn.staticaly.com/gh/Jiangjiang-jiang/picture@master/blog/datacon5.png" style="zoom:50%;" /></p>
+<p>所有ID，KEY, SECRECT字段，都可能对应提取出开发者标识。我们将它们提取出来保存在一个json文件中。例如，原<meta-data>部分的形式为：</p>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta-data</span> <span class="token attr-name"><span class="token namespace">android:</span>name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>JPUSH_APPKEY<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">android:</span>value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>9f6627a3f8efaa87b929071c<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>提取后的json文件：</p>
+<p><img src="https://cdn.staticaly.com/gh/Jiangjiang-jiang/picture@master/blog/datacon4.png" alt=""></p>
+<p>此外，带VERSION的部分可以提取明显的版本信息。例如，华为扫描的SDK，其版本号为<code>1.1.3.301</code>，使用它的apk中AndroidManifest为：</p>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta-data</span>
+      <span class="token attr-name"><span class="token namespace">tools:</span>replace</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>android:value<span class="token punctuation">"</span></span>
+      <span class="token attr-name"><span class="token namespace">android:</span>name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>huawei_module_scankit_sdk_version<span class="token punctuation">"</span></span>
+      <span class="token attr-name"><span class="token namespace">android:</span>value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>scan:1.1.3.301<span class="token punctuation">"</span></span>
+<span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>同时，分析整理出频率出现最高TOP100的SDK：  </p>
+<p><img src="https://cdn.staticaly.com/gh/Jiangjiang-jiang/picture@master/blog/datacon3.png" alt=""></p>
+<p>在各大厂商开发平台官网下载对应的SDK，下载的SDK文件名中大部分带有版本号，没有版本号的jadx打开查找静态字符串。编写代码提取模块，找到版本号字符串所在位置，同时提取SDK中所有包名。如下所示，<code>fields</code>表示版本号所在路径，<code>mehthods</code>表示存在版本号的方法，<code>packages</code>表示该SDK下所有的包名路径，<code>regex</code>表示匹配版本的正则表达式形式。</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json">&#123;
+  &quot;sdk_name&quot;: &quot;\u817e\u8bafQQ\u4e92\u8054&quot;,
+  &quot;fields&quot;: [
+    &quot;com&#x2F;tencent&#x2F;connect&#x2F;common&#x2F;Constants:SDK_VERSION_REPORT&quot;,
+    &quot;com&#x2F;tencent&#x2F;connect&#x2F;common&#x2F;Constants:SDK_QUA&quot;,
+    &quot;com&#x2F;tencent&#x2F;connect&#x2F;common&#x2F;Constants:SDK_VERSION&quot;
+  ],
+  &quot;methods&quot;: [
+    &quot;com&#x2F;tencent&#x2F;open&#x2F;b&#x2F;h$2:run&quot;,
+    &quot;com&#x2F;tencent&#x2F;open&#x2F;utils&#x2F;i:b&quot;,
+    &quot;com&#x2F;tencent&#x2F;connect&#x2F;avatar&#x2F;QQAvatar:a&quot;,
+    &quot;com&#x2F;tencent&#x2F;open&#x2F;b&#x2F;b:b&quot;,
+    &quot;com&#x2F;tencent&#x2F;connect&#x2F;common&#x2F;BaseApi:b&quot;,
+    &quot;com&#x2F;tencent&#x2F;connect&#x2F;common&#x2F;BaseApi:a&quot;,
+    &quot;com&#x2F;tencent&#x2F;open&#x2F;SocialOperation:joinGroup&quot;,
+    &quot;com&#x2F;tencent&#x2F;connect&#x2F;auth&#x2F;c:&lt;init&gt;&quot;,
+    &quot;com&#x2F;tencent&#x2F;connect&#x2F;avatar&#x2F;ImageActivity:a&quot;,
+    &quot;com&#x2F;tencent&#x2F;open&#x2F;log&#x2F;SLog:a&quot;,
+    &quot;com&#x2F;tencent&#x2F;open&#x2F;SocialOperation:bindQQGroup&quot;
+  ],
+  &quot;packages&quot;: [
+    &quot;com&#x2F;tencent&#x2F;open&#x2F;web&#x2F;security&quot;,
+    &quot;com&#x2F;tencent&#x2F;open&#x2F;log&quot;,
+    &quot;com&#x2F;tencent&#x2F;open&#x2F;apireq&quot;,
+    &quot;com&#x2F;tencent&#x2F;connect&#x2F;share&quot;,
+    &quot;com&#x2F;tencent&#x2F;tauth&quot;,
+    &quot;com&#x2F;tencent&#x2F;connect&#x2F;api&quot;,
+    &quot;com&#x2F;tencent&#x2F;open&#x2F;c&quot;,
+    &quot;com&#x2F;tencent&#x2F;open&quot;,
+    &quot;com&#x2F;tencent&#x2F;open&#x2F;b&quot;,
+    &quot;com&#x2F;tencent&#x2F;open&#x2F;a&quot;,
+    &quot;com&#x2F;tencent&#x2F;connect&#x2F;commonchannel&quot;,
+    &quot;com&#x2F;tencent&#x2F;open&#x2F;miniapp&quot;,
+    &quot;com&#x2F;tencent&#x2F;connect&quot;,
+    &quot;com&#x2F;tencent&#x2F;connect&#x2F;common&quot;,
+    &quot;com&#x2F;tencent&#x2F;connect&#x2F;a&quot;,
+    &quot;com&#x2F;tencent&#x2F;open&#x2F;im&quot;,
+    &quot;com&#x2F;tencent&#x2F;open&#x2F;web&quot;,
+    &quot;com&#x2F;tencent&#x2F;open&#x2F;utils&quot;,
+    &quot;com&#x2F;tencent&#x2F;connect&#x2F;emotion&quot;,
+    &quot;com&#x2F;tencent&#x2F;connect&#x2F;avatar&quot;,
+    &quot;com&#x2F;tencent&#x2F;connect&#x2F;auth&quot;,
+    &quot;com&#x2F;tencent&#x2F;a&#x2F;a&quot;
+  ],
+  &quot;regex&quot;: &quot;(\\d+[\\._]\\d+[\\._]\\d+)&quot;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>一些SDK中包名经过了混淆，出现<code>/a /b</code>一类的路径，可能会造成后续匹配失败。我们对其进行清洗，去掉混淆部分并提出前缀，清洗后的结果：</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json">&#123;
+        &quot;sdk_name&quot;: &quot;\u817e\u8bafQQ\u4e92\u8054&quot;,
+        &quot;regex&quot;: &quot;(\\d+[\\._]\\d+[\\._]\\d+)&quot;,
+        &quot;fields&quot;: [
+            &quot;com&#x2F;tencent&#x2F;connect&#x2F;common&#x2F;Constants:SDK_VERSION&quot;,
+            &quot;com&#x2F;tencent&#x2F;connect&#x2F;common&#x2F;Constants:SDK_VERSION_REPORT&quot;,
+            &quot;com&#x2F;tencent&#x2F;connect&#x2F;common&#x2F;Constants:SDK_QUA&quot;
+        ],
+        &quot;methods&quot;: [
+            &quot;com&#x2F;tencent&#x2F;connect&#x2F;common&#x2F;BaseApi:b&quot;,
+            &quot;com&#x2F;tencent&#x2F;open&#x2F;SocialOperation:bindQQGroup&quot;,
+            &quot;com&#x2F;tencent&#x2F;open&#x2F;b&#x2F;h$2:run&quot;,
+            &quot;com&#x2F;tencent&#x2F;open&#x2F;log&#x2F;SLog:a&quot;,
+            &quot;com&#x2F;tencent&#x2F;connect&#x2F;avatar&#x2F;QQAvatar:a&quot;,
+            &quot;com&#x2F;tencent&#x2F;connect&#x2F;avatar&#x2F;ImageActivity:a&quot;,
+            &quot;com&#x2F;tencent&#x2F;open&#x2F;b&#x2F;b:b&quot;,
+            &quot;com&#x2F;tencent&#x2F;open&#x2F;utils&#x2F;i:b&quot;,
+            &quot;com&#x2F;tencent&#x2F;open&#x2F;SocialOperation:joinGroup&quot;,
+            &quot;com&#x2F;tencent&#x2F;connect&#x2F;auth&#x2F;c:&lt;init&gt;&quot;,
+            &quot;com&#x2F;tencent&#x2F;connect&#x2F;common&#x2F;BaseApi:a&quot;
+        ],
+        &quot;packages&quot;: [
+            &quot;com&#x2F;tencent&#x2F;open&#x2F;miniapp&quot;,
+            &quot;com&#x2F;tencent&#x2F;open&#x2F;utils&quot;,
+            &quot;com&#x2F;tencent&#x2F;connect&#x2F;commonchannel&quot;,
+            &quot;com&#x2F;tencent&#x2F;open&#x2F;web&#x2F;security&quot;,
+            &quot;com&#x2F;tencent&#x2F;open&#x2F;apireq&quot;,
+            &quot;com&#x2F;tencent&#x2F;connect&#x2F;api&quot;,
+            &quot;com&#x2F;tencent&#x2F;open&#x2F;web&quot;,
+            &quot;com&#x2F;tencent&#x2F;connect&#x2F;avatar&quot;,
+            &quot;com&#x2F;tencent&#x2F;connect&#x2F;auth&quot;,
+            &quot;com&#x2F;tencent&#x2F;open&#x2F;im&quot;,
+            &quot;com&#x2F;tencent&#x2F;tauth&quot;,
+            &quot;com&#x2F;tencent&#x2F;connect&quot;,
+            &quot;com&#x2F;tencent&#x2F;connect&#x2F;emotion&quot;,
+            &quot;com&#x2F;tencent&#x2F;connect&#x2F;share&quot;,
+            &quot;com&#x2F;tencent&#x2F;open&#x2F;log&quot;,
+            &quot;com&#x2F;tencent&#x2F;open&quot;,
+            &quot;com&#x2F;tencent&#x2F;connect&#x2F;common&quot;
+        ]
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>所有规则都保存在Manifest.json和Identifier.json两个配置文件中，在数据匹配阶段时读取。</p>
+<h4 id="数据匹配"><a href="#数据匹配" class="headerlink" title="数据匹配"></a>数据匹配</h4><p>特征数据匹配过程：  </p>
+<p><img src="https://cdn.staticaly.com/gh/Jiangjiang-jiang/picture@master/blog/2.png" alt=""></p>
+<p>首先通过解析APK文件，读取AndroidManifest和Dalvik字节码得到APK中所有的manifest信息和类信息。接下来读取json中预处理好的规则，对manifest和代码分别进行匹配。对于manifest，匹配其中meta-data属性的元素名；匹配得到之后可以得到版本号和SDK的相关信息，从而生成Config类型的报告<code>Report&lt;Config&gt;</code>。例如，匹配到了com.baidu.lbsapi.API_KEY，那么可以得知存在百度地图SDK，并且该meta-data的值是开发者的KEY标识，也添加进入报告。对于代码，匹配其中的字段内容，方法内容和包名。对于包名，如果规则中存在的某条特征包名能够匹配到APK中的一个类，也就是说APK中存在类在SDK的特征命名空间下，那么可以给出报告<code>Report&lt;Code&gt;</code>，扫描到类以com.sina.weibo开头，则存在微博SDK。而对于字段内容和方法内容，提取到所有APK中的类之后，根据规则到对应名字的位置使用正则表达式匹配疑似版本号字符串。如果能匹配上则可知存在该SDK的对应版本，并保存其版本号。</p>
+<p>两方面全部扫描结束以后汇总所有的报告并对于同一个SDK的代码和配置报告整合信息。代码部分得到的版本号会同步到配置报告，配置报告的开发者标识会同步到代码报告，整合去重完成后生成最终报告Results.json。</p>
+<h3 id="赛题二：PowerShell样本反混淆挑战"><a href="#赛题二：PowerShell样本反混淆挑战" class="headerlink" title="赛题二：PowerShell样本反混淆挑战"></a>赛题二：PowerShell样本反混淆挑战</h3><h4 id="比赛要求-1"><a href="#比赛要求-1" class="headerlink" title="比赛要求"></a>比赛要求</h4><p>该挑战要求设计并实现一个反混淆脚本，能够自动处理混淆的PowerShell样本。最终，选手需要在反混淆后的结果中提取出预先插入的IP字段。</p>
+<p>要求反混淆结果必须由自动化脚本生成，并且必须具有可复现性。</p>
+<ol>
+<li>识别出样例中常见的混淆方法</li>
+<li>针对混淆方法设计对应的解混淆方案</li>
+</ol>
+<h4 id="整体思路"><a href="#整体思路" class="headerlink" title="整体思路"></a>整体思路</h4><ol>
+<li><p>对于PowerShell样本，首先需要对其进行反混淆，去除混淆措施。</p>
+</li>
+<li><p>在反混淆后的样本中，搜索包含预先插入的IP字段的代码段，并提取汇总</p>
+</li>
+</ol>
+<p>PowerShell是高度动态的脚本语言，提供了诸如Invoke-Expression，iex等方式执行一段指定的字符串。所以想要像常见的解混淆问题中那样在中端做优化进行解混淆是不现实的。事实上PowerShell内部实际执行也是在提升到Ast之后构造好若干的Pipeline之后以Pipeline单位对文本指令进行解析并执行。正因如此导致了PowerShell中端与后端基础设施的缺失，想要进行表达式化简最好的选择就是PoweShell本身。于是选择AST这样一个前端表示形式。</p>
+<p><img src="https://cdn.staticaly.com/gh/Jiangjiang-jiang/picture@master/blog/dataconexample-ast.png" style="zoom:50%;" /></p>
+<p>通过在AST树上进行后序遍历，从叶子节点开始从下往上进行尝试进行化简。常见的PipelineAst之类的节点是重点关注的求解对象。整体思路沿用Invoke-Deobfuscation方案。在化简的过程中变量的跟踪也很还重要，当构造出来的表达式中存在变量的时候要保证所有变量可用。同时因为Ast的控制流表达能力弱，所以对于循环和分支的处理会比较受限。默认不对表达式中存在变量位于循环中的情况进行求解。</p>
+<h4 id="系统设计"><a href="#系统设计" class="headerlink" title="系统设计"></a>系统设计</h4><p>我们使用Python的pythonnet库与.Net框架进行互操作，从而把构造好的表达式传递给PowerShell进行化简。</p>
+<p>在系统架构上比较特殊，如下：</p>
+<p><img src="https://cdn.staticaly.com/gh/Jiangjiang-jiang/picture@master/blog/datacon2022-12-11_16-52.png" style="zoom:40%;" /></p>
+<p>在Python中编写求解器，负责节点的遍历与处理。当需要进行脚本转AST，Tokenize处理还有表达式求值时把命令传递给PowerShell实例计算。计算后通过Pythonnet把结果转化到Python对象返回。好处在于求解器代码不在PowerShell实例中，不会存在变量或者cmdlet名称污染PowerShell的命名空间。坏处在与PowerShell通过.Net框架返回的对象如果不是整数或者字符串这种常见的类型，Python端操作这些对象会比较困难。</p>
+<p>在系统设计上与Invoke-Deobfuscation并无明显区别，如下:  </p>
+<p><img src="https://cdn.staticaly.com/gh/Jiangjiang-jiang/picture@master/blog/datacon2022-12-11_16-12.png" alt=""></p>
+<p>我们为了运行速度舍弃了重命名和格式化过程，对于解混淆后的输出直接用正则表达式匹配IP地址。对于变量追踪部分，因为原版方案使用PowerShell实现，所以变量的值（PowerShell对象）可以直接存储在求解脚本内存中。我们的求解脚本使用Python，所以额外维护变量名到PowerShell示例中临时变量的对应关系。</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">$var1 -&gt; Value # Invoke-Deobfuscation
+$var1 -&gt; $middle_var -&gt; Value # Ours<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>其中var_1到middle_var名称的匹配关系维护在Python写的求解中，middle_var的变量名可以看作值的别名使用。</p>
+<p>我们的方案基于Invoke-DeObfuscation开源版本完全重写并改进，运行平台在Linux。可以通过Docker容器实现低开销环境隔离与平行运行。因为环境和Windows版存在差异，解决了如下问题：</p>
+<ol>
+<li><p>.Net框架string.split()实现bug</p>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://github.com/PowerShell/PowerShell/issues/11720">https://github.com/PowerShell/PowerShell/issues/11720</a></p>
+<p>5.1版本之后.Net中String的Split方法添加了新的重载函数，具体是这两个</p>
+<ul>
+<li><code>Split(Char[], StringSplitOptions)</code></li>
+<li><code>Split(String, StringSplitOptions)</code></li>
+</ul>
+<p>对于输入像<code>[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]</code>，高版本PowerShell会选取第二个重载方法使得表达式求解失败。于是需要在AST树上这样的表达式进行修改强制指定类型<code>[char[]]</code>来绕过这个bug。</p>
+</li>
+<li><p>SecureString在Windows实现bug</p>
+<p>Windows平台上Securetring API中因为实现问题<code>PtrToStringAuto</code>可以和<code>SecureStringToBSTR</code>配合使用，但是在实现正确的Linux上会报错。为了修复这个问题需要在表达式求解的时候找到该误用并修复。</p>
+</li>
+<li><p>补齐Windows平台变量和环境变量</p>
+<p>Linux上PowerShell缺少一部分全局变量，这些变量会被用来凑’iex’这个字符串来实现命令执行，于是需要在创建PowerShell示例的时候进行补充设置。</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">Get_Variables &#x3D; &#123;
+    &quot;ConsoleFileName&quot;: None,
+    &quot;MaximumAliasCount&quot;: 4096,
+    &quot;MaximumDriveCount&quot;: 4096,
+    &quot;MaximumErrorCount&quot;: 256,
+    &quot;MaximumFunctionCount&quot;: 4096,
+    &quot;MaximumVariableCount&quot;: 4096,
+    &quot;PROFILE&quot;: &quot;C:\\Users\\Administrator\\Documents\\WindowsPowerShell\\Microsoft.PowerShell_profile.ps1&quot;,
+&#125;
+
+ENV_VARIABLES &#x3D; &#123;
+    &quot;ALLUSERSPROFILE&quot;: r&quot;C:\ProgramData&quot;,
+    &quot;APPDATA&quot;: r&quot;C:\Users\Administrator\AppData\Roaming&quot;,
+    &quot;CommonProgramFiles&quot;: r&quot;C:\Program Files\Common Files&quot;,
+    &quot;CommonProgramW6432&quot;: r&quot;C:\Program Files\Common Files&quot;,
+    &quot;ComSpec&quot;: r&quot;C:\Windows\system32\cmd.exe&quot;,
+    &quot;FPS_BROWSER_APP_PROFILE_STRING&quot;: r&quot;Internet Explorer&quot;,
+    &quot;FPS_BROWSER_USER_PROFILE_STRING&quot;: r&quot;Default&quot;,
+    &quot;HOMEDRIVE&quot;: r&quot;C:&quot;,
+    &quot;HOMEPATH&quot;: r&quot;\Users\Administrator&quot;,
+    &quot;LOCALAPPDATA&quot;: r&quot;C:\Users\Administrator\AppData\Local&quot;,
+    &quot;OS&quot;: r&quot;Windows_NT&quot;,
+    &quot;Path&quot;: r&quot;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd;C:\Users\Administrator\AppData\Local\Microsoft\WindowsApps;;C:\Users\Administrator\AppData\Local\Programs\Microsoft VS Code\bin&quot;,
+    &quot;PATHEXT&quot;: r&quot;.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL&quot;,
+    &quot;PROCESSOR_ARCHITECTURE&quot;: r&quot;AMD64&quot;,
+    &quot;ProgramData&quot;: r&quot;C:\ProgramData&quot;,
+    &quot;ProgramFiles&quot;: r&quot;C:\Program Files&quot;,
+    &quot;ProgramW6432&quot;: r&quot;C:\Program Files&quot;,
+    &quot;PUBLIC&quot;: r&quot;C:\Users\Public&quot;,
+    &quot;SESSIONNAME&quot;: r&quot;Console&quot;,
+    &quot;SystemDrive&quot;: r&quot;C:&quot;,
+    &quot;SystemRoot&quot;: r&quot;C:\Windows&quot;,
+    &quot;TEMP&quot;: r&quot;C:\Users\ADMINI~1\AppData\Local\Temp&quot;,
+    &quot;TMP&quot;: r&quot;C:\Users\ADMINI~1\AppData\Local\Temp&quot;,
+    &quot;USERNAME&quot;: r&quot;Administrator&quot;,
+    &quot;USERPROFILE&quot;: r&quot;C:\Users\Administrator&quot;,
+    &quot;windir&quot;: r&quot;C:\Windows&quot;,
+    &quot;WXDRIVE_START_ARGS&quot;: r&quot;--wxdrive-setting&#x3D;0 --disable-gpu --disable-software-rasterizer --enable-features&#x3D;NetworkServiceInProcess&quot;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>替换Linux上PSHOME与marshal类上方法</p>
+<p>因为PSHome变量和PowerShell有关，不能直接替换，所以需要在表达式求解之前动态实现替换，替换成<code>C:\Windows\System32\WindowsPowerShell\v1.0</code>。</p>
+<p>对于类似于<code>[runtime.interopservices.marshal].getmembers()[3].name</code>这种强实现相关的混淆名也需要替换，映射关系如下：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">GetMember_Alternate &#x3D; &#123;
+    &#39;[runtime.interopservices.marshal].getmembers()[3].name&#39;: &#39;&quot;PtrToStringAuto&quot;&#39;,
+    &#39;[runtime.interopservices.marshal].getmembers()[5].name&#39;: &#39;&quot;PtrToStringAuto&quot;&#39;,
+    &#39;[runtime.interopservices.marshal].getmembers()[2].name&#39;: &#39;&quot;PtrToStringUni&quot;&#39;,
+    &#39;[runtime.interopservices.marshal].getmembers()[4].name&#39;: &#39;&quot;PtrToStringUni&quot;&#39;,
+    &#39;[runtime.interopservices.marshal].getmembers()[0].name&#39;: &#39;&quot;PtrToStringAnsi&quot;&#39;,
+    &#39;[runtime.interopservices.marshal].getmembers()[1].name&#39;: &#39;&quot;PtrToStringAnsi&quot;&#39;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ol>
+<h4 id="针对赛题优化"><a href="#针对赛题优化" class="headerlink" title="针对赛题优化"></a>针对赛题优化</h4><p>主要是针对Stage 2的赛题进行优化，因为Stage 2的赛题存在以下特征：</p>
+<ol>
+<li><p>出现了必须简化的函数调用过程</p>
+<p>需要把实际参数传入函数才能进行化简，举例：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">Function _&#x3D;_\&#x3D;_\&#123;
+    [CmdletBinding()] Param(
+        [Parameter(position &#x3D; 0)]
+        [String]
+        $param1
+    )
+    
+    $param1 &#x3D; _&#x3D;____&#x2F;\ -param1 $param1 
+    $result &#x3D; [text.encoding]::unicode.getstring([convert]::frombase64string($param1))
+    $result | Out-Null
+&#125;
+
+_&#x3D;_\&#x3D;_\(&#39;YQBRAEIAdwBBAEQAbwBBAE8AQQBBADQAQQBDADQAQQBNAGcAQQB4AEEARABZAEEATABnAEEAeQBB
+AEQAQQBBAE0AZwBBAHUAQQBEAEUAQQBOAHcAQQB5AEEAQQA9AD0A&#39;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看到必须把base64字符串给进函数才能进行求解。</p>
+<p>解决方法是进行类似于函数内连的展开，把被调用的函数内容展开在调用位置，并把参数替换成实参。然后进行化简。化简后举例：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">&#123;
+    $result &#x3D; [text.encoding]::unicode.getstring([convert]::frombase64string($param1&#39;YQBRAEIAdwBBAEQAbwBBAE8AQQBBADQAQQBDADQAQQBNAGcAQQB4AEEARABZAEEATABnAEEAeQBB
+AEQAQQBBAE0AZwBBAHUAQQBEAEUAQQBOAHcAQQB5AEEAQQA9AD0A&#39;))
+    $result | Out-Null&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这样等到表达式带入PowerShell执行了就可以得到明文并替换对应的表达式。</p>
+</li>
+<li><p>所有的分支可以移除</p>
+<p>通过分析Stage 2的赛题可以发现大部分判断逻辑类似于</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">FuNCtion GHtS &#123; 
+    [ CmdLEtbinDIng() ]PaRAm( 
+        [parAmEteR (vAluEfrOMpIPeLine)]
+        $PUcJq,
+        [parAmEteR(vAluEfrOMpIPeLine)]
+        $lkrjoD,
+        [parAmEteR (vAluEfrOMpIPeLine)]
+        $BVLpZM
+    )
+    IF(( gET-RAnDOM @(0..20)) -eq 10)&#123;
+        $Jqmbi &#x3D; [SyStEM.io.MEmorySTrEam][sysTem.cOnveRT]::froMBAse64STRING( $PUcJq) 
+        $Jqmbi|mIxpi    
+    &#125;
+    $eEbw &#x3D;[SyStEM.io.MEmorySTrEam] [sysTem.cOnveRT]::froMBAse64STRING($lkrjoD)
+    $eEbw | HlRq    IF (( GET-DaTe).MoNTH -eq 5)&#123;
+        $YrJNmVb&#x3D;[sysTem.cOnveRT ]::froMBAse64STRING( $BVLpZM)
+        [IO.FiLe ]::WRitealLBytEs( &quot;$pwd&#x2F;isjstlv&quot;,$YrJNmVb)
+    
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这样的if判断<code>Get-Random</code>的结果，没有实际意义只会干扰简化过程。所以直接识别这样的分支代码删除。</p>
+</li>
+<li><p>计算得到变量或表达式求值后不输出</p>
+<p>有的表达式结果计算完毕之后不赋值只是传给<code>Out-Null</code>，因为<code>Out-Null</code>没有返回值所以会导致该结果无法被显示到最终结果里。于是有的flag就会被漏掉，比如</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">Function _&#x3D;_\&#x3D;_\&#123;
+    [CmdletBinding()] Param(
+        [Parameter(position &#x3D; 0)]
+        [String]
+        $param1
+    )
+    
+    $param1 &#x3D; _&#x3D;____&#x2F;\ -param1 $param1 
+    $result &#x3D; [text.encoding]::unicode.getstring([convert]::frombase64string($param1))
+    $result | Out-Null
+&#125;
+
+_&#x3D;_\&#x3D;_\(&#39;YQBRAEIAdwBBAEQAbwBBAE8AQQBBADQAQQBDADQAQQBNAGcAQQB4AEEARABZAEEATABnAEEAeQBB
+AEQAQQBBAE0AZwBBAHUAQQBEAEUAQQBOAHcAQQB5AEEAQQA9AD0A&#39;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这里的结果包含flag却在简化后无法显示。</p>
+<p>结果方法是在表达式求解的位置进行检查，判断是否在中间变量就已经出现了’ip’这种flag特征。如果有的话则输出避免遗漏。</p>
+</li>
+<li><p>计算得到结果加载干扰，需要额外处理</p>
+<p>有的时候本应该得到’ip:xxx.xxx.xxx.xxx’的位置得到的是存在干扰的数组，比如：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">@(105, 0, 112, 0, 58, 0, 49, 0, 50, 0, 51, 0, 46, 0, 49, 0, 50, 0, 51, 0, 46, 0, 49, 0, 50, 0, 51, 0, 46, 0, 49, 0, 50, 0, 51)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>实际上就是把字符串之间加上了<code>\x00</code>，需要在求解完表达式后对该情况进行特殊判断。</p>
+</li>
+</ol>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>H. Chai, L. Ying, H. Duan and D. Zha, “Invoke-Deobfuscation: AST-Based and Semantics-Preserving Deobfuscation for PowerShell Scripts,” 2022 52nd Annual IEEE/IFIP International Conference on Dependable Systems and Networks (DSN), 2022, pp. 295-306, doi: 10.1109/DSN53405.2022.00039.</p>
+
+    </div>
+
+</div>
+				
+					<div>
+    <ul class="post-copyright">
+      <li class="post-copyright-author">
+
+      <strong>本文作者:  </strong><a href="https://qsang.xin">姜姜酱</a>
+      </li>
+      <li class="post-copyright-link">
+      <strong>本文链接:  </strong>
+	  <a href="https://qsang.xin/2023/02/17/datacon2022/" target="_blank" title="aa">https://qsang.xin/2023/02/17/datacon2022/</a>
+      </li>
+      <li class="post-copyright-license">
+        <strong>版权声明:   </strong>
+        本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+        许可协议。转载请注明出处!
+      </li>
+    </ul>
+<div>
+				
+                <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="footer">
+    <span>Copyright © 2022 姜姜酱</span>
+
+	<span id="busuanzi_container_site_pv">
+    本站访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span>@QSANG</a></span>
+</div>
+
+<link rel="stylesheet" href="/css/a11y-dark.min.css">
+
+
+<script src="/js/highlight.min.js"></script>
+
+
+<script src="/js/highlightjs-line-numbers.js"></script>
+
+
+<script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+</script>
+
+            </div>
+        </div>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
