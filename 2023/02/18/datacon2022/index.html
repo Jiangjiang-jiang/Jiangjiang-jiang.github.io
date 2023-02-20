@@ -103,24 +103,26 @@ var _hmt = _hmt || [];
 </ol>
 <h3 id="SDK特征收集"><a href="#SDK特征收集" class="headerlink" title="SDK特征收集"></a>SDK特征收集</h3><p>SDK具体收集过程：</p>
 <ol>
-<li>字段：在特定的SDK代码文件中查找包含该SDK版本字符串的字段，并把该字段路径作为识别的规则。如果出现类似于版本号的字符串，则记录所有这样可能的字段路径，以便后续定位查找。</li>
-<li>函数：和字段收集类似，在特定的SDK代码文件中查找包含SDK版本字符串的字段，并把该字段所属方法的路径作为识别的规则。</li>
-<li>包名：通过收集SDK涉及到的所有.jar和.aar这类文件，区分出其中属于该SDK的部分。读取其中所有的类并且提取出其中的包名。</li>
-<li><code>&lt;meta-data&gt;</code>:<code>&lt;meta-data&gt;</code>一般从属于<code>&lt;application&gt;</code>，有时候从属于<code>&lt;activity&gt;</code>等节点。其中名称部分如果包含了SDK的名称并且只被对应SDK使用，则可以用来作为SDK的判断依据。name部分往往是和厂商相关联的字符串（APP_ID, APP_KEY, APP_SECRET），其对应的value部分可以用来标识开发者。如：</li>
-</ol>
+<li><p>字段：在特定的SDK代码文件中查找包含该SDK版本字符串的字段，并把该字段路径作为识别的规则。如果出现类似于版本号的字符串，则记录所有这样可能的字段路径，以便后续定位查找。</p>
+</li>
+<li><p>函数：和字段收集类似，在特定的SDK代码文件中查找包含SDK版本字符串的字段，并把该字段所属方法的路径作为识别的规则。</p>
+</li>
+<li><p>包名：通过收集SDK涉及到的所有.jar和.aar这类文件，区分出其中属于该SDK的部分。读取其中所有的类并且提取出其中的包名。</p>
+</li>
+<li><p><code>&lt;meta-data&gt;</code>:<code>&lt;meta-data&gt;</code>一般从属于<code>&lt;application&gt;</code>，有时候从属于<code>&lt;activity&gt;</code>等节点。其中名称部分如果包含了SDK的名称并且只被对应SDK使用，则可以用来作为SDK的判断依据。name部分往往是和厂商相关联的字符串（APP_ID, APP_KEY, APP_SECRET），其对应的value部分可以用来标识开发者。如：</p>
 <pre class="line-numbers language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta-data</span> <span class="token attr-name"><span class="token namespace">android:</span>name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>JPUSH_APPKEY<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">android:</span>value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>9f6627a3f8efaa87b929071c<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>JPUSH_APPKEY表明是极光推送SDK服务，开发者标识为<code>9f6627a3f8efaa87b929071c</code>。</p>
-<ol>
-<li>4大组件的名称：通过遍历manifest中<code>&lt;activity&gt;</code>,<code>&lt;service&gt;</code>,<code>&lt;receiver&gt;</code>, <code>&lt;provider&gt;</code>获取到所有APP中四大组件的名称并计入报名进行匹配处理。可以作为抗混淆情况下的可靠判断依据。如：</li>
-</ol>
+</li>
+<li><p>4大组件的名称：通过遍历manifest中<code>&lt;activity&gt;</code>,<code>&lt;service&gt;</code>,<code>&lt;receiver&gt;</code>, <code>&lt;provider&gt;</code>获取到所有APP中四大组件的名称并计入报名进行匹配处理。可以作为抗混淆情况下的可靠判断依据。如：</p>
 <pre class="line-numbers language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>receiver</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>com.xiaomi.push.service.receivers.PingReceiver<span class="token punctuation">"</span></span> <span class="token attr-name">exported</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>false<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>intent-filter</span><span class="token punctuation">></span></span>
                 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>action</span> <span class="token attr-name"><span class="token namespace">android:</span>name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>com.xiaomi.push.PING_TIMER<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>intent-filter</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>receiver</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>提取出包名com.xiaomi.push.service.receivers.PingReceiver与小米推送SDK服务匹配。</p>
-<ol>
-<li>properties：Google系SDK独有，其中包含组件名和版本号。Google GMS, Google Firebase均有使用，通过读取对应文件即可获得版本号。</li>
+</li>
+<li><p>properties：Google系SDK独有，其中包含组件名和版本号。Google GMS, Google Firebase均有使用，通过读取对应文件即可获得版本号。</p>
+</li>
 </ol>
 <h3 id="特征数据收集"><a href="#特征数据收集" class="headerlink" title="特征数据收集"></a>特征数据收集</h3><p>特征数据收集过程：</p>
 <p><img src="https://cdn.staticaly.com/gh/Jiangjiang-jiang/picture@master/blog/datacon6.png" alt=""></p>
@@ -149,7 +151,7 @@ var _hmt = _hmt || [];
 <span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>同时，分析整理出频率出现最高TOP100的SDK：  </p>
 <p><img src="https://cdn.staticaly.com/gh/Jiangjiang-jiang/picture@master/blog/datacon3.png" alt=""></p>
-<p>在各大厂商开发平台官网下载对应的SDK，下载的SDK文件名中大部分带有版本号，没有版本号的jadx打开查找静态字符串。编写代码提取模块，找到版本号字符串所在位置，同时提取SDK中所有包名。如下所示，<code>fields</code>表示版本号所在路径，<code>mehthods</code>表示存在版本号的方法，<code>packages</code>表示该SDK下所有的包名路径，<code>regex</code>表示匹配版本的正则表达式形式。</p>
+<p>在各大厂商开发平台官网下载对应的SDK，下载的SDK文件名中大部分带有版本号，没有版本号的jadx打开查找静态字符串。编写代码提取模块，找到版本号字符串所在位置，同时提取SDK中所有包名。如下所示，<code>fields</code>表示版本号所在路径，<code>methods</code>表示存在版本号的方法，<code>packages</code>表示该SDK下所有的包名路径，<code>regex</code>表示匹配版本的正则表达式形式。</p>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json">&#123;
   &quot;sdk_name&quot;: &quot;\u817e\u8bafQQ\u4e92\u8054&quot;,
   &quot;fields&quot;: [
