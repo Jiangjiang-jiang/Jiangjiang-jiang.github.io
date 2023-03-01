@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+	
+<!-- baidu_tongji -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?0a3d5f5625415746246872fefe2c1f97";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- End baidu_tongji -->
+
+
+	
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YHNVSYV4EM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YHNVSYV4EM');
+</script>
+
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <link rel="alternate icon" type="image/png" href="/img/favicon.png">
+    <title>姜姜酱 | </title>
+    
+<link rel="stylesheet" href="/css/reset.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/css/markdown.css">
+
+    
+<link rel="stylesheet" href="/css/fonts.css">
+
+<meta name="generator" content="Hexo 6.1.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
+    <body>
+        <div class="paper">
+            <div class="paper-main">
+                
+                    <div class="post-header">
+    <a class="logo" href="/">姜姜酱</a>
+    <a class="go-home" href="/">
+        <svg width="8" height="14" viewBox="0 0 8 14">
+            <path d="M7 1L1 7l6 6" stroke="#000" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+</div>
+                
+                <div class="post-main">
+
+    
+        <div class="post-main-title">
+            BMZCTF2020 re &amp; crypto writeup
+        </div>
+        <div class="post-meta">
+            2020-12-03
+        </div>
+    
+
+    <div class="post-md">
+        <p><a target="_blank" rel="noopener" href="https://share.weiyun.com/9Bz96oYq">题目链接</a></p>
+<span id="more"></span>
+<h2 id="RE"><a href="#RE" class="headerlink" title="RE"></a>RE</h2><h3 id="re1"><a href="#re1" class="headerlink" title="re1"></a>re1</h3><p>64位程序，IDA查看。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">int __cdecl main(int argc, const char **argv, const char **envp)
+&#123;
+  int v4[30]; &#x2F;&#x2F; [rsp+0h] [rbp-90h]
+  int v5; &#x2F;&#x2F; [rsp+78h] [rbp-18h]
+  int m; &#x2F;&#x2F; [rsp+7Ch] [rbp-14h]
+  int l; &#x2F;&#x2F; [rsp+80h] [rbp-10h]
+  int k; &#x2F;&#x2F; [rsp+84h] [rbp-Ch]
+  int j; &#x2F;&#x2F; [rsp+88h] [rbp-8h]
+  int i; &#x2F;&#x2F; [rsp+8Ch] [rbp-4h]
+
+  puts(&quot;Hello,Reverser,Lets play a game (T_T)&quot;);
+  for ( i &#x3D; 0; i &lt;&#x3D; 27; ++i )
+    v4[i] &#x3D; getchar();
+  getchar();
+  for ( j &#x3D; 0; j &lt;&#x3D; 27; ++j )
+  &#123;
+    v4[j] ^&#x3D; 0x1A2B3Cu;
+    encrypt_jump(0x1A2B3Cu);
+  &#125;
+  v5 &#x3D; 0x1A2B0C;
+  for ( k &#x3D; 0; k &lt;&#x3D; 27; ++k )
+  &#123;
+    v4[k] %&#x3D; v5;
+    encrypt_jump(v5);
+  &#125;
+  for ( l &#x3D; 0; l &lt;&#x3D; 27; ++l )
+  &#123;
+    v4[l] ^&#x3D; 0x4D5E6Fu;
+    encrypt_jump(0x4D5E6Fu);
+  &#125;
+  for ( m &#x3D; 0; m &lt;&#x3D; 27; ++m )
+  &#123;
+    if ( bytes_0318912x[m] !&#x3D; v4[m] )
+    &#123;
+      puts(&quot;Sorry~&quot;);
+      return 0;
+    &#125;
+  &#125;
+  puts(&quot;Congratulations!&quot;);
+  return 0;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>v4数组是flag的值，让bytes_0318912x[m] == v4[m]时候跳转到Congratulations处，encrypt_ jump()对v4没有影响，直接逆算法。注意在这里：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">for ( k &#x3D; 0; k &lt;&#x3D; 27; ++k )
+&#123;
+   v4[k] %&#x3D; v5;
+   encrypt_jump(v5);
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>按理说模运算并不容易复原，但尝试后发现这里只有倍数k=1。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">bytes_0318912x &#x3D; [0x4D5E21,0x4D5E2B,0x4D5E3E,0x4D5E20,
+                  0x4D5E54,0x4D5E1D,0x4D5E0A,0x4D5E35,
+                  0x4D5E1C,0x4D5E33,0x4D5E01,0x4D5E38,
+                  0x4D5E0D,0x4D5E22,0x4D5E32,0x4D5E22,
+                  0x4D5E37,0x4D5E2C,0x4D5E6C,0x4D5E38,
+                  0x4D5E6E,0x4D5E2C,0x4D5E38,0x4D5E1C,
+                  0x4D5E28,0x4D5E6F,0x4D5E6E,0x4D5E5A]
+
+def attack():
+    flag &#x3D; &#39;&#39;
+    for i in range(0, 28):
+        bytes_0318912x[i] ^&#x3D; 0x4D5E6F
+        bytes_0318912x[i] +&#x3D; 0x1A2B0C
+        bytes_0318912x[i] ^&#x3D; 0x1A2B3C
+        flag +&#x3D; chr(bytes_0318912x[i])
+    return flag
+
+print(attack())
+
+# flag&#123;BMZCTF_ReUeXs3_1s_Co01&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="re2"><a href="#re2" class="headerlink" title="re2"></a>re2</h3><p>64位程序，IDA查看伪代码。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">int __cdecl main(int argc, const char **argv, const char **envp)
+&#123;
+  int v4[30]; &#x2F;&#x2F; [rsp+0h] [rbp-80h]
+  int v5; &#x2F;&#x2F; [rsp+78h] [rbp-8h]
+  int i; &#x2F;&#x2F; [rsp+7Ch] [rbp-4h]
+
+  puts(&amp;s);
+  v5 &#x3D; 0;
+  for ( i &#x3D; 0; i &lt;&#x3D; 26; ++i )
+    v4[i] &#x3D; getchar();
+  getchar();
+  if ( (unsigned int)Auth(v4, argv) &#x3D;&#x3D; 1 )
+    puts(&quot;Congratulations!~&quot;);
+  else
+    puts(&quot;tryyyyy again&quot;);
+  return 0;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>当输入字符串v4满足Auth(v4, argv) == 1时，打印出”Congratulations!~”，v4为flag值。进入Auth函数，a1=v4。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">signed __int64 __fastcall Auth(__int64 a1)
+&#123;
+  int v2[12]; &#x2F;&#x2F; [rsp+8h] [rbp-C0h]
+  int v3[12]; &#x2F;&#x2F; [rsp+38h] [rbp-90h]
+  int v4[12]; &#x2F;&#x2F; [rsp+68h] [rbp-60h]
+  __int64 v5; &#x2F;&#x2F; [rsp+98h] [rbp-30h]
+  __int64 v6; &#x2F;&#x2F; [rsp+A0h] [rbp-28h]
+  __int64 v7; &#x2F;&#x2F; [rsp+A8h] [rbp-20h]
+  int j; &#x2F;&#x2F; [rsp+B0h] [rbp-18h]
+  int v9; &#x2F;&#x2F; [rsp+B4h] [rbp-14h]
+  int v10; &#x2F;&#x2F; [rsp+B8h] [rbp-10h]
+  int i; &#x2F;&#x2F; [rsp+BCh] [rbp-Ch]
+  int v12; &#x2F;&#x2F; [rsp+C0h] [rbp-8h]
+  int v13; &#x2F;&#x2F; [rsp+C4h] [rbp-4h]
+
+  v13 &#x3D; 0;
+  v12 &#x3D; 8;
+  while ( v13 &lt;&#x3D; 8 )
+    v4[v13++] &#x3D; *(_DWORD *)(4LL * v12-- + a1) ^ 0xCE2;
+  for ( i &#x3D; 9; i &lt;&#x3D; 17; ++i )
+    v3[i - 9] &#x3D; *(_DWORD *)(4LL * i + a1) ^ 0xFFF;
+  v10 &#x3D; 18;
+  v9 &#x3D; 26;
+  while ( v10 &lt;&#x3D; 26 )
+    v2[v10++ - 18] &#x3D; *(_DWORD *)(4LL * v9-- + a1) ^ 0x4EA;
+  v7 &#x3D; SboxExchangeA(&amp;SboxA, v4);
+  v6 &#x3D; SboxExchangeB(&amp;SboxB, v3);
+  v5 &#x3D; SboxExchangeC(&amp;SboxC, v2);
+  for ( j &#x3D; 0; j &lt;&#x3D; 8; ++j )
+  &#123;
+    if ( bytes_0x0001[j] !&#x3D; *(_DWORD *)(4LL * j + v7) )
+      return 0LL;
+    if ( bytes_0x0002[j] !&#x3D; *(_DWORD *)(4LL * j + v6) )
+      return 0LL;
+    if ( *((_DWORD *)&amp;bytes_0x0003 + j) !&#x3D; *(_DWORD *)(4LL * j + v5) )
+      return 0LL;
+  &#125;
+  return 1LL;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>发现最终要使Auth()返回 1，那么就要满足bytes_0x0001[j] = v7[j]，bytes_0x0002[j]=v6[j]，bytes_0x0003[j]=v5[j]。bytes_0x0001，bytes_0x0002，bytes_0x0003可以直接查看，那么需要知道v5，v6，v7的值。v5，v6，v7由v2，v3，v4经过S盒得出。如果推出v2，v3，v4的值，根据前面的循环，可以拼凑出a1的值。3个S盒：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">_DWORD *__fastcall SboxExchangeA(__int64 a1, __int64 a2)
+&#123;
+  signed int i; &#x2F;&#x2F; [rsp+1Ch] [rbp-4h]
+
+  for ( i &#x3D; 0; i &lt;&#x3D; 8; ++i )
+    final_2323[i] &#x3D; *(_DWORD *)(4LL * *(signed int *)(4LL * i + a1) + a2);
+  return final_2323;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">_DWORD *__fastcall SboxExchangeB(__int64 a1, __int64 a2)
+&#123;
+  signed int i; &#x2F;&#x2F; [rsp+1Ch] [rbp-4h]
+
+  for ( i &#x3D; 0; i &lt;&#x3D; 8; ++i )
+    final_2332[i] &#x3D; *(_DWORD *)(4LL * *(signed int *)(4LL * i + a1) + a2);
+  return final_2332;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">_DWORD *__fastcall SboxExchangeC(__int64 a1, __int64 a2)
+&#123;
+  signed int i; &#x2F;&#x2F; [rsp+1Ch] [rbp-4h]
+
+  for ( i &#x3D; 0; i &lt;&#x3D; 8; ++i )
+    final_2341[i] &#x3D; *(_DWORD *)(4LL * *(signed int *)(4LL * i + a1) + a2);
+  return final_2341;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>发现3个S盒只是简单的异或运算，直接异或回去就好。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">bytes_0x0001 &#x3D; [0x0C8E, 0x0C85, 0x0C87, 0x0C99, 0x0CA4, 0x0CD1, 0x0C83, 0x0C8E, 0x0C84]
+bytes_0x0002 &#x3D; [0x0F9A, 0x0F8B, 0x0FA0, 0x0FCF, 0x0F8D, 0x0FA0, 0x0FB9, 0x0F9E, 0x0FA0]
+bytes_0x0003 &#x3D; [0x48F,0x499,0x48F,0x497,0x4DD,0x4B5,0x49C,0x482,0x4B8]
+sboxa &#x3D; [7,0,0,0,5,0,0,0,2,0,0,0,4,0,0,0,3,0,0,0,1,0,0,0,6,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+sboxb &#x3D; [2,0,0,0,6,0,0,0,0,0,0,0,7,0,0,0,4,0,0,0,5,0,0,0,1,0,0,0,3,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+sboxc &#x3D; [3,0,0,0,1,0,0,0,6,0,0,0,0,0,0,0,8,0,0,0,5,0,0,0,2,0,0,0,7,0,0,0,4,0,0,0]
+
+def SboxExchangeA():
+  final_2323 &#x3D; [&#39;0&#39;] * 9
+  for i in range(0, 9):
+      final_2323[i] &#x3D;  bytes_0x0001[sboxa[4*i]]
+  return final_2323
+
+def SboxExchangeB():
+  final_2323 &#x3D; [&#39;0&#39;] * 9
+  for i in range(0, 9):
+      final_2323[i] &#x3D;  bytes_0x0002[sboxb[4*i]]
+  return final_2323
+
+def SboxExchangeC():
+  final_2341 &#x3D; [&#39;0&#39;] * 9
+  for i in range(0, 9):
+      final_2341[i] &#x3D;  bytes_0x0003[sboxc[4*i]]
+  return final_2341
+
+def attack():
+  v4 &#x3D; SboxExchangeA()
+  v3 &#x3D; SboxExchangeB()
+  v2 &#x3D; SboxExchangeC()
+  a1 &#x3D; [&#39;*&#39;] * 27
+  for i in range(0, 9):
+    a1[8-i] &#x3D; v4[i] ^ 0xCE2
+  for i in range(9, 18):
+    a1[i] &#x3D; v3[i - 9] ^ 0xFFF
+  for i in range(18, 27):
+    a1[44 - i] &#x3D; v2[i - 18] ^ 0x4EA
+  flag &#x3D; &#39;&#39;
+  for i in a1:
+    flag +&#x3D; chr(i)
+  return flag
+
+print(attack())
+
+# flag&#123;Fe3l_Fear_t0_7he_Revs&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="re3"><a href="#re3" class="headerlink" title="re3"></a>re3</h3><p>apk文件解压之后dex2jar转为jar文件，jd-gui打开。可以看到有两个Activity：MainActivity.class和FlagActivity.class</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">&#x2F;&#x2F; MainActivity.class
+package com.ctfgame.bmzctf;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.Signature;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity &#123;
+  public int Globalhit &#x3D; 999999;
+  
+  private boolean checkSignature() &#123;
+    try &#123;
+      Signature signature &#x3D; (getPackageManager().getPackageInfo(getPackageName(), 64)).signatures[0];
+      getMD5String(signature.toByteArray());
+      boolean bool &#x3D; getMD5String(signature.toByteArray()).equals(&quot;E915DDE06E7090754E9ACD1DA29C052A&quot;);
+      return bool;
+    &#125; catch (Exception exception) &#123;
+      exception.printStackTrace();
+      return false;
+    &#125; 
+  &#125;
+  
+  private String getMD5String(byte[] paramArrayOfbyte) &#123;
+  &#125;
+  
+  protected void onCreate(Bundle paramBundle) &#123;
+    super.onCreate(paramBundle);
+    if (!checkSignature())
+      System.exit(1); 
+    setContentView(2131361823);
+    ((Button)findViewById(2131165265)).setOnClickListener(new Flag_listenser());
+  &#125;
+  
+  private class Flag_listenser implements View.OnClickListener &#123;
+    private Flag_listenser() &#123;&#125;
+    
+    public void onClick(View param1View) &#123;
+      MainActivity mainActivity &#x3D; MainActivity.this;
+      mainActivity.Globalhit--;
+      MainActivity.this.checkSignature();
+      StringBuilder stringBuilder &#x3D; new StringBuilder();
+      stringBuilder.append(&quot;);
+      stringBuilder.append(Integer.toString(MainActivity.this.Globalhit));
+      stringBuilder.append(&quot;);
+      String str &#x3D; stringBuilder.toString();
+      ((TextView)MainActivity.this.findViewById(2131165419)).setText(str);
+      if (MainActivity.this.Globalhit &#x3D;&#x3D; 0) &#123;
+        Intent intent &#x3D; new Intent((Context)MainActivity.this, FlagActivity.class);
+        MainActivity.this.startActivity(intent);
+      &#125; 
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Globalhit = 999999，用listener来监听点击事件，每点击一次Globalhit减1，当Globalhit = 0时利用Intent传参调用startActivity()来启动FlagActivity。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">&#x2F;&#x2F; FlagActivity.class
+package com.ctfgame.bmzctf;
+
+import android.os.Bundle;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class FlagActivity extends AppCompatActivity &#123;
+  public int[] encF &#x3D; new int[] &#123; 
+      4, 5, 30, 27, 9, 55, 56, 53, 43, 15, 
+      70, 90, 85, 14, 25, 9, 78, 54, 83, 96, 
+      25, 23, 19, 115, 25, 49, 77, 75, 29, 28, 
+      4, 122, 96, 110, 56, 16 &#125;;
+  
+  private int[] wocaozheshisha(int[] paramArrayOfint) &#123;
+    for (int i &#x3D; 0; i &lt;&#x3D; 34; i++)
+      paramArrayOfint[i + 1] &#x3D; paramArrayOfint[i] ^ paramArrayOfint[i + 1]; 
+    return paramArrayOfint;
+  &#125;
+  
+  protected void onCreate(Bundle paramBundle) &#123;
+    super.onCreate(paramBundle);
+    setContentView(2131361822);
+    byte[] arrayOfByte &#x3D; &quot;bmz&quot;.getBytes();
+    wocaozheshisha(wocaozheshisha(wocaozheshisha(this.encF)));
+    int i &#x3D; 0;
+    while (true) &#123;
+      int[] arrayOfInt &#x3D; this.encF;
+      if (i &lt;&#x3D; arrayOfInt.length - 1) &#123;
+        arrayOfInt[i] &#x3D; arrayOfByte[i % 3] ^ arrayOfInt[i];
+        i++;
+        continue;
+      &#125; 
+      String str &#x3D; &quot;&quot;;
+      for (i &#x3D; 0; i &lt;&#x3D; this.encF.length - 1; i++) &#123;
+        StringBuilder stringBuilder &#x3D; new StringBuilder();
+        stringBuilder.append(str);
+        stringBuilder.append((char)this.encF[i]);
+        str &#x3D; stringBuilder.toString();
+      &#125; 
+      ((TextView)findViewById(2131165420)).setText(str);
+      return;
+    &#125; 
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>最后打印出的是encF中的字符。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">encF &#x3D; [4, 5, 30, 27, 9, 55, 56, 53, 43, 15, 70, 90, 85, 14, 25, 9, 78, 54, 83, 96, 25, 23, 19, 115, 25, 49, 77, 75, 29, 28, 4, 122, 96, 110, 56, 16 ]
+
+def wocaozheshisha(paramArrayOfint):
+    for i in range(0, 35):
+      paramArrayOfint[i + 1] &#x3D; paramArrayOfint[i] ^ paramArrayOfint[i + 1]; 
+    return paramArrayOfint
+
+def attack():
+    new_encF &#x3D; wocaozheshisha(wocaozheshisha(wocaozheshisha(encF)))
+    arrayOfInt &#x3D; len(new_encF)
+    arrayOfByte &#x3D; &quot;bmz&quot;
+    for i in range(0, arrayOfInt):
+        new_encF[i] &#x3D; ord(arrayOfByte[i % 3]) ^ new_encF[i]
+    flag &#x3D; &#39;&#39;
+    for j in new_encF:
+        flag +&#x3D; chr(j)
+    return flag
+
+print(attack())
+
+# flag&#123;Every0ne-0f-BMZCTF-1s-3he-Best&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="Crypto"><a href="#Crypto" class="headerlink" title="Crypto"></a>Crypto</h2><h3 id="Crypto-xor"><a href="#Crypto-xor" class="headerlink" title="Crypto_xor"></a>Crypto_xor</h3><p>hint： [‘\x00’,’\x00’,’\x00’] at start of xored is the best hint you get.</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">xored &#x3D; [&#39;\x00&#39;, &#39;\x00&#39;, &#39;\x00&#39;, &#39;\x18&#39;, &#39;C&#39;, &#39;_&#39;, &#39;\x05&#39;, &#39;E&#39;, &#39;V&#39;, &#39;T&#39;, &#39;F&#39;, &#39;U&#39;, &#39;R&#39;, &#39;B&#39;, &#39;_&#39;, &#39;U&#39;, &#39;G&#39;, &#39;_&#39;, &#39;V&#39;, &#39;\x17&#39;, &#39;V&#39;, &#39;S&#39;, &#39;@&#39;, &#39;\x03&#39;, &#39;[&#39;, &#39;C&#39;, &#39;\x02&#39;, &#39;\x07&#39;, &#39;C&#39;, &#39;Q&#39;, &#39;S&#39;, &#39;M&#39;, &#39;\x02&#39;, &#39;P&#39;, &#39;M&#39;, &#39;_&#39;, &#39;S&#39;, &#39;\x12&#39;, &#39;V&#39;, &#39;\x07&#39;, &#39;B&#39;, &#39;V&#39;, &#39;Q&#39;, &#39;\x15&#39;, &#39;S&#39;, &#39;T&#39;, &#39;\x11&#39;, &#39;_&#39;, &#39;\x05&#39;, &#39;A&#39;, &#39;P&#39;, &#39;\x02&#39;, &#39;\x17&#39;, &#39;R&#39;, &#39;Q&#39;, &#39;L&#39;, &#39;\x04&#39;, &#39;P&#39;, &#39;E&#39;, &#39;W&#39;, &#39;P&#39;, &#39;L&#39;, &#39;\x04&#39;, &#39;\x07&#39;, &#39;\x15&#39;, &#39;T&#39;, &#39;V&#39;, &#39;L&#39;, &#39;\x1b&#39;]
+s1 &#x3D; &quot;&quot;
+s2 &#x3D; &quot;&quot;
+a_list &#x3D; [chr(ord(a) ^ ord(b)) for a,b in zip(s1, s2)]
+print(a_list)
+print(&quot;&quot;.join(a_list))<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>提示说3个\x00是关键提示，我寻思不就是相同异或为0吗…虽然s1s2是可打印字符串，但只知道异或的值构造flag好像又有点说不过去。flag开头固定字符长度为3的只有’ctf’，len(xored) = 69是3的倍数，只好猜想s1或s2中是’ctf’重复23次。(总之有点迷)</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">s1 &#x3D; [&#39;c&#39;, &#39;t&#39;, &#39;f&#39;] * 23
+s2 &#x3D; [&#39;\x00&#39;, &#39;\x00&#39;, &#39;\x00&#39;, &#39;\x18&#39;, &#39;C&#39;, &#39;_&#39;, &#39;\x05&#39;, &#39;E&#39;, &#39;V&#39;, &#39;T&#39;, &#39;F&#39;, &#39;U&#39;, &#39;R&#39;, &#39;B&#39;, &#39;_&#39;, &#39;U&#39;, &#39;G&#39;, &#39;_&#39;, &#39;V&#39;, &#39;\x17&#39;, &#39;V&#39;, &#39;S&#39;, &#39;@&#39;, &#39;\x03&#39;, &#39;[&#39;, &#39;C&#39;, &#39;\x02&#39;, &#39;\x07&#39;, &#39;C&#39;, &#39;Q&#39;, &#39;S&#39;, &#39;M&#39;, &#39;\x02&#39;, &#39;P&#39;, &#39;M&#39;, &#39;_&#39;, &#39;S&#39;, &#39;\x12&#39;, &#39;V&#39;, &#39;\x07&#39;, &#39;B&#39;, &#39;V&#39;, &#39;Q&#39;, &#39;\x15&#39;, &#39;S&#39;, &#39;T&#39;, &#39;\x11&#39;, &#39;_&#39;, &#39;\x05&#39;, &#39;A&#39;, &#39;P&#39;, &#39;\x02&#39;, &#39;\x17&#39;, &#39;R&#39;, &#39;Q&#39;, &#39;L&#39;, &#39;\x04&#39;, &#39;P&#39;, &#39;E&#39;, &#39;W&#39;, &#39;P&#39;, &#39;L&#39;, &#39;\x04&#39;, &#39;\x07&#39;, &#39;\x15&#39;, &#39;T&#39;, &#39;V&#39;, &#39;L&#39;, &#39;\x1b&#39;]
+a_list &#x3D; [chr(ord(a) ^ ord(b)) for a,b in zip(s1, s2)]
+print(&quot;&quot;.join(a_list))
+
+# ctf&#123;79f107231696395c004e87dd7709d3990f0d602a57e9f56ac428b31138bda258&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="Crypto-easy-crypto"><a href="#Crypto-easy-crypto" class="headerlink" title="Crypto_easy_crypto"></a>Crypto_easy_crypto</h3><p>变过形的RSA。题目代码：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from Crypto.Util.number import *
+from secret import flag
+
+def keygen(nbit):
+    while True:
+        p, q, r &#x3D; [getPrime(nbit) for _ in range(3)]
+        if isPrime(p + q + r):
+            pubkey &#x3D; (p * q * r, p + q + r)
+            privkey &#x3D; (p, q, r)
+            return pubkey, privkey
+
+def encrypt(msg, pubkey):
+    enc &#x3D; pow(bytes_to_long(msg.encode(&#39;utf-8&#39;)), 0x10001, pubkey[0] * pubkey[1])
+    return enc
+
+nbit &#x3D; 512
+pubkey, _ &#x3D; keygen(nbit)
+print(&#39;pubkey &#x3D;&#39;, pubkey)
+
+enc &#x3D; encrypt(flag, pubkey)
+print(&#39;enc &#x3D;&#39;, enc)
+
+# pubkey &#x3D; (763929224901239050077647342425144363318006219360210465113458622937882119766705458273788947718911994090187932947694326848868575500906975653763043489419853300731695950407389203582333794360159494405111004208058198680365172060235321945875374635278292661761319773173838900295933943437761251440819434675631450032782188481758975272071015244168751016874668742536151359822585793537758876078350987062972237271763834743266722655055439868971805843593929839097963319788083763, 27750416681837900468631425875797804482827864226099175414717825894823303299159277202974070903630276868248755642608884903122768656427165401563920443482151217)
+# enc &#x3D; 7579294603035135817234501131256282324240132424272000903035801073847222917306092792610406876451698121956232047031639448767323475088170357863653435096746640609325525035329328626562143049656124241263576649974820533800161432666946327226418036826146160288273175521864687122720836795596635067761146519940441817765732160382018434465776749372209181212817247187474685246156193381822044772746654690126746715728166527274933634750443478682812664022009444348448955720226579468781927776133336045525149203384137859868153077820708167146052429014790660921586958660759949399826568136755816563468739111123761288318276379025018708883521<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>加密过程$\small m^{e}\equiv c(mod\ pqr(p+q+r))$因为$\small p,q,r,p+q+r$两两互质，因此等价于4个同余式：</p>
+<script type="math/tex; mode=display">
+\small m^{e} \equiv c(mod\ p) \\ \small m^{e} \equiv c(mod\ q) \\ \small m^{e} \equiv c(mod\ r) \\ \small m^{e} \equiv c(mod\ p+q+r)</script><p>注意到$\small m^{e}\equiv c(mod\ p+q+r)$中$\small p+q+r$已知，由于$\small p+q+r$为素数，则有$\small (e,p+q+r)=1$，因此存在$\small d$使得$\small ed\equiv 1(mod\ p+q+r-1)$。计算d用来解密：$\small m\equiv c^{d}(mod\ p+q+r)$</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">import gmpy2
+from Crypto.Util.number import *
+
+b &#x3D; 27750416681837900468631425875797804482827864226099175414717825894823303299159277202974070903630276868248755642608884903122768656427165401563920443482151217
+phi &#x3D; b - 1
+e &#x3D; 0x10001
+d &#x3D; gmpy2.invert(e, phi)
+enc &#x3D; 7579294603035135817234501131256282324240132424272000903035801073847222917306092792610406876451698121956232047031639448767323475088170357863653435096746640609325525035329328626562143049656124241263576649974820533800161432666946327226418036826146160288273175521864687122720836795596635067761146519940441817765732160382018434465776749372209181212817247187474685246156193381822044772746654690126746715728166527274933634750443478682812664022009444348448955720226579468781927776133336045525149203384137859868153077820708167146052429014790660921586958660759949399826568136755816563468739111123761288318276379025018708883521
+# d &#x3D; 4700510789097495050159107964161182653522012310205333571551682030889932250850163056444682562540239918129139820080278793804505162808763952008195078247331441
+m &#x3D; pow(enc, d, b)
+print(long_to_bytes(m))
+
+# BMZCTF&#123;9d8ef46w59c4-4s5w-8d4a-w9d5-5dq78e9d&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+    </div>
+
+</div>
+				
+					<div>
+    <ul class="post-copyright">
+      <li class="post-copyright-author">
+
+      <strong>本文作者:  </strong><a href="https://qsang.xin">姜姜酱</a>
+      </li>
+      <li class="post-copyright-link">
+      <strong>本文链接:  </strong>
+	  <a href="https://qsang.xin/2020/12/03/BMZCTF2020/" target="_blank" title="aa">https://qsang.xin/2020/12/03/BMZCTF2020/</a>
+      </li>
+      <li class="post-copyright-license">
+        <strong>版权声明:   </strong>
+        本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+        许可协议。转载请注明出处!
+      </li>
+    </ul>
+<div>
+				
+                <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="footer">
+    <span>Copyright © 2022 姜姜酱</span>
+
+	<span id="busuanzi_container_site_pv">
+    本站访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span>@QSANG</a></span>
+</div>
+
+<link rel="stylesheet" href="/css/a11y-dark.min.css">
+
+
+<script src="/js/highlight.min.js"></script>
+
+
+<script src="/js/highlightjs-line-numbers.js"></script>
+
+
+<script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+</script>
+
+            </div>
+        </div>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

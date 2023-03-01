@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+	
+<!-- baidu_tongji -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?0a3d5f5625415746246872fefe2c1f97";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- End baidu_tongji -->
+
+
+	
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YHNVSYV4EM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YHNVSYV4EM');
+</script>
+
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <link rel="alternate icon" type="image/png" href="/img/favicon.png">
+    <title>姜姜酱 | </title>
+    
+<link rel="stylesheet" href="/css/reset.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/css/markdown.css">
+
+    
+<link rel="stylesheet" href="/css/fonts.css">
+
+<meta name="generator" content="Hexo 6.1.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
+    <body>
+        <div class="paper">
+            <div class="paper-main">
+                
+                    <div class="post-header">
+    <a class="logo" href="/">姜姜酱</a>
+    <a class="go-home" href="/">
+        <svg width="8" height="14" viewBox="0 0 8 14">
+            <path d="M7 1L1 7l6 6" stroke="#000" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+</div>
+                
+                <div class="post-main">
+
+    
+        <div class="post-main-title">
+            DASCTF X GFCTF 2022 Crypto Writeup
+        </div>
+        <div class="post-meta">
+            2022-10-27
+        </div>
+    
+
+    <div class="post-md">
+        <h3 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from Crypto.Util.number import *
+from secret import flag
+
+def encrypt1(n):
+    n1 &#x3D; hex(n&gt;&gt;200).encode()
+    n2 &#x3D; str(hex(n))[20:].encode()
+    return n1,n2
+
+
+def encrypt2(m , n_1):
+    c_1 &#x3D; pow(m,e_1,n_1)
+    print(&#39;c_1 &#x3D; &#39;+str(c_1))
+
+
+def encrypt3(m , n_2):
+    c_2 &#x3D; pow( m , e_2 , n_2)
+    print(&#39;c_2 &#x3D; &#39;+str(c_2))
+
+
+def encrypt4(m):
+    k &#x3D; getPrime(512)
+    m &#x3D; m % k
+    c_3 &#x3D; pow(m, e_2, n_3)
+    print(&#39;c_3 &#x3D; &#39; + str(c_3))
+    print(&#39;m &#x3D; &#39; + str(m))
+    print(&#39;k &#x3D; &#39; + str(k))
+
+
+m1,m2 &#x3D; encrypt1(flag)
+m1 &#x3D; bytes_to_long(m1)
+m2 &#x3D; bytes_to_long(m2)
+
+
+print(&#39;n_2 &#x3D; &#39; + str(n_2))
+print(&#39;n_3 &#x3D; &#39; + str(n_3))
+print(&#39;e_1 &#x3D; &#39; + str(e_1))
+print(&#39;e_2 &#x3D; &#39; + str(e_2))
+
+
+encrypt2(m1,n_1)
+encrypt3(n_1,n_2)
+encrypt4(m2)
+
+&#39;&#39;&#39;
+n_2 &#x3D; 675835056744450121024004008337170937331109883435712066354955474563267257037603081555653829598886559337325172694278764741403348512872239277008719548968016702852609803016353158454788807563316656327979897318887566108985783153878668451688372252234938716250621575338314779485058267785731636967957494369458211599823364746908763588582489400785865427060804408606617016267936273888743392372620816053927031794575978032607311497491069242347165424963308662091557862342478844612402720375931726316909635118113432836702120449010
+n_3 &#x3D; 91294511667572917673898699346231897684542006136956966126836916292947639514392684487940336406038086150289315439796780158189004157494824987037667065310517044311794725172075653186677331434123198117797575528982908532086038107428540586044471407073066169603930082133459486076777574046803264038780927350142555712567
+e_1 &#x3D; 65537
+e_2 &#x3D; 3
+c_1 &#x3D; 47029848959680138397125259006172340325269302342762903311733700258745280761154948381409328053449580957972265859283407071931484707002138926840483316880087281153554181290481533
+c_2 &#x3D; 332431
+c_3 &#x3D; 11951299411967534922967467740790967733301092706094553308467975774492025797106594440070380723007894861454249455013202734019215071856834943490096156048504952328784989777263664832098681831398770963056616417301705739505187754236801407014715780468333977293887519001724078504320344074325196167699818117367329779609
+m &#x3D; 9530454742891231590945778054072843874837824815724564463369259282490619049557772650832818763768769359762168560563265763313176741847581931364
+k &#x3D; 8139616873420730499092246564709331937498029453340099806219977060224838957080870950877930756958455278369862703151353509623205172658012437573652818022676431
+&#39;&#39;&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>普通的RSA，flag分成$m_1$和$m_2$按照encrypt1的规则分成两部分，再根据encrypt2、encrypt3、encrypt4进行变换：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+m_1^{e_1}\equiv c_1(\bmod n_1) \\
+n_1^{e_2}\equiv c_2(\bmod n_2) \\
+{(m_2\bmod k)}^{e_2}\equiv c_3(\bmod n_3)
+\end{aligned}</script><p>已知$e_2=3, n_2,n_3,c_1,c_2,c_3, m=m_2\bmod k, k$，先看最后一个同余式：$m=k*i+m_2$，其中$i$为整数，指数太小，因此可以尝试找到这样的$i$求出$m_2$：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from Crypto.Util.number import *
+import gmpy2
+
+c_3 &#x3D; 11951299411967534922967467740790967733301092706094553308467975774492025797106594440070380723007894861454249455013202734019215071856834943490096156048504952328784989777263664832098681831398770963056616417301705739505187754236801407014715780468333977293887519001724078504320344074325196167699818117367329779609
+m &#x3D; 9530454742891231590945778054072843874837824815724564463369259282490619049557772650832818763768769359762168560563265763313176741847581931364
+k &#x3D; 8139616873420730499092246564709331937498029453340099806219977060224838957080870950877930756958455278369862703151353509623205172658012437573652818022676431
+
+i &#x3D; 0
+while 1:
+    if(gmpy2.powmod(m+i*k, 3, n_3) &#x3D;&#x3D; c_3):
+        print(long_to_bytes(m+i*k))
+        break
+    i +&#x3D; 1
+
+# b&#39;383539643865383534633466363030636231323735376262663966357d&#39;
+# f_2 &#x3D; b&#39;859d8e854c4f600cb12757bbf9f5&#125;&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>对第二个同余式用小指数可直接开3次方求出$n_1$：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from Crypto.Util.number import *
+import gmpy2
+
+n_3 &#x3D; 91294511667572917673898699346231897684542006136956966126836916292947639514392684487940336406038086150289315439796780158189004157494824987037667065310517044311794725172075653186677331434123198117797575528982908532086038107428540586044471407073066169603930082133459486076777574046803264038780927350142555712567
+c_2 &#x3D; 332431
+n_2 &#x3D; 675835056744450121024004008337170937331109883435712066354955474563267257037603081555653829598886559337325172694278764741403348512872239277008719548968016702852609803016353158454788807563316656327979897318887566108985783153878668451688372252234938716250621575338314779485058267785731636967957494369458211599823364746908763588582489400785865427060804408606617016267936273888743392372620816053927031794575978032607311497491069242347165424963308662091557862342478844612402720375931726316909635118113432836702120449010
+
+i &#x3D; 0
+while 1:
+    if(gmpy2.iroot(c_2+i*n_2, 3)[1] &#x3D;&#x3D; 1):
+        print(gmpy2.iroot(c_2+i*n_2, 3)[0])
+        break
+    i +&#x3D; 1
+
+# n_1 &#x3D; 70406706457855863712635967741447303613971473150228480705119773604469794649140239446237334040048504811343327173817296308781190911727763110615393368497803655390445303946160971<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>发现$n_1$可以分解成三个素数，即可得到另一部分$m_1$：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from Crypto.Util.number import *
+import gmpy2
+
+c_1 &#x3D; 47029848959680138397125259006172340325269302342762903311733700258745280761154948381409328053449580957972265859283407071931484707002138926840483316880087281153554181290481533
+e_1 &#x3D; 65537
+
+p &#x3D; 2224243981
+q &#x3D; 2732337821
+r &#x3D; 11585031296201346891716939633970482508158508580350404805965250133832632323150440185890235814142601827544669601048550999405490149435265122374459158586377571
+n_1 &#x3D; p * q * r
+phi &#x3D; (p - 1) * (q - 1) * (r - 1)
+d &#x3D; inverse(e_1, phi)
+f_1 &#x3D; pow(c_1, d, n_1)
+print(long_to_bytes(f_1))
+# b&#39;0x666c61677b3230366538353964&#39;
+print(long_to_bytes(0x666c61677b3230366538353964))
+# b&#39;flag&#123;206e859d&#39;
+
+# flag&#123;206e859d8e854c4f600cb12757bbf9f5&#125;&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="CryptoRecover-Secret"><a href="#CryptoRecover-Secret" class="headerlink" title="CryptoRecover_Secret"></a>CryptoRecover_Secret</h3><h4 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h4><pre class="line-numbers language-python" data-language="python"><code class="language-python">import gmpy2 as gy
+import random
+import functools
+import libnum
+from Crypto.Util import number
+from datetime import datetime
+import os
+import sys
+
+of &#x3D; open(&#39;output&#39;,&#39;w&#39;)
+sys.stdout &#x3D; of
+_N &#x3D; gy.next_prime(2 ** 512)
+_rand_int &#x3D; functools.partial(random.SystemRandom().randint, 0)
+
+class Encryptor():
+    def __init__(self):
+        self.pubKey &#x3D; None
+        self.priKey &#x3D; None
+
+    def __gen_prime__(self, rs, n_bits):
+        p &#x3D; gy.mpz_urandomb(rs, n_bits)
+        while not gy.is_prime(p):
+            p +&#x3D; 1
+        return p
+
+    def __key_gen__(self, n_bits&#x3D;512):
+        while True:
+            rs &#x3D; gy.random_state(datetime.now().microsecond)
+            p &#x3D; self.__gen_prime__(rs, n_bits)
+            q &#x3D; self.__gen_prime__(rs, n_bits)
+            n &#x3D; p * q
+            lmd &#x3D; (p - 1) * (q - 1)
+            if gy.gcd(n, lmd) &#x3D;&#x3D; 1:
+                break
+
+        g &#x3D; n + 1
+        mu &#x3D; gy.invert(lmd, n)
+        self.pubKey &#x3D; [n, g]
+        self.priKey &#x3D; [lmd, mu]
+        return (self.pubKey, self.priKey)
+
+    def encipher(self, plaintext):
+        m &#x3D; plaintext
+        n, g &#x3D; self.pubKey
+        r &#x3D; gy.mpz_random(gy.random_state(datetime.now().microsecond), n)
+        while gy.gcd(n, r) !&#x3D; 1:
+            r +&#x3D; 1
+        ciphertext &#x3D; gy.powmod(g, m, n ** 2) * gy.powmod(r, n, n ** 2) % (n ** 2)
+        return ciphertext
+
+class Commit:
+    def __init__(self):
+        self.param &#x3D; None
+
+    def __key_gen__(self, n):
+        p &#x3D; n
+        r &#x3D; 1
+        while True:
+            q &#x3D; r * p + 1
+            if gy.is_prime(q):
+                break
+            r +&#x3D; 1
+        x &#x3D; q - 1
+        while True:
+            g &#x3D; x ** r % q
+            if g !&#x3D; 1:
+                break
+            x -&#x3D; 1
+        while True:
+            h &#x3D; x ** r % q
+            if(g !&#x3D; h and h !&#x3D; 1):
+                break
+            x -&#x3D; 1
+        self.param &#x3D; q, g, h
+
+    def commit(self, m):
+        q, g, h &#x3D; self.param
+        r &#x3D; number.getRandomRange(1, q - 1)
+        c &#x3D; (pow(g, m, q) * pow(h, r, q)) % q
+        return c, r
+
+def shuffle(X, Y, x):
+    res &#x3D; []
+    for i in range(len(X)):
+        res.append([i, X[i], Y[i]])
+        for j in range(x):
+            res.append([i, X[i] + random.randint(-X[i], X[i]), Y[i] + random.randint(-Y[i], Y[i])])
+    random.shuffle(res)
+    return res
+
+def main():
+    k &#x3D; 6
+    sk &#x3D; []
+    flag &#x3D; os.environ[&quot;flag for GFCTF2022-Crypto Recover Secret&quot;]
+    secret &#x3D; libnum.s2n(flag)
+    assert len(bin(secret)) &lt; 514
+    enc &#x3D; Encryptor()
+    sk &#x3D; [enc.__key_gen__() for i in range(k)]
+    print(sk)
+
+    s &#x3D; [_rand_int(_N - 1) for i in range(k)]
+    s[0] &#x3D; secret
+
+    v &#x3D; Commit()
+    v.__key_gen__(_N)
+    print(v.param)
+    cr &#x3D; [v.commit(s[i]) for i in range(k)]
+    c &#x3D; [i[0] for i in cr]
+    print(c) 
+
+    X &#x3D; []
+    Y &#x3D; []
+    for i in range(1, k + 1):
+        xs &#x3D; 1
+        enc.pubKey &#x3D; sk[i - 1][0]
+        n_2q &#x3D; enc.pubKey[0] ** 2
+        for j in range(k):
+            xs *&#x3D; pow(enc.encipher(i ** j), cr[j][1], n_2q)
+        X.append(xs)
+
+        ys &#x3D; 1
+        for j in range(k):
+            ys *&#x3D; pow(enc.encipher(i ** j), s[j], n_2q)
+        Y.append(ys)
+
+    X_Y &#x3D; shuffle(X, Y, 51)
+    print(X_Y)
+
+if __name__ &#x3D;&#x3D; &#39;__main__&#39;:
+    main()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Encryptor类实现Paillier加解密，Commit类实现Pedersen可验证秘密分享中的承诺方案。首先Paillier是一种概率加密，但它具有同态性：对一个消息$m$来说，加密过程引入了随机数$r$，相同的明文可能对应不同的密文，而密文只能解密到它所对应的明文，而与引入的随机数无关。并且对于两个不同的$m_1,m_2$，用同一把公钥$(g,n)$加密成它们的密文$c_1,c_2$，使用私钥可以将$c_1c_2$解密到$m_1+m_2$：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+E(m_1)\cdot E(m_2)&=g^{m_1}r_1^{n}\cdot g^{m_2}r_2^{n}=g^{m_1+m_2}\cdot(r_1r_2)^{n}=c_1c_2\\
+D(c_1c_2)&=m_1+m_2
+\end{aligned}</script><p>其次，Pedersen VSS是Shamir秘密共享(SSS)的一种并行版本。一般我们会把SSS方案中选择随机多项式的人叫做dealer，由dealer向参与方分发秘密份额。Pedersen VSS在SSS中加入可验证步骤，也就是在dealer选定随机多项式后，对多项式进行承诺(Commit)，在分发份额前，广播给所有参与方，参与方在收到秘密份额后通过承诺来检查份额是否正确。承诺部分采用了Pedersen承诺的形式：$c=g^s h^t$，同样具有同态的性质。这两部分其实都有许多值得讨论的问题，现在这里只针对这道题目。</p>
+<p>一共有6个参与方，dealer选择的随机模$N$下($N$为素数)多项式为：</p>
+<script type="math/tex; mode=display">
+f(x)= s_5x^5+s_4x^4+\cdots+s_1x+s_0 \in \mathbb{Z}_N[x]</script><p>$s_0$为要恢复秘密值，$f(i)$作为dealer分发给每个参与方$P_i$的份额，$i$是集合下标。$f(x)$阶为5，那么只要知道6个$f(x)$上的点$(i,f(i))$，那么可以由拉格朗日插值恢复出$f(x)$，即所有系数。</p>
+<p>最终列表中的数据格式为$X_Y=[i,X_i,Y_i]$。用$r_x$和$R_x$表示未知的随机数，E表示Paillier加密，D表示Paillier解密，每个参与方$P_i$的Paillier公私钥$(pk_i,sk_i)$，$X_i$和$Y_i$生成的形式为：</p>
+<script type="math/tex; mode=display">
+X_i = \prod_{j=0}^{5}E_{pk_i}(i^j)^{r_j} = \prod_{j=0}^{5}\left( g^{i^j}r_x^{n}\right)^{r_j}=g^{\sum_{j=0}^{5}i^jr_j}R_x = E_{pk_i}(\sum_{j=0}^{5}i^jr_j)\\
+
+Y_i = \prod_{j=0}^{5}E_{pk_i}(i^j)^{s_j} = \prod_{j=0}^{5}\left( g^{i^j}r_y^{n}\right)^{s_j}=g^{\sum_{j=0}^{5}i^js_j}R_y = E_{pk_i}(\sum_{j=0}^{5}i^js_j)\\</script><p>注意到$f(i)=\sum_{j=0}^{5}i^js_j$。已经有Paillier的私钥，虽然随机数不一样，由Paillier同态的性质，解密后：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+t&=D_{sk_i}(X_i)=\sum_{j=0}^{5}i^jr_j \\
+s&=D_{sk_i}(Y_i)=\sum_{j=0}^{5}i^js_j=f(i)
+\end{aligned}</script><p>最终列表使用了shuffle函数加入了50个$X_i$和$Y_i$的干扰项，并打乱了顺序。但是利用承诺$c_j=g^{s_j}h^{r_j}$，$P_i$验证从而找出自己正确的$X_i,Y_i$：</p>
+<script type="math/tex; mode=display">
+\prod_{j=0}^{5} {c_j}^{i^j} = \prod_{j=0}^{5} g^{i^js_j} h^{i^jr_j}
+=g^{\sum_{j=0}^{5} i^js_j} h^{\sum_{j=0}^{5} i^jr_j}=g^sh^t</script><p>完整代码如下。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from gmpy2 import mpz, next_prime
+from Crypto.Util.number import *
+from scipy.interpolate import lagrange
+
+with open(&#39;output&#39;, &#39;r&#39;) as f:
+    content &#x3D; list(filter(lambda x:len(x)&gt;0, f.read().split(&#39;\n&#39;)))
+
+key &#x3D; eval(content[0])
+param &#x3D; eval(content[1])
+commit &#x3D; eval(content[2])
+X_Y &#x3D; eval(content[3])
+_N &#x3D; next_prime(2 ** 512)
+
+q, g, h &#x3D; param
+
+pk &#x3D; [i[0] for i in key]
+sk &#x3D; [i[1] for i in key]
+
+def eval_poly_hx(i, commit):
+    c &#x3D; 1
+    for j in range(len(commit)):
+        c &#x3D; (c * pow(commit[j], (i+1)**j, q)) % q
+    return c
+
+def pillier_dec(i, sk, c):  
+    m &#x3D; ((((pow(c, sk[i][0], pk[i][0]**2) - 1) &#x2F;&#x2F; pk[i][0]) % pk[i][0]**2) * sk[i][1]) % pk[i][0]
+    # m_ &#x3D; ((((pow(c, sk[i][0], pk[i][0]**2) - 1) &#x2F;&#x2F; pk[i][0]) % pk[i][0]**2) * inverse((((pow(pk[i][1], sk[i][0], pk[i][0]**2) - 1) &#x2F;&#x2F; pk[i][0]) % pk[i][0]**2), pk[i][0]**2)) % pk[i][0]
+    # assert m &#x3D;&#x3D; m_
+    return m
+
+f &#x3D; [0] * 6
+
+for item in X_Y:
+    i, x, y &#x3D; item
+    t &#x3D; pillier_dec(i, sk, x)
+    s &#x3D; pillier_dec(i, sk, y)
+    if (pow(g, s, q) * pow(h, t, q)) % q &#x3D;&#x3D; eval_poly_hx(i, commit) % q:
+        f[i] &#x3D; s
+
+F &#x3D; GF(_N)
+points &#x3D; list(zip([i+1 for i in range(6)], f))
+R &#x3D; F[&#39;x&#39;]
+print(long_to_bytes(R.lagrange_polynomial(points)[0]))
+
+# b&#39;DASCTF&#123;fe22ca94-c002-d10b-7104-1c5eff3f335c&#125;&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="CryptoProof-Yourself"><a href="#CryptoProof-Yourself" class="headerlink" title="CryptoProof_Yourself"></a>CryptoProof_Yourself</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">import gmpy2 as gy
+import random
+import functools
+from datetime import datetime
+from Crypto.Cipher import AES
+import base64
+import os
+
+_N &#x3D; gy.next_prime(2 ** 512)
+_rand_int &#x3D; functools.partial(random.SystemRandom().randint, 0)
+
+class Encryptor():
+    def __init__(self):
+        self.pubKey &#x3D; None
+        self.priKey &#x3D; None
+        self.r &#x3D; None
+
+    def __gen_prime__(self, rs, n_bits):
+        p &#x3D; gy.mpz_urandomb(rs, n_bits)
+        while not gy.is_prime(p):
+            p +&#x3D; 1
+        return p
+
+    def __key_gen__(self, n_bits&#x3D;512):
+        while True:
+            rs &#x3D; gy.random_state(datetime.now().microsecond)
+            p &#x3D; self.__gen_prime__(rs, n_bits)
+            q &#x3D; self.__gen_prime__(rs, n_bits)
+            n &#x3D; p * q
+            lmd &#x3D; (p - 1) * (q - 1)
+            if gy.gcd(n, lmd) &#x3D;&#x3D; 1:
+                break
+
+        g &#x3D; n + 1
+        mu &#x3D; gy.invert(lmd, n)
+        self.pubKey &#x3D; [n, g]
+        self.priKey &#x3D; [lmd, mu]
+        return (self.pubKey, self.priKey)
+
+    def encipher(self, plaintext):
+        m &#x3D; plaintext
+        n, g &#x3D; self.pubKey
+        if self.r is None:
+            r &#x3D; gy.mpz_random(gy.random_state(datetime.now().microsecond), n)
+            while gy.gcd(n, r) !&#x3D; 1:
+                r +&#x3D; 1
+            self.r &#x3D; r
+        else:
+            r &#x3D; self.r
+        ciphertext &#x3D; gy.powmod(g, m, n ** 2) * gy.powmod(r, n, n ** 2) % (n ** 2)
+        return ciphertext
+
+    def decipher(self, ciphertext):
+        # The decryption process is hidden
+        return 0xffffffff
+
+
+class Proof():
+    def __init__(self):
+        self.pubKey &#x3D; None
+        self.proof_param &#x3D; None
+        self.pre_param &#x3D; None
+        self.d &#x3D; None
+
+    def setup(self, pk, c1, c2, c3, m1, m2, r1, r2, r3):
+        self.pubKey &#x3D; pk
+        self.proof_param &#x3D; [c1, c2, c3, m1, m2, r1, r2, r3]
+
+    def pre_work_verify(self):
+        c1, c2, c3, m1, m2, r1, r2, r3 &#x3D; self.proof_param
+        m4 &#x3D; gy.mpz_random(gy.random_state(datetime.now().microsecond), self.pubKey[0])
+        pai &#x3D; Encryptor()
+        pai.pubKey &#x3D; self.pubKey
+        c4 &#x3D; pai.encipher(m4)
+        r4 &#x3D; pai.r
+        pai.r &#x3D; None
+
+        c5 &#x3D; pai.encipher(m2 * m4)
+        r5 &#x3D; pai.r
+        pai.r &#x3D; None
+
+        self.pre_param &#x3D; [c4, m4, r4, c5, r5]
+        return c4, c5
+
+    def set_d(self, d):
+        self.d &#x3D; d
+
+    def verify(self):
+        n_2q &#x3D; self.pubKey[0] ** 2
+        c1, c2, c3, m1, m2, r1, r2, r3 &#x3D; self.proof_param
+        c4, m4, r4, c5, r5 &#x3D; self.pre_param
+        d &#x3D; self.d
+
+        e &#x3D; d * m1 + m4
+        a1 &#x3D; pow(r1, d, n_2q) * r4 % n_2q
+        b1 &#x3D; r5 * pow(r3, d, n_2q) % n_2q
+        a2 &#x3D; pow(r2, e, n_2q) * gy.invert(b1, n_2q) % n_2q
+        b2 &#x3D; pow(c3, d, n_2q) * c5 % n_2q
+
+        enc &#x3D; Encryptor()
+        enc.pubKey &#x3D; self.pubKey
+        enc.r &#x3D; pow(r1, d, n_2q) * r4 % n_2q
+        if pow(c1, d, n_2q) * c4 % n_2q !&#x3D; enc.encipher(d * m1 + m4):
+            return False
+        enc.r &#x3D; a2
+        return pow(c2, e, n_2q) * gy.invert(b2, n_2q) % n_2q &#x3D;&#x3D; enc.encipher(0)
+
+class MProof():
+    def __init__(self):
+        self.pubKey &#x3D; None
+        self.priKey &#x3D; None
+        self.cs &#x3D; None
+        self.rs &#x3D; None
+        self.k &#x3D; None
+        self.t &#x3D; 9
+
+    def generate_param(self, pk, cs, rs, k):
+        self.pubKey &#x3D; pk[0]
+        self.priKey &#x3D; pk[1]
+        self.cs &#x3D; cs
+        self.rs &#x3D; rs
+        self.k &#x3D; k
+
+    def verify(self, d):
+        enc &#x3D; Encryptor()
+        enc.pubKey &#x3D; self.pubKey
+        enc.priKey &#x3D; self.priKey
+        cs &#x3D; self.cs
+        rs &#x3D; self.rs
+        k &#x3D; self.k
+        t &#x3D; self.t
+        assert k &#x3D;&#x3D; enc.decipher(cs[0])
+        for i in range(1, t - 1):
+            c1 &#x3D; cs[0]
+            c2 &#x3D; cs[i - 1]
+            c3 &#x3D; cs[i]
+            m2 &#x3D; enc.decipher(cs[i - 1])
+            r1 &#x3D; rs[0]
+            r2 &#x3D; rs[i - 1]
+            r3 &#x3D; rs[i]
+
+            proof &#x3D; Proof()
+            proof.setup(self.pubKey, c1, c2, c3, k, m2, r1, r2, r3)
+
+            proof.pre_work_verify()
+            proof.set_d(d)
+
+            if not proof.verify():
+                return False
+        return True
+
+def main():
+    flag &#x3D; os.environ[&quot;flag for GFCTF2022-Crypto Proof Yourself&quot;]
+    k &#x3D; _rand_int(_N - 1)
+    print(&quot;k: &quot;, k)
+    d &#x3D; _rand_int(_N - 1)
+    print(&quot;d: &quot;, d)
+    param &#x3D; eval(input(&quot;please proof yourself: &quot;))
+
+    cs &#x3D; param[&#39;cs&#39;]
+    rs &#x3D; param[&#39;rs&#39;]
+    pk &#x3D; param[&#39;pk&#39;]
+
+    print(pk[0])
+    print(rs)
+    mp &#x3D; MProof()
+    mp.generate_param(pk, cs, rs, k)
+    if mp.verify(d):
+        s &#x3D; 1
+        for i in cs:
+            s *&#x3D; i
+            s %&#x3D; _N
+        aes &#x3D; AES.new(str(s)[:32].encode(), AES.MODE_ECB)
+        flag &#x3D; flag.encode()
+        while len(flag) % AES.block_size !&#x3D; 0:
+            flag +&#x3D; b&#39;\x00&#39;
+        c &#x3D; aes.encrypt(flag)
+        c &#x3D; base64.b64encode(c)
+        print(c)
+    else:
+        print(&quot;you&#39;re not yourself!&quot;)
+
+if __name__ &#x3D;&#x3D; &#39;__main__&#39;:
+    main()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>同样是Paillier，开始以为是ZKP，然而不是，没看出来题目原型是什么证明。首先给定一些证明的参数$c_1, c_2, c_3, k, m_2, r_1, r_2, r_3$，验证输入$d$时会经过一个验证的参数预处理阶段Proof.pre_work_verify()，生成预处理参数$c_4, m_4, r_4, c_5, r_5$，调用验证函数在MProof.verify()，真正验证的地方在Proof.verify()中。其中已知的列表rs，依次提供$r_1,r_2,r_3$且$r_1$始终为rs[0]；列表cs依次提供$c_1,c_2,c_3$，$c_1$始终为cs[0]，并且作为$m_1=k$的密文，列表cs所有元素的乘积作为AES的密钥，目标是获得完整的cs。</p>
+<p>分析Proof.pre_work_verify()生成参数的关系(在模$n^2$下)：</p>
+<script type="math/tex; mode=display">
+c_4=g^{m_4}{r_4}^{n} \\
+c_5=g^{m_5}{r_5}^{n} \\</script><p>分析Proof.verify()验证中(在模$n^2$下)：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+e&=dm_1+m_4 \\
+a_1 &= r_1^d\cdot r_4 \\
+b_1 &= r_5\cdot r_3^d \\
+a_2 &= r_2^e\cdot b_1^{-1}\\
+b_2 &= c_3^d\cdot c_5
+\end{aligned}</script><p>验证通过需要满足两个条件：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+{c_1}^d\cdot c_4&=E(e)=g^e{a_1}^{n}\\
+{c_2}^e \cdot b_2^{-1}&=E(0)={a_2}^{n}
+\end{aligned}</script><p>显然第一个等式成立。对第二个式子代入变形，用$\hat{r}$表示Paillier加密时的未知随机数：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+c_2^e&=a_2^n\cdot b_2 \\
+&={r_2}^{en}\cdot ({b_1}^{n})^{-1}\cdot b_2\\
+&={r_2}^{en}\cdot ({r_5\cdot r_3}^{n})^{-1}\cdot {c_3}^d\cdot g^{m_2m_4}{r_5}^{n}\\
+&={r_2}^{en}\cdot ({r_3}^{n})^{-1}\cdot {c_3}^d\cdot g^{m_2m_4}\\
+{c_2}^e\cdot {r_3}^{n}&={r_2}^{en}\cdot {c_3}^d\cdot g^{m_2m_4}\\
+(g^{m_2}{\hat{r}}^{n})^{dm_1+m_4}\cdot r_3^n &= {r_2}^{en}\cdot {c_3}^d\cdot g^{m_2m_4}\\
+g^{dm_1m_2}{\hat{r}}^n&={\hat{r}}^{n}\cdot{g^{dm_3}}
+\end{aligned}</script><p>在模$n^2$下，任意的$\hat{r}$都满足${(\hat{r}})^n\equiv 1(\bmod n^2)$，结合$D(c_2)=m_2$，所以真正验证的是如下关系：</p>
+<script type="math/tex; mode=display">
+m_1\cdot m_2=m_3</script><p>因为$m_1=k$，第一轮$m_1\cdot m_1=m_2$，依次算出所有的$m_i=k^{i}$。现在知道了Paillier加密的所有明文，cs列表是其对应的密文集合。题目不太严谨的地方是并没有说明加密中所用的随机数是rs，只能猜测：</p>
+<script type="math/tex; mode=display">
+cs[i]=E(k^{i+1})=g^{k^{i+1}}\cdot (rs[i])^n</script><pre class="line-numbers language-python" data-language="python"><code class="language-python">import base64 
+from Crypto.Util.number import *
+from Crypto.Cipher import AES
+from functools import reduce
+import gmpy2 as gy
+
+k &#x3D; 11279504534075664648994853756208309836888259081316987836068134565254532996039360827546417609514423428910384542842117375028420780633866653159695275393368525
+d &#x3D; 10221665185656075870670995630062725196664430105025904882602057721789662854574978018794504264934209067929011475979200882531626936657436063908347321906634698
+pk &#x3D; [48818225666351727287207574448645102762537417687444983843100304919285725062598967011116889972414214836241381602471131430626879759533369143920487299838261148460925610689261484965443528954172944323770181595455493018560585886136460076911284321702606299935385905187490733877700172236929823996030434548431963845417, 48818225666351727287207574448645102762537417687444983843100304919285725062598967011116889972414214836241381602471131430626879759533369143920487299838261148460925610689261484965443528954172944323770181595455493018560585886136460076911284321702606299935385905187490733877700172236929823996030434548431963845418]
+rs &#x3D; [7017835444643249654271082822123622319668823350427792339866057586668389112104752762656197513200543360993520983724957230042201508973227162755834455588213955577427129770220944523362675094151087610149577572745132843096125306714661937578722687485657829513505193501779196974947234280267216675125252078851200384511, 11926419785881734844311665235521692826579887231998046623960612782040667947241499738956574205257924912658501445776452678070116549164041547529876699253294424780763676555577471679864402445858336882095147665188840642566915806261768356998922735189200720213585973193760859762565499482788728104626011895319246070666, 42849056994192303821377400100288133996583852078950720125488290595760149056455393645072193770289570081775019724341661792638180771853532605128714550478335577195726229688940314874397525687446284173037582151644404387768530054222357908795147990398041926171515316417608763369700129500666902309717940977358807727525, 569456034348887900543839220414996643340590767934767190156995758515165897120739581783360541347732807472270912131379832279120488198273011491688831841399829273608264595546111772893429063435258947915507670361144515456182164834954215193382047579447153761545329658264080907041640135001986168270265476743567482692, 3882702856238247498776796661311784006527802920550510293689922477675526354665322642479849874736259591551374176143098918760791897417239069537473431992448934909453262242143947844529634470612342500819944459175262578570970986439077317400529787443727039336276584314877540411569781766947088676007567558786204756622, 34782235652997768305926510863494232383450368915240504241174297907018847182768375070693257841105403770877838315164696945795337955510221866283665914601590428884905858716454103802020812133141150426745257298797890891272342044576267512614330845263269719988690131903885166576787904418689220619969803389055644879283, 41592967491176047854989428284345162501007190601227408901070248204262133730525966700579489348638677097892234799114781714483501047161590906530561145043956218048476973681993844049727301616425300184917461748554561251157129032137452031152035104390819324726028213814331358281835310137578997975640720667608761964678, 2578609445428238934369429276761562264275224240462388961086309951471476260768389780485799474959219453117497280460546287104687546269870223859389440049894002336889078632572487931627548008400365190508858547984095575105551066221392543458691134989381950316158817283668533035090342510306180189918351739923749743570]
+c &#x3D; b&#39;Oq5bkAPCCT6W3CskX+2uqtY5wrhs+2DqupzjIJ0u&#x2F;Yl0m&#x2F;Ig1&#x2F;uvrSWdezrqLxHG&#39;
+_N &#x3D; gy.next_prime(2 ** 512)
+
+s &#x3D; reduce(lambda x,y: (x*y)%_N, [gy.powmod(pk[1], k**(i+1), pk[0]**2) * gy.powmod(rs[i], pk[0], pk[0]**2) % (pk[0]**2) for i in range(8)])
+aes &#x3D; AES.new(str(s)[:32].encode(), AES.MODE_ECB)
+f &#x3D; aes.decrypt(base64.b64decode(c))
+print(f)
+
+# b&#39;DASCTF&#123;6c2d3ab0-cd47-ba82-5c51-fd7d4ea332c0&#125;\x00\x00\x00\x00&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+    </div>
+
+</div>
+				
+					<div>
+    <ul class="post-copyright">
+      <li class="post-copyright-author">
+
+      <strong>本文作者:  </strong><a href="https://qsang.xin">姜姜酱</a>
+      </li>
+      <li class="post-copyright-link">
+      <strong>本文链接:  </strong>
+	  <a href="https://qsang.xin/2022/10/27/DASCTFXGFCTF2022/" target="_blank" title="aa">https://qsang.xin/2022/10/27/DASCTFXGFCTF2022/</a>
+      </li>
+      <li class="post-copyright-license">
+        <strong>版权声明:   </strong>
+        本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+        许可协议。转载请注明出处!
+      </li>
+    </ul>
+<div>
+				
+                <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="footer">
+    <span>Copyright © 2022 姜姜酱</span>
+
+	<span id="busuanzi_container_site_pv">
+    本站访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span>@QSANG</a></span>
+</div>
+
+<link rel="stylesheet" href="/css/a11y-dark.min.css">
+
+
+<script src="/js/highlight.min.js"></script>
+
+
+<script src="/js/highlightjs-line-numbers.js"></script>
+
+
+<script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+</script>
+
+            </div>
+        </div>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

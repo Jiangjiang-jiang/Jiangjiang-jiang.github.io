@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+	
+<!-- baidu_tongji -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?0a3d5f5625415746246872fefe2c1f97";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- End baidu_tongji -->
+
+
+	
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YHNVSYV4EM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YHNVSYV4EM');
+</script>
+
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <link rel="alternate icon" type="image/png" href="/img/favicon.png">
+    <title>姜姜酱 | </title>
+    
+<link rel="stylesheet" href="/css/reset.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/css/markdown.css">
+
+    
+<link rel="stylesheet" href="/css/fonts.css">
+
+<meta name="generator" content="Hexo 6.1.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
+    <body>
+        <div class="paper">
+            <div class="paper-main">
+                
+                    <div class="post-header">
+    <a class="logo" href="/">姜姜酱</a>
+    <a class="go-home" href="/">
+        <svg width="8" height="14" viewBox="0 0 8 14">
+            <path d="M7 1L1 7l6 6" stroke="#000" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+</div>
+                
+                <div class="post-main">
+
+    
+        <div class="post-main-title">
+            论文笔记：Locally Verifiable Signature and Key Aggregation
+        </div>
+        <div class="post-meta">
+            2022-07-17
+        </div>
+    
+
+    <div class="post-md">
+        <p>论文主要贡献是在单签名者(single-signer)设置下，提出了两种局部可验证的聚合签名构造以及衍生出的一种私钥聚合的IBE方案。局部可验证聚合签名分别基于strong RSA和q-DHI假设的构造，加密方案则在第二种签名构造的基础上稍微变动，基于q-BDHI假设。</p>
+<blockquote>
+<p>Title: Locally Verifiable Signature and Key Aggregation</p>
+<p>Author: Rishab Goyal, Vinod Vaikuntanathan</p>
+<p>Publication: Crypto 2022</p>
+<p>Link: <a target="_blank" rel="noopener" href="https://eprint.iacr.org/2022/179.pdf">https://eprint.iacr.org/2022/179.pdf</a></p>
+</blockquote>
+<h3 id="局部可验证聚合签名"><a href="#局部可验证聚合签名" class="headerlink" title="局部可验证聚合签名"></a>局部可验证聚合签名</h3><p>局部可验证聚合签名算法由元组(Setup, Sign, Verify, Aggregate, AggVerify, LocalOpen, LocalAggVerify)构成。其中Sign和Verify是单条签名的签名及验证，Aggregate和AggVerify是聚合签名的签名及验证，LocalOpen表示局部打开(提示生成器生成提示)，LocalAggVerify是验证者利用提示信息对聚合签名进行局部验证。</p>
+<p>签名者在$\ell$个消息上生成$\ell$个合法的签名，在消息和签名组成的序列$\{(m_i,\sigma_i)\}_{i=1}^{\ell}$上生成的聚合签名$\hat{\sigma}$。对一般的聚合签名方案来说，在验证$\hat{\sigma}$的时候，验证者需要整个消息集合$\mathcal{M}=\{m_i\}_{i=1}^{\ell}$。而具有局部可验证性质的聚合签名，允许验证者在不知道整个消息集合的情况下，单独对某一条消息$m\in\mathcal{M}$进行验证，这样就把验证者的验证时间由$O(n)$降到了$O(1)$。</p>
+<p>整个过程可以看作之前的聚合签名算法是对多个签名进行了压缩，将单条签名$O(N)$的空间复杂度降到了$O(1)$，但是这样的压缩不可逆，验证者必须知道所有消息才能进行验证，而论文给出了一个可逆的方法，但是额外增加了一个公共的提示生成器(hint generator)，提示生成器不需要知道签名的私钥，且拥有完整的$\mathcal{M}$，其时间复杂度是$O(N)$。所以说，该方案可以看作是传统签名方案和聚合方案之间的一个时间-空间折中的过渡方案。</p>
+<h3 id="基于RSA的局部可验证签名"><a href="#基于RSA的局部可验证签名" class="headerlink" title="基于RSA的局部可验证签名"></a>基于RSA的局部可验证签名</h3><p>首先我们先来回顾下传统RSA签名的构造。RSA签名可以简单地将加密方案中公私钥交换，即$\sigma\equiv h(m)^d(mod\ n)$，通过验证同余式$\sigma^e\equiv h(m)(mod\ n)$来判断签名是否被正确签署。如果有$\ell$个消息及对应的签名，将签名的乘积作为聚合签名$\hat{\sigma}$：</p>
+<script type="math/tex; mode=display">
+\hat{\sigma}\equiv \prod_{i}\sigma(mod\ n)</script><p>那么聚合签名可以通过</p>
+<script type="math/tex; mode=display">
+\hat{\sigma}^{e}\equiv \prod_{i=1}H(m_i)(mod\ n)</script><p>来验证。假设要局部验证的消息是$m_j$，一个很自然的想法是将消息序列中所有除$H(m_j)$的所有散列值乘起来，作为提示生成器的输出$h$，来辅助验证：</p>
+<script type="math/tex; mode=display">
+\hat{\sigma}^{e}\equiv hH(m_j)(mod\ n)</script><p>然而在这样的构造中，验证者无法得知$h$是否是由$\ell-1$个散列值正确生成的，也就是说，存在提示生成器是恶意的可能，要验证正确性的唯一方法是知道这$\ell-1$个消息，这和局部验证的性质矛盾。</p>
+<p>论文的构造采用了已有的[GHR99]方案中，选择$\lambda/2$长的素数$p$和$q$，计算$n=pq$，随机选择$g\in\mathbb{Z}_n^*$，$(n,g)$作为公钥，$(p,q)$作为私钥，对于单个消息$m$，$e_{m}$表示$m$的散列，单条签名</p>
+<script type="math/tex; mode=display">
+\sigma\equiv g^{1/e_{m}}(mod\ n)</script><p>签名者只有知道了$n$的分解，才能计算$e_m^{-1}\ mod\ \phi(n)$，因此可以产生正确的签名。验签只需要验证$\sigma^{e_m}\equiv g(mod\ n)$是否成立。$e_{m}$不同于密码学意义上的哈希函数，而是采用了确定素数序列的生成器，输出是长度$1+\lambda$长的确定素数，用PRF或者哈希函数族进行实例化，满足有效采样和抗碰撞的性质(构造和安全性证明都类似于[CMS99]和[MRV99])，分别达到在标准模型和ROM下的安全性要求。Aggregate通过$\sigma$相乘简单进行聚合，生成聚合签名$\hat{\sigma}$：</p>
+<script type="math/tex; mode=display">
+\hat{\sigma}=\prod_{i=1}^{\ell}\sigma_i(mod\ n)</script><p>在模$n$下，推导聚合签名的验证等式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\hat{\sigma} &\equiv g^{1/e_{m_1}}g^{1/e_{m_2}}\cdots g^{1/e_{m_\ell}}\\
+&\equiv g^{1/e_{m_1}+1/e_{m_2}+\cdots +1/e_{m_\ell}} \\
+&\equiv g^{(e_{m_2}e_{m_3}\cdots e_{m_{\ell}}+e_{m_1}e_{m_3}\cdots e_{m_{\ell}}+\cdots+e_{m_1}e_{m_2}\cdots e_{m_{\ell-1}})/{e_{m_1}e_{m_2}\cdots e_{m_{\ell}}}}\\
+\end{aligned}</script><p>两边同时进行$e_{\boldsymbol{m}}=e_{m_1}e_{m_2}\cdots e_{m_{n}}$次方,得到$\hat{\sigma}^{e_{m_1}e_{m_2}\cdots e_{m_{n}}} \equiv g^{e_{m_2}e_{m_3}\cdots e_{m_{n}}+e_{m_1}e_{m_3}\cdots e_{m_{n}}+\cdots+e_{m_1}e_{m_2}\cdots e_{m_{n-1}}} $，即验证聚合签名AggVerify：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\hat{\sigma}^{e_{\boldsymbol{m}}}&\equiv \prod_{i} g^{\prod_{j\not =i}e_{m_j}}
+\end{aligned}</script><p>考虑加入局部验证的性质，这就需要提示生成器的LocalOpen生成一些辅助的信息(opening)。如果我们局部地去验证$m_j$，$e_{m_j}$是可以由$m_j$计算出来，除去$e_{m_j}$这一项，就变成了：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+
+\hat{\sigma}^{e_{m_1}e_{m_2}\cdots e_{m_{j-1}}e_{m_{j+1}}\cdots e_{m_{\ell}}}&\equiv g^{(e_{m_2}e_{m_3}\cdots e_{m_{\ell}}+e_{m_1}e_{m_3}\cdots e_{m_{\ell}}+\cdots+e_{m_1}e_{m_2}\cdots e_{m_{\ell-1}})/e_{m_j}} \\
+
+&\equiv g^{(e_{m_1}e_{m_2}\cdots e_{m_{j-1}}e_{m_{j+1}}\cdots e_{m_{\ell}})/e_{m_j}} g^{e_{m_2}e_{m_3}\cdots e_{m_{j-1}}e_{m_{j+1}}\cdots e_{m_{\ell}}+e_{m_1}e_{m_3}\cdots e_{m_{j-1}}e_{m_{j+1}}\cdots e_{m_{\ell}}+\cdots+e_{m_1}e_{m_2}\cdots e_{m_{j-1}}e_{m_{j+1}}\cdots e_{m_{\ell-1}}} \\
+\end{aligned}</script><p>这样用$e_{\boldsymbol{m}\backslash m_j}$表示除$e_{m_j}$外的所有$e_{m_i}$的乘积，$f_j=\sum_{i\not = j}\prod_{k\not = {i,j}}e_{m_k}$，其含义就是缺少某一项$e_{m_i}$和$e_{m_j}$以外的所有$e_{m_k}$相乘。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\hat{\sigma}^{e_{\boldsymbol{m}\backslash m_j}}&\equiv g^{e_{\boldsymbol{m}\backslash m_j}/e_{m_j}}g^{f_j}
+\end{aligned}</script><p>将$g^{f_i}$移到左边后再$e_{m_j}$次方，验证等式为：</p>
+<script type="math/tex; mode=display">
+\left(\hat{\sigma}^{e_{\boldsymbol{m}\backslash m_j}} / g^{f_j}\right)^{e_{m_j}}  \overset{?}{\equiv} g^{e_{\boldsymbol{m}\backslash m_j}}</script><p>此时我们拥有的信息已经包括了$\hat{\sigma}$和$g,n$，并且可以自己计算$e_{m_j}$，如果额外知道$e_{\boldsymbol{m}\backslash m_j}$和$f_j$的值，便可以通过上面的等式来局部验证聚合签名$\hat{\sigma}$。但是我们发现，提示生成器来无法直接计算两个值，首先生成器不知道模数$n$的分解，指数无法模去$\phi(n)$导致乘积很大，其次它没办法计算$g^{-f_j}$。这里用到了一个叫做Shamir trick的巧妙方法：</p>
+<blockquote>
+<p>Shamir trick：已知$x,y\in \mathbb{Z}_n$和$a,b\in \mathbb{Z}$，$x^a\equiv y^b(mod\ n)$且$(a,b)=1$，存在一个有效的算法计算$z$，使得$z^a\equiv y(mod\ n)$</p>
+<ul>
+<li>$(a,b)=1$，那么存在$\alpha,\beta\in\mathbb{Z}$，满足$\alpha a+\beta b=1$</li>
+<li>计算$z=y^{\alpha}x^{\beta}$</li>
+</ul>
+<p>验证该算法的正确性，$z^a\equiv y^{\alpha a}x^{\beta a}\equiv y^{\alpha a+\beta b}\equiv y(mod\ n)$。</p>
+</blockquote>
+<p>令$x=\hat{\sigma}^{e_{\boldsymbol{m}\backslash m_j}} / g^{f_j}=g^{e_{\boldsymbol{m}\backslash m_j}/e_{m_j}},y=g,a=e_{m_j},b=e_{\boldsymbol{m}\backslash m_j}$，提示生成器知道所有的消息序列，从而计算$b$。$e_{\boldsymbol{m}\backslash m_j}$和$e_{m_j}$都是素数，满足$(e_{\boldsymbol{m}\backslash m_j},e_{m_j})=1$。在不知道$n$的分解下，提示生成器生成辅助信息$z$满足$z^{e_{m_j}}=g$：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+g^{1/e_{m_j}}&\equiv g^{(\alpha e_{m_j}+\beta e_{\boldsymbol{m}\backslash m_j})/e_{m_j}}\equiv g^{\alpha}\left( g^{e_{\boldsymbol{m}\backslash m_j}/e_{m_j}}\right)^{\beta}\equiv y^{\alpha}x^{\beta} \\
+\end{aligned}</script><p>发现提示生成器输出的$z$刚好是$m_j$的签名，意味着提示生成器能够公开解压缩$\hat{\sigma}$为单个签名，我们直接将$m_j$和$z$作为Verify的输入，就可以完成验证。</p>
+<p>方案的安全性可以规约到Strong RSA的安全性上，在标准模型下满足统计不可伪造，在ROM中满足完全不可伪造，证明比较简单，论文描述也很清晰，参照原文安全性证明。</p>
+<blockquote>
+<p>RSA assumption：已知$n,e$和随机的$y\in\mathbb{Z}_n^{*}$，很难找到这样的一个$x$，使得$x$满足$x^e\equiv y(mod\ n)$</p>
+<p>Strong RSA assumption：已知$n$和随机的$y\in\mathbb{Z}_n^{*}$，很难找到$(x,e)$，使得$x^e\equiv y(mod\ n)$</p>
+</blockquote>
+<p>可以发现，实际上方案中的Shamir trick运用里面已经蕴含了Strong RSA的假设。</p>
+<h3 id="基于Pairing的局部可验证签名"><a href="#基于Pairing的局部可验证签名" class="headerlink" title="基于Pairing的局部可验证签名"></a>基于Pairing的局部可验证签名</h3><p>第二种构造是一种full public(提示生成器不仅没有私钥，还没有$\hat{\sigma}$)、基于q-BHI假设的局部可验证签名方案。</p>
+<blockquote>
+<p>q-BHI assumption：已知双线性对$e:\mathbb{G\times G}\rightarrow \mathbb{G}_T$，其中$\mathbb{G}$和$\mathbb{G}_T$的阶为$p$，$g$是$\mathbb{G}$的一个生成元，$a$是$\mathbb{Z}_p^{*}$上的随机元素，即使敌手知道$q\in\mathbb{Z}$的序列$(g^a,g^{a^2},g^{a^3},\cdots,g^{a^q})$，很难计算出$g^{1/a}$</p>
+</blockquote>
+<p>q-BHI是一个非标准的假设，并且事先要计算一个$q$长的公开序列，因此在这种构造中，聚合签名的数目以$q$为上界，也就是说，最多只能聚合$q$条签名。基于配对的签名私钥是$\mathbb{Z}_p^{*}$上一个随机的$\alpha$，$g$是群$\mathbb{G}$上的一个随机生成元，公钥为$q$长的序列$(g^a,g^{a^2},g^{a^3},\cdots,g^{a^q})$，$h$同样是消息$m$的散列，现在的Sign算法为：</p>
+<script type="math/tex; mode=display">
+\sigma=g^{1/(\alpha+h_i)}</script><p>Verify很容易通过一次配对$e(\sigma, g^\alpha g^h)\overset{?}{=}e(g,g)$来验证。和第一种方案的Aggregate不同，这里的Aggregate算法不再是所有签名的乘积，指数相加的形式，而是指数相乘：</p>
+<script type="math/tex; mode=display">
+\hat{\sigma}=g^{\prod_{i=1}^{\ell}1/(\alpha+h_i)}</script><p>但是此时我们会产生一个疑问，Aggregate是一个公开聚合的算法，没有私钥$\alpha$的情况下$\hat{\sigma}$似乎不能聚合。这里同样使用了一个巧妙的方法，利用拉格朗日插值，在只知道散列序列$\{h_i\}$的情况下去计算$\hat{\sigma}$的值。</p>
+<blockquote>
+<p>Lagrange inverse polynomial interpolation: 已知$\ell$长的点对$\{(x_i,y_i)\}$，可以找到唯一一个$\ell-1$阶的多项式$p(x)$经过所有的点对。定义$L_j(x)$为一个在$x_j$上取值为1，在其余$\ell-1$个点上取值为0的多项式，容易知道$y_jL_j(x)$一定会经过$(x_i,y_i)$。</p>
+<script type="math/tex; mode=display">
+p(x)=\sum_{j\in[\ell]}y_jL_j(x) \quad  \quad L_j(x)=\frac{\prod_{i\not=j}(x-x_j)}{\prod_{i\not=j}(x_j-x_i)}</script></blockquote>
+<p>尝试将指数乘积转化成相加：</p>
+<script type="math/tex; mode=display">
+\prod_{i=1}^{\ell} \frac{1}{\alpha+h_i}=\frac{\gamma_1}{\alpha+h_1}+\cdots+\frac{\gamma_\ell}{\alpha+h_\ell}</script><p>如果仅仅依赖于$\{h_i\}$，能够公开地计算每个$\gamma_i$，那么就可以公开地计算等式左边，从而算出$\hat{\sigma}$。现在假设有$\ell$个点$\{(x_i,y_i)\}$，将所有的$y_i$设置成1，我们很容易找到一个多项式$p’(x)=\prod_{i}(x-x_i)+1$和由拉格朗日插值得到的多项式$p(x)=\sum_{j\in[\ell]}L_j(x)$相等，$p’(x)$和$p(x)$齐次。那么有：</p>
+<script type="math/tex; mode=display">
+\prod_{i}(x-x_i)+1=\sum_{j\in[\ell]}\frac{\prod_{i\not=j}(x-x_j)}{\prod_{i\not=j}(x_j-x_i)}</script><p>两边同时除以项$\prod_{i}(x-x_i)$：</p>
+<script type="math/tex; mode=display">
+1+\frac{1}{\prod_{i}(x-x_i)}=\sum_{i\in[\ell]}\frac{\Delta_j}{x-x_i} \quad \quad \Delta_i=\frac{1}{\prod_{i\not=j}(x_i-x_j)}</script><p>注意到$\Delta_i$可以由$\{x_i\}$单独计算，如果将$-h_i$作为$x_i$代入，发现$\Delta_i$其实就是要计算的$\gamma_i$，变量$x$就是秘密的$\alpha$。这样一来，计算聚合签名$\hat{\sigma}$：</p>
+<script type="math/tex; mode=display">
+\hat{\sigma}=\prod_{i}\sigma_i^{\gamma_i}</script><p>聚合的验证算法Verify中，把$\alpha$看作变量，$\prod_{i=1}^{\ell}(X+h_i)$看作是$\ell$次的多项式$\sum_{i=1}^{\ell}\delta_iX^i$，次数为$i$的项系数为$\delta_i$，公钥中已经提供了$g^{\alpha^i}$，因此用一次双线性配对就可以验证(之前的聚合签名算法的验证需要$n$次配对，这也是这篇论文优化的地方)：</p>
+<script type="math/tex; mode=display">
+e(\hat{\sigma},\prod_{i}(g^{\alpha^i})^{\delta_i})=e(g,g)</script><p>在此基础上增减局部可验证的性质，考虑提示生成器的输出。局部验证消息$m_j$，输出两个辅助信息：</p>
+<script type="math/tex; mode=display">
+aux_1=g^{\prod_{i\not =j}(\alpha+h_i)}\quad \quad aux_2=g^{\alpha{\prod_{i\not =j}(\alpha+h_i)}} \quad \quad</script><p>$aux_2$是$aux_1$的$\alpha$次方，其目的是由$aux_2$提供指数上的$\alpha$，由$aux_1$的$h_j$次方提供指数上的$h_j$。在实际计算中，$\prod_{i\not =j}(\alpha+h_i)$转化为多项式，计算每一项的系数$\tilde\delta_i$，$aux_1$和$aux_2$等价于：</p>
+<script type="math/tex; mode=display">
+aux_1={\prod_{i=1}^{\ell-1}(g^{\alpha^i})^{\tilde\delta_i}}\quad \quad aux_2={\prod_{i=1}^{\ell-1}(g^{\alpha^{i+1}})^{\tilde\delta_i}} \quad \quad</script><p>所以只需验证配对等式：</p>
+<script type="math/tex; mode=display">
+e(\hat{\sigma},aux_1^{h_j}aux_2)=e(g,g)</script><p>额外附加对$aux_1,aux_2$正确性的验证：</p>
+<script type="math/tex; mode=display">
+e(g^{\alpha},aux_1)=e(g,aux_2)</script><p>从而完成$m_j$局部的局部验证，注意到LocalVerify的过程中只用到$g^{\alpha}$，没有必要知道公钥序列的其它部分，只有在LocalOpen的阶段才会用到长公钥序列，这保障了局部验证的效率。方案安全性证明同样采用规约，详见原文，略。</p>
+<h3 id="密钥聚合的加密方案"><a href="#密钥聚合的加密方案" class="headerlink" title="密钥聚合的加密方案"></a>密钥聚合的加密方案</h3><p>密钥聚合加密方案由第二个构造衍生而来，论文中提出在基于身份的加密(IBE)或者基于属性的加密(ABE)中，会有一个第三方使用自己的主密钥$\alpha$，一个用户可能有$\ell$个身份信息$id_1,id_2,\dots,id_\ell$作为公钥，这个第三方对用户的其中一个$id_i$生成对应私钥$sk_{id_i}$并发送给用户，如果把该用户$\ell$个私钥压缩成一个聚合密钥$\hat{sk}$，这将减少私钥的存储空间。当用户使用其中任意一个公钥对消息$m$进行加密得到密文$c$，用户利用$c,\hat{sk}$以及所有的公钥序列，能够正确解密出$c$对应的明文$m$。密钥聚合、加解密如下所示，参数表达含义和基于配对的方案中一致。</p>
+<ul>
+<li>密钥聚合</li>
+</ul>
+<script type="math/tex; mode=display">
+\hat{sk}=g^{\prod_{i=1}^{\ell}1/(\alpha+h_i)}=\prod_{i=1}^{\ell}(g^{\alpha^i\delta_i})^{-1}</script><ul>
+<li>加密过程</li>
+</ul>
+<script type="math/tex; mode=display">
+c=(\{g^{r(\alpha+h_{id})\alpha^i}\}_{i=1}^{\ell},e(g,g)^rm)</script><ul>
+<li>解密过程中，如果密文是$c_j$，首先要计算除了$(\alpha+h_{id_j})$外所有$(\alpha+h_{id_i})$的多项式系数$\tilde\delta_i$(模$p$下)，然后解密出明文：</li>
+</ul>
+<script type="math/tex; mode=display">
+m=\frac{e(g,g)^rm}{e(\prod_{i=1}^{\ell-1}g^{r(\alpha+h_{id_j})\alpha^i\tilde\delta_i},\hat{sk})}</script><p>$\alpha+h_{id_j}$补上了唯一缺失的项，加解密的正确性很容易验证。同时引入了随机数$r$进行概率加密，保证了加密方案的语义安全。底层使用的假设是q-BDHI，是q-DHI的双线性对版本，由于q-BDHI的限制，聚合的密钥数目上限仍然是q。最后方案的CCA1安全归约到q-BDHI和标准模型下的hash map以及CCA2安全归约到q-BDHI和ROM的hash上。</p>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><ul>
+<li><p>证书透明(CT) 创建公开日志，记录所有由CA颁发的证书，可以定期对日志进行审计，识别错误或恶意颁发的证书。用户收到来自网站的证书$\sigma$，CT日志里面检查是否存在这样一个条目，检查通过后和网站进行连接。聚合签名能够降低CT的存储，但是网络环境不允许用户下载所有CT条目中对应的消息，局部可验证的签名可以做到这一点。虽然提示生成器生成提示信息的代价很高，但它可以由不可信任的服务器计算，缓存访问频率高的提示来提高性能。</p>
+</li>
+<li><p>另一种应用场景出现在区块链中，把某一个用户所有交易集的签名聚合起来，当审计的时候计算简短的提示信息来让审计方快速审计某一特定交易。</p>
+</li>
+<li><p>服务器存储$n$条消息以及对应的$n$条签名，客户端要验证某几条签名。局部可验证的签名允许时间和空间上的均衡，将$n$条消息划分成长度是$L$的消息块，聚合$L$条签名，服务器端的存储变为$O(N/L)$。</p>
+<p><img src="https://i.bmp.ovh/imgs/2022/07/17/2ea1b0ce9515501f.png" alt=""></p>
+<p>表中显示的是不同签名方案下，签名服务器和验证客户端的时间空间复杂度。第一行Vanilla signature是传统的单条消息-签名方案，第二行是聚合签名方案，第三行是本文提出的局部可验证聚合签名，第四行是一种混合模式。在混合模式下，每个块有$L_2$条消息，签名者计算块的哈希值，生成一个签名，$L_1$个块作为一个大块，所以生成$L_1$个签名，聚合$L_1$个签名并存储。服务器存储的签名个数是$N/L_1L_2$。客户端验证时，在块中检索需要$O(L_2)$的时间，回应客户端的请求，服务器花$O(L_1)$的时间生成提示。</p>
+</li>
+<li><p>文档的可修订签名(redactable signature)。可修订签名要求可以对文档的签名进行更新。将文档划分为小的消息块，分别签署每个小的消息块，聚合这些签名作为整个文档的签名。修改方对文档每一个未修改的部分生成hint，包含在修订后的签名里面。</p>
+</li>
+</ul>
+<p>(思考：1. pairing的方案类似于VRF；2. 有没有更合适的应用场景；3. redactable blockchain)</p>
+
+    </div>
+
+</div>
+				
+					<div>
+    <ul class="post-copyright">
+      <li class="post-copyright-author">
+
+      <strong>本文作者:  </strong><a href="https://qsang.xin">姜姜酱</a>
+      </li>
+      <li class="post-copyright-link">
+      <strong>本文链接:  </strong>
+	  <a href="https://qsang.xin/2022/07/17/Locally/" target="_blank" title="aa">https://qsang.xin/2022/07/17/Locally/</a>
+      </li>
+      <li class="post-copyright-license">
+        <strong>版权声明:   </strong>
+        本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+        许可协议。转载请注明出处!
+      </li>
+    </ul>
+<div>
+				
+                <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="footer">
+    <span>Copyright © 2022 姜姜酱</span>
+
+	<span id="busuanzi_container_site_pv">
+    本站访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span>@QSANG</a></span>
+</div>
+
+<link rel="stylesheet" href="/css/a11y-dark.min.css">
+
+
+<script src="/js/highlight.min.js"></script>
+
+
+<script src="/js/highlightjs-line-numbers.js"></script>
+
+
+<script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+</script>
+
+            </div>
+        </div>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

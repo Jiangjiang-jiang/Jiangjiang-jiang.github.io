@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+	
+<!-- baidu_tongji -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?0a3d5f5625415746246872fefe2c1f97";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- End baidu_tongji -->
+
+
+	
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YHNVSYV4EM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YHNVSYV4EM');
+</script>
+
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <link rel="alternate icon" type="image/png" href="/img/favicon.png">
+    <title>姜姜酱 | </title>
+    
+<link rel="stylesheet" href="/css/reset.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/css/markdown.css">
+
+    
+<link rel="stylesheet" href="/css/fonts.css">
+
+<meta name="generator" content="Hexo 6.1.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
+    <body>
+        <div class="paper">
+            <div class="paper-main">
+                
+                    <div class="post-header">
+    <a class="logo" href="/">姜姜酱</a>
+    <a class="go-home" href="/">
+        <svg width="8" height="14" viewBox="0 0 8 14">
+            <path d="M7 1L1 7l6 6" stroke="#000" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+</div>
+                
+                <div class="post-main">
+
+    
+        <div class="post-main-title">
+            2021华为计算AI安全冬令营crypto writeup
+        </div>
+        <div class="post-meta">
+            2021-01-09
+        </div>
+    
+
+    <div class="post-md">
+        <p>crypto writeup</p>
+<span id="more"></span>
+<h2 id="古典美"><a href="#古典美" class="headerlink" title="古典美"></a>古典美</h2><p>密钥：VklHRU5FUkU=</p>
+<p>密文：</p>
+<p>HHCKPDQEGUFXFCKHBZXXVQAAHZYHVDSYBQEHXRUHHCEXXSADBGEXZRCHBYEHTBAEH4GJEMFS</p>
+<p>密钥用base64解码：VIGENERE，作为维吉尼亚的密钥。</p>
+<p>解密密文得到：</p>
+<p>MZWGCZZALMZTSYTDGRRTIMJWMRSDIZBUGIYDKNDDMUYTKOJZGYYTMNLDGQYDGXJAM4YDAZBB</p>
+<p>只有A-Z和数字，因此采用base32解码： flag [39bc4c416dd4d42054ce15996165c403] g00d! </p>
+<h2 id="忘记题目"><a href="#忘记题目" class="headerlink" title="(忘记题目)"></a>(忘记题目)</h2><p>题目考察的点是在RSA中，如果已知公钥对(e, n)对应的私钥对(d, n)，有办法分解出p, q的值。参考<a target="_blank" rel="noopener" href="https://www.di-mgt.com.au/rsa_factorize_n.html">https://www.di-mgt.com.au/rsa_factorize_n.html</a></p>
+<p>这道题首先第一部分用正常的d解密就好：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from Crypto.Util.number import *
+d1&#x3D;0x7d12e57b1aa157038ebe5c45b56256270671e6984b0dcdf10a2ea07ce480143240c9a3e1c60870e499306a717073f157476aa88e99a7bdf1e2a4adf8ce21025cc6c05035c4a1d7e3b6f061464872e65118384999f0154f3c1761fa68d4685126b7fc98f4c2cdc41c98aa4e099a868a89099dd2170664647efca2c8d8e06a2e49
+e1&#x3D;0x10001
+n1&#x3D;0x96ed2727e4446e26c84552a9a19640c7d720c9b6e661cfcfec03463e92a9d0b228ddc9847c0daa137a19db67294626c535fe71c388f6ea3eb8cb5dbf09a84374eb021c9297a29394cf77da157c1b8be77b09a4fcbe54bf3dc93d33539e842766ad8e38369093ddc034ac32583a48e299a4d8b31b606b1729298ee136664b8b77
+c1&#x3D;0x6c435db37217bc4da3f225a8f1a0501e03a97d2cbc4fa249df051ed66c1559b68885f4fa181bdd9e98242441f463dbbc1c26d1eea2c5774a0a905b366c8775bce8e52182dc32a93647c9b8842b74abc434e5b84eeae679a3b19cb7a1ef6ae8f65d22ce6ab438a16119805eee83408a68207bbdfde5181a8bd8b4794c711d33c4
+m1&#x3D;pow(c1, d1, n1)
+long_to_bytes(m1)
+
+# &#39;flag part one is :2295b774c4467c9a&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>再由e,d,n分解出p,q。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">import java.math.BigInteger;
+import java.util.Random;
+import java.util.Scanner;
+
+public class KnownEDN &#123;
+    public static BigInteger[] attack(BigInteger e, BigInteger d, BigInteger n) &#123;
+        BigInteger[] result &#x3D; new BigInteger[2];
+        BigInteger k &#x3D; d.multiply(e).subtract(BigInteger.ONE);
+        Random random &#x3D; new Random();
+        while (true) &#123;
+            BigInteger g &#x3D; new BigInteger(n.bitLength(), random);
+            while (g.compareTo(BigInteger.ONE) &lt;&#x3D; 0 || g.compareTo(n) &gt;&#x3D; 0)
+                g &#x3D; new BigInteger(n.bitLength(), random);
+            BigInteger k1 &#x3D; k;
+            while (k1.mod(BigInteger.TWO).equals(BigInteger.ZERO)) &#123;
+                k1 &#x3D; k1.shiftRight(1);
+                BigInteger x &#x3D; g.modPow(k1, n);
+                result[0] &#x3D; x.subtract(BigInteger.ONE).gcd(n);
+                if (x.compareTo(BigInteger.ONE) &gt; 0 &amp;&amp; result[0].compareTo(BigInteger.ONE) &gt; 0) &#123;
+                    result[1] &#x3D; n.divide(result[0]);
+                    return result;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+
+    public static void main(String[] args) &#123;
+        BigInteger e &#x3D; new BigInteger(&quot;65537&quot;);
+        BigInteger d &#x3D; new
+        BigInteger(&quot;87829819124646652739812957863722412015634891260772294325995961099107534010712036077168547772778499478512604716421195336244466016654383871260966997679029170319388738640308348628385235411655710226519739834339519380578327359429189610559253693055613763347244887191660768249285720137254760097622936841830552710729&quot;);
+        BigInteger n &#x3D; new
+        BigInteger(&quot;105984107381045601823003108385313761784328476156897016317924496005453968007586579300498888169700143991517014514556827875595249016469561521069948889302177015514105662236342493793950683120435606323771328483886206142440957804487985287339927632655132795619465387151256885471251176082064948939517064310791867173751&quot;);
+        BigInteger[] pq &#x3D; attack(e, d, n);
+        System.out.println(&quot;p:\n&quot; + pq[0] + &quot;\nq:\n&quot; + pq[1]);
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>从而得到p,q的值。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from Crypto.Util.number import *
+import gmpy2
+
+p &#x3D; 7989817345872802916258824633068986429227729563110196898659568255235293257271203068952971618219681106634429039565231866429796385557747877260629666332312643
+q &#x3D; 13264897405419718100411551025228233248810511685104073408647554593159408298020238756835088759200259612491893289998541138751171701279712972233358298687021757
+c2 &#x3D; 0x8cb5d8861e5838f41910d6eaf142a8d47b92e0c6b1b1e9e25896f7169644bbb726ccfdc82ba50932fbc45f00c53dda42f8efc358a5108cde8aaa9f38b493aa3417c9522924f06847ba4a3dd26f005a610f7633877fbe89e090df5cb3a7a5ebae0fbe72eabb339b21fa2ddd33844a5cb53e39491fc472721ed676ae07b33c8d6e
+phi &#x3D; (p - 1) * (q - 1)
+e &#x3D; 0x3f1
+d &#x3D; gmpy2.invert(e, phi)
+m &#x3D; pow(c2, d, p*q)
+print(long_to_bytes(m))
+
+# flag part two is :ca5c600783b9bde0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>两部分连接起来就是flag的值。</p>
+<h2 id="RSA-upgrade"><a href="#RSA-upgrade" class="headerlink" title="RSA_upgrade"></a>RSA_upgrade</h2><p>题目代码：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">import random
+from sympy import nextprime
+from Crypto.Util.number import *
+from gmpy2 import *
+from typing import *
+flag &#x3D; b&#39;DASCTF&#123;********************************&#125;&#39;
+
+def lcg(seed,params):
+    (m,c,n)&#x3D;params
+    s &#x3D; seed % n
+    while True:
+        s &#x3D; (m * s + c) % n
+        yield s
+
+
+seed &#x3D; getPrime(128)
+m &#x3D; getPrime(128)
+c &#x3D; getPrime(128)
+n &#x3D; getPrime(129)
+
+
+key_stream &#x3D; lcg(seed,(m,c,n))
+num&#x3D;[]
+for _ in range(6):
+	num.append(next(key_stream))
+
+secret &#x3D;  next(key_stream)
+
+e &#x3D; nextprime(secret)
+p &#x3D; getPrime(1024)
+q &#x3D; getPrime(1024)
+r &#x3D; getPrime(1024)
+
+
+flag &#x3D; bytes_to_long(flag)
+flag ^&#x3D; flag &gt;&gt; 10
+print(p)
+print(p*q*r)
+print(pow(flag,e,p*q*r))
+        
+
+num &#x3D; [58605992502479537155943965904595921273, 525605798656979919420608964379033982804, 607738431135489138748992347244318940466, 631747898536603358381419028993140907216, 13450658701001781564543219325486287717, 407826262741495712819054543462943222370]
+p &#x3D; 138092450043978032187397495330379791355629274237204650898232878263413301988536751004632087169676028049236253598677819980191406826529664613957150122788435561338344715937422320958238628877093605040078776555586363593650646481242888908171897232624141894446324625781720275455534977357099473212936612966142541689717
+newN &#x3D; 3373500409784821814490131118443028295231446638918191872866826078664586857545499510115664725311697632345156866795088640886074708893049896293408277232121045205172588091316164743124173177747110069553394872128870505076277498830601152723565030932360665298864122468812389923295873644041292977470736981439616767671752225297169001703767163460419431015014012924743881828753765788455996503018031103917461875346904941302752301152097427368052588291798732671143344833211267818507324812463058368199324367285019651028003000765054679485233317767201747568717493732406861626561470103436488978595267326521876995116542475030869904228103019888619123275263009931569375612626796485751453790231029224398879558668919940829341599982045260085645733137064910612640851525128951165660322666651603943749615559507563880191545144231282875004494643666234781231448702811026047613232622993307630737999918058511598922102840862761604680588858313364100914751476403
+c &#x3D; 40522976224675404992818282038409183193065303107530049168092540620105120083552580372904554927069109321998620410524986748598618388761467715127564839742806614159382512978830563949967053562802375030363283879451081474764301602860367140250483857874335594802704634427276762179861996608105102610424633434334897307449739846880323406404392707133580686043181007091235341464802410874449708870610192494627811013526751435468963111672237058189288520084494533786573065843704621915085789731723587760910378534773137633519620193203450046994466154848079413319979993890764583887936777316159487010002407093187269512820453207591173395762513970799972839858119501585885277954258269483363133460240339866272358522431904252286259542327658731232568465990008278265227086114042064326334937705758042097987623388556184022737180944807660792992413039097516526454455063218161704505837882378018400687043158628503465274374703624257222504948612055237771581019005<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>典型的m,c,n未知时候的LCG。首先求出m,c,n及seed的值，有多个可能的值，代回原来的lcg函数比对生成的6个值。具体公式推导见 <a target="_blank" rel="noopener" href="https://blog.csdn.net/superprintf/article/details/108964563">https://blog.csdn.net/superprintf/article/details/108964563</a> (写的真不错)</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from Crypto.Util.number import *
+
+def gcd(a,b): 
+    if(b &#x3D;&#x3D; 0): 
+        return a 
+    else: 
+        return gcd(b,a % b) 
+
+s &#x3D;  [58605992502479537155943965904595921273, 525605798656979919420608964379033982804, 607738431135489138748992347244318940466, 631747898536603358381419028993140907216, 13450658701001781564543219325486287717, 407826262741495712819054543462943222370]
+t &#x3D; []
+all_n &#x3D; []
+for i in range(6):
+    t.append(s[i] - s[i - 1]) 
+
+for i in range(4):
+    all_n.append(gcd((t[i + 1] * t[i - 1] - t[i] * t[i]), (t[i + 2] * t[i] - t[i + 1] * t[i + 1]))) 
+
+MMI &#x3D; lambda A, n, s&#x3D;1, t&#x3D;0, N&#x3D;0: (n &lt; 2 and t % N or MMI(n, A % n, t, s - A &#x2F;&#x2F; n * t, N or n), -1)[n &lt; 1]
+for n in all_n:
+    n &#x3D; abs(n)
+    if n &#x3D;&#x3D; 1:
+        continue
+    m &#x3D; (s[2] - s[1]) * MMI((s[1] - s[0]), n) % n
+    ani &#x3D; MMI(m,n)
+    c &#x3D; (s[1] - m * s[0]) % n
+    seed &#x3D; (ani * (s[0] - c)) % n
+    print(&quot;n &#x3D; &quot;,n)
+    print(&quot;m &#x3D; &quot;,m)
+    print(&quot;c &#x3D; &quot;,c)
+    print(&quot;seed &#x3D; &quot;,seed)
+    
+# n &#x3D;  658483278832814360413959491304994965751
+# m &#x3D;  304895213771629215412875483024241040557
+# c &#x3D;  332633353219222389093389121471714482887
+# seed &#x3D;  233122372118782757817692638408531340431<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>e是lcg的第7个值的下一质数，这样就能得出e。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">import random
+from sympy import nextprime
+from Crypto.Util.number import *
+from gmpy2 import *
+
+n &#x3D;  658483278832814360413959491304994965751
+m &#x3D;  304895213771629215412875483024241040557
+c &#x3D;  332633353219222389093389121471714482887
+seed &#x3D;  233122372118782757817692638408531340431
+
+def lcg(seed,params):
+    (m,c,n)&#x3D;params
+    s &#x3D; seed % n
+    while True:
+        s &#x3D; (m * s + c) % n
+        yield s
+
+key_stream &#x3D; lcg(seed,(m,c,n))
+num&#x3D;[]
+for _ in range(6):
+	num.append(next(key_stream))
+
+secret &#x3D;  next(key_stream)
+e &#x3D; nextprime(secret)
+
+# e &#x3D; 176683449265430137948016253982177600477<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>发现是三质数的RSA。这里有个坑，跟BMZCTF2020里一样。因为p,q,r两两互素，所以不需要知道q,r的值，利用phi(p)=p-1就可以得到d的值。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">import gmpy2
+p &#x3D; 138092450043978032187397495330379791355629274237204650898232878263413301988536751004632087169676028049236253598677819980191406826529664613957150122788435561338344715937422320958238628877093605040078776555586363593650646481242888908171897232624141894446324625781720275455534977357099473212936612966142541689717
+c &#x3D; 40522976224675404992818282038409183193065303107530049168092540620105120083552580372904554927069109321998620410524986748598618388761467715127564839742806614159382512978830563949967053562802375030363283879451081474764301602860367140250483857874335594802704634427276762179861996608105102610424633434334897307449739846880323406404392707133580686043181007091235341464802410874449708870610192494627811013526751435468963111672237058189288520084494533786573065843704621915085789731723587760910378534773137633519620193203450046994466154848079413319979993890764583887936777316159487010002407093187269512820453207591173395762513970799972839858119501585885277954258269483363133460240339866272358522431904252286259542327658731232568465990008278265227086114042064326334937705758042097987623388556184022737180944807660792992413039097516526454455063218161704505837882378018400687043158628503465274374703624257222504948612055237771581019005
+phi &#x3D; p - 1
+e &#x3D; 176683449265430137948016253982177600477
+d &#x3D; gmpy2.invert(e, phi)
+m &#x3D; pow(c, d, p)
+
+# 569987504250336203008383799281952855095298052417061158522700484233183317916824291767569080757872<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>有了明文，但并不是真正的flag。明文是flag异或上flag &gt;&gt; 10的值，flag头部’DASCTF{‘，但只移动了10bits，因此理论上每10bit一组交替异或，可以逆推出flag的值。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from Crypto.Util.number import *
+
+m &#x3D; 569987504250336203008383799281952855095298052417061158522700484233183317916824291767569080757872
+flag &#x3D; list(bin(m)[2:])
+part &#x3D; bin(bytes_to_long(b&#39;DASCTF&#123;&#39;))[2:][:10]
+result &#x3D; [part]
+str1 &#x3D; []
+str2 &#x3D; [&#39;0000000000&#39;, part]
+
+for i in range(0, len(flag), 10):
+    t &#x3D; &#39;&#39;.join(str(j) for j in flag[i:i+10])
+    str1.append(t)
+
+for i in range(1, len(str1)):
+    L &#x3D; len(str1[i])
+    tmp &#x3D; str2[i][:L]
+    t &#x3D; bin(int(str1[i], 2) ^ int(tmp, 2))[2:].zfill(L)
+    result.append(t)
+    str2.append(t)
+
+print(long_to_bytes(int(&#39;&#39;.join(result), 2)))
+
+# DASCTF&#123;b19998fb5acd197e441029b37bc246d7&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="rsa4"><a href="#rsa4" class="headerlink" title="rsa4"></a>rsa4</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python">from Crypto.Util.number import *
+import binascii
+import gmpy2
+flag &#x3D; &#39;flag is :********************************&#39;
+hex_flag&#x3D;int(flag.encode(&quot;hex&quot;),16)
+
+p&#x3D;getPrime(256)
+q&#x3D;getPrime(256)
+n&#x3D;p*q
+
+e&#x3D;0x3
+
+c&#x3D;pow(hex_flag,e,n)
+
+m&#x3D;((hex_flag&gt;&gt;120)&lt;&lt;120)
+
+print(&quot;n&#x3D;&quot;,hex(n))
+print(&quot;e&#x3D;&quot;,hex(e))
+print(&quot;c&#x3D;&quot;,hex(c))
+print(&quot;m&#x3D;&quot;,hex(m))
+
+&#39;&#39;&#39;
+(&#39;n&#x3D;&#39;, &#39;0x8bc8479ebf10dc1a4c24d6dfd6effd0437969eebf67654bc5c495bf2577f15226c15b9793ce9363c5986c485c2932fc7e7e6daac8dc108cca6d1b3850353fa2fL&#39;)
+(&#39;e&#x3D;&#39;, &#39;0x3&#39;)
+(&#39;c&#x3D;&#39;, &#39;0x87c05b7868cf54a58e19fe7a969a0213101f045e2afbf7547534564e918b62caa8187c773a8168ff464b20c28ce0e33383a600351883bb0938b2ecf0c45d59f3L&#39;)
+(&#39;m&#x3D;&#39;, &#39;0x666c6167206973203a3739306666373532653338393838613532000000000000000000000000000000L&#39;)
+&#39;&#39;&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>m是由flag向右移120后再向左移120位得到，m高位泄露，低位的120比特未知。加上e = 3，可以联想到coopersmith的高位攻击。以前的coopersmith定理的题目一般是已知p的高位，爆破出完整的p来分解n。 sage里面的small_roots实现了LLL算法求解非线性低维度多项式方程小根的方法。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from Crypto.Util.number import *
+n &#x3D; 0x8bc8479ebf10dc1a4c24d6dfd6effd0437969eebf67654bc5c495bf2577f15226c15b9793ce9363c5986c485c2932fc7e7e6daac8dc108cca6d1b3850353fa2f
+e &#x3D; 0x3
+c &#x3D; 0x87c05b7868cf54a58e19fe7a969a0213101f045e2afbf7547534564e918b62caa8187c773a8168ff464b20c28ce0e33383a600351883bb0938b2ecf0c45d59f3
+m_part &#x3D; 0x666c6167206973203a3739306666373532653338393838613532000000000000000000000000000000
+
+kbits &#x3D; 120
+PR.&lt;x&gt; &#x3D; PolynomialRing(Zmod(n))
+f &#x3D; (m_part + x) ^ e - c
+x0 &#x3D; f.small_roots(X&#x3D;2^kbits, beta&#x3D;0.4)[0]
+m &#x3D; m_part + x0
+print(long_to_bytes(m))
+
+# flag is :790ff752e38988a521c73837942b1414<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="MEET"><a href="#MEET" class="headerlink" title="MEET"></a>MEET</h2><p>题目代码：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from Crypto.Cipher import DES
+import random
+import base64
+from secret import flag
+
+class _2DES:
+    def __init__(self):
+        pass
+
+    def Get_key(self):
+        k1&#x3D;&quot;&quot;.join([random.choice(&#39;0123456789abcdef&#39;) for i in range(8)])
+        return (k1[:4]*2,k1[4:]*2)
+
+    def Enc(self,msg,key1,key2):
+        k1,k2&#x3D;key1,key2
+        e1&#x3D;DES.new(k1.encode(),DES.MODE_CBC,bytes(8))
+        e2&#x3D;DES.new(k2.encode(),DES.MODE_CBC,bytes(8))
+        c&#x3D;e2.decrypt(e1.encrypt(msg))
+        return base64.b64encode(c)
+
+if __name__ &#x3D;&#x3D; &quot;__main__&quot;:
+    _2des&#x3D;_2DES()
+    k1,k2&#x3D;_2des.Get_key()
+    c&#x3D;_2des.Enc(b&#39;12345678&#39;,k1,k2)
+    print(c)
+    c&#x3D;_2des.Enc(flag,k1,k2)
+    print(c)
+
+#b&#39;D4meWwYAUE4&#x3D;&#39;
+#b&#39;qMMGe3wORmFJePnQnM2ZeA&#x3D;&#x3D;&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>2DES的中间相遇攻击。已知一组明密文[12345678, D4meWwYAUE4=]，能够爆破出k1k2的值。满足：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">c &#x3D; e2.decrypt(e1.encrypt(msg))
+e2.encrypt(c) &#x3D; e1.encrypt(msg)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>因此先遍历k1加密明文后的值放入一个数组1，再遍历k2加密密文c后的值放入数组2，比较数组1和数组2找相同的中间值，根据中间值计算对应的k1和k2。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from Crypto.Cipher import DES
+import base64
+import itertools as its
+from Crypto.Util.number import *
+
+def enc(msg,k):
+    e&#x3D;DES.new(k.encode(),DES.MODE_CBC,bytes(8))
+    c &#x3D; e.encrypt(msg)
+    return c
+
+def dec(c, key1, key2):
+    k1, k2 &#x3D; key1, key2
+    e1 &#x3D; DES.new(k1.encode(), DES.MODE_CBC, bytes(8))
+    e2 &#x3D; DES.new(k2.encode(), DES.MODE_CBC, bytes(8))
+    m &#x3D; e1.decrypt(e2.encrypt(c))
+    return m
+
+if __name__ &#x3D;&#x3D; &quot;__main__&quot;:
+    words &#x3D; &#39;0123456789abcdef&#39;
+    c_1 &#x3D; base64.b64decode(&#39;D4meWwYAUE4&#x3D;&#39;)
+    c_2 &#x3D; base64.b64decode(&#39;qMMGe3wORmFJePnQnM2ZeA&#x3D;&#x3D;&#39;)
+    words &#x3D; its.product(words,repeat&#x3D;4)
+    mid_1 &#x3D; []
+    mid_2 &#x3D; []
+    key &#x3D; []
+    k1 &#x3D; &#39;&#39;
+    k2 &#x3D; &#39;&#39;
+
+    for i in words:
+        key.append(&#39;&#39;.join(i))
+
+    for i in key:
+        m &#x3D; enc(b&#39;12345678&#39;, i * 2)
+        mid_1.append(m)
+
+    for i in key:
+        m &#x3D; enc(c_1, i * 2)
+        mid_2.append(m)
+
+    for i in mid_1:
+        for j in mid_2:
+            if i &#x3D;&#x3D; j:
+                mid &#x3D; i
+                break
+
+    for i in key:
+        if enc(b&#39;12345678&#39;, i * 2) &#x3D;&#x3D; mid:
+            k1 &#x3D; i * 2
+
+    for i in key:
+        if enc(c_1, i * 2) &#x3D;&#x3D; mid:
+            k2 &#x3D; i * 2
+    
+    print(dec(c_2, k1, k2))
+
+# b&#39;_Meet_in_Middle_&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+    </div>
+
+</div>
+				
+					<div>
+    <ul class="post-copyright">
+      <li class="post-copyright-author">
+
+      <strong>本文作者:  </strong><a href="https://qsang.xin">姜姜酱</a>
+      </li>
+      <li class="post-copyright-link">
+      <strong>本文链接:  </strong>
+	  <a href="https://qsang.xin/2021/01/09/huawei2021/" target="_blank" title="aa">https://qsang.xin/2021/01/09/huawei2021/</a>
+      </li>
+      <li class="post-copyright-license">
+        <strong>版权声明:   </strong>
+        本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+        许可协议。转载请注明出处!
+      </li>
+    </ul>
+<div>
+				
+                <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="footer">
+    <span>Copyright © 2022 姜姜酱</span>
+
+	<span id="busuanzi_container_site_pv">
+    本站访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span>@QSANG</a></span>
+</div>
+
+<link rel="stylesheet" href="/css/a11y-dark.min.css">
+
+
+<script src="/js/highlight.min.js"></script>
+
+
+<script src="/js/highlightjs-line-numbers.js"></script>
+
+
+<script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+</script>
+
+            </div>
+        </div>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
