@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+	
+<!-- baidu_tongji -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?0a3d5f5625415746246872fefe2c1f97";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- End baidu_tongji -->
+
+
+	
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YHNVSYV4EM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YHNVSYV4EM');
+</script>
+
+	
+	<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+	<script>LA.init({id:"JzJnuCPe0GHIO9bf",ck:"JzJnuCPe0GHIO9bf"})</script>
+	
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <link rel="alternate icon" type="image/png" href="/img/favicon.png">
+    <title>姜姜酱 | </title>
+    
+<link rel="stylesheet" href="/css/reset.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/css/markdown.css">
+
+    
+<link rel="stylesheet" href="/css/fonts.css">
+
+<meta name="generator" content="Hexo 6.1.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
+    <body>
+        <div class="paper">
+            <div class="paper-main">
+                
+                    <div class="post-header">
+    <a class="logo" href="/">姜姜酱</a>
+    <a class="go-home" href="/">
+        <svg width="8" height="14" viewBox="0 0 8 14">
+            <path d="M7 1L1 7l6 6" stroke="#000" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+</div>
+                
+                <div class="post-main">
+
+    
+        <div class="post-main-title">
+            论文笔记：On the (in)security of ROS
+        </div>
+        <div class="post-meta">
+            2023-05-23
+        </div>
+    
+
+    <div class="post-md">
+        <p>论文的主要贡献是找到了ROS问题的一种多项式解决方法，在此之前，只能在亚指数时间内解决ROS问题。Schnorr盲签名，一些两轮多方签名以及DKG都可以建模成ROS问题，从而受到攻击。</p>
+<blockquote>
+<p>Title: On the (in)security of ROS</p>
+<p>Author: Fabrice Benhamouda, Tancrede Lepoint , Julian Loss , Michele Orru , Mariana Raykova</p>
+<p>Publication: EUROCRYPT 2021</p>
+<p>Link: <a target="_blank" rel="noopener" href="https://eprint.iacr.org/2020/945.pdf">https://eprint.iacr.org/2020/945.pdf</a></p>
+</blockquote>
+<h3 id="ROS亚指数时间攻击"><a href="#ROS亚指数时间攻击" class="headerlink" title="ROS亚指数时间攻击"></a>ROS亚指数时间攻击</h3><p>ROS问题全称为超定可解线性方程组中的随机不均匀性（Random inhomogeneities in a Overdetermined Solvable system of linear equations），最早用来刻画Schnorr盲签名的安全性。[Wag02]中给出的结论是k-sum亚指数攻击。</p>
+<blockquote>
+<p>[Wag02] David Wagner. A generalized birthday problem. In Moti Yung, editor, <em>CRYPTO 2002</em>, volume 2442 of <em>LNCS</em>, pages 288–303. Springer, Heidelberg, August 2002.</p>
+</blockquote>
+<p>已知素数$p$，假设$\ell&gt;\log p$。定义阶为1，有$\ell$个变量$x_1,x_2,\cdots,x_\ell$的多项式$\pmb{\rho}$：</p>
+<script type="math/tex; mode=display">
+\pmb{\rho}=\rho_{0}+\rho_{1}x_1+\rho_{2}x_2+\cdots +\rho_{\ell}x_{\ell}\in\mathbb{Z}_p[x_1,x_2,\cdots,x_\ell]</script><p>除去常数项，将多项式$\pmb{\rho}$的系数向量记作$\vec{\pmb{\rho}}=(\rho_1,\rho_2,\cdots,\rho_{\ell})$。</p>
+<p>ROS问题描述为：给定一个random oracle $H:\{0,1\}^{*}\rightarrow \mathbb{Z}_p$，敌手$\mathcal{A}$的目标是找到$\ell+1$个这样的多项式${\pmb{\rho}_1,\pmb{\rho}_2,\cdots,\pmb{\rho}_{\ell},\pmb{\rho}_{\ell+1}}$，以及向量$\pmb{c}=(c_1,c_2\dots,c_{\ell})$，使得对所有$i\in[1,\ell+1]$，都有</p>
+<script type="math/tex; mode=display">
+H(\vec{\pmb{\rho}_i})=\langle \vec{\pmb{\rho}_i}, \pmb{c}\rangle</script><p>成立。$\langle \vec{\pmb{\rho}_i}, \pmb{c}\rangle$表示第$i$个多项式$\pmb{\rho}_i$的系数向量$\vec{\pmb{\rho}_i}=(\rho_{i,1},\rho_{i,2}, \rho_{i,3},\cdots, \rho_{i,\ell})$与向量$\pmb{c}$的内积。如果将每一个满足的等式看作是矩阵中的一行，用矩阵的形式表达：</p>
+<script type="math/tex; mode=display">
+\left [
+\begin{array}{C}
+H(\pmb{\vec{\rho}}_1) \\
+H(\pmb{\vec{\rho}}_2) \\
+H(\pmb{\vec{\rho}}_3) \\
+\vdots \\
+H(\pmb{\vec{\rho}}_{\ell}) \\
+H(\pmb{\vec{\rho}}_{\ell+1}) \\
+\end{array}
+\right ]
+=\left [
+\begin{array}{cccccc}
+\rho_{1,1} & \rho_{1,2} & \rho_{1,3} & \cdots & \rho_{1,\ell}\\
+\rho_{2,1} & \rho_{2,2} & \rho_{2,3} & \cdots & \rho_{2,\ell} \\
+\rho_{3,1} & \rho_{3,2} & \rho_{3,3} & \cdots & \rho_{3,\ell} \\
+\vdots & \vdots & \vdots & \vdots & \vdots \\
+\rho_{\ell,1} & \rho_{\ell,2} & \rho_{\ell,3} & \cdots & \rho_{\ell,\ell} \\
+\rho_{\ell+1,1} & \rho_{\ell+1,2} & \rho_{\ell+1,3} & \cdots & \rho_{\ell+1,\ell} \\
+\end{array}
+\right ]
+\cdot
+\left [
+\begin{array}{C}
+c_1 \\
+c_2 \\
+c_3 \\
+\vdots \\
+c_{\ell} 
+\end{array}
+\right ]</script><p>如果令$c_i=\rho_{i,i}^{-1}H(\pmb{\vec{\rho}}_i)$，前$\ell$个多项式为$\pmb{\rho}_i=\rho_{i,i}x_i$，第$\ell+1$个多项式$\pmb{\rho}_{\ell+1}=a(x_1+x_2+\cdots + x_{\ell}),a\in \mathbb{Z}_p$，那么矩阵$(3)$可以写为：</p>
+<script type="math/tex; mode=display">
+\left [
+\begin{array}{C}
+H(\pmb{\vec{\rho}}_1) \\
+H(\pmb{\vec{\rho}}_2) \\
+H(\pmb{\vec{\rho}}_3) \\
+\vdots \\
+H(\pmb{\vec{\rho}}_{\ell}) \\
+H(\pmb{\vec{\rho}}_{\ell+1}) \\
+\end{array}
+\right ]
+=\left [
+\begin{array}{cccccc}
+\rho_{1,1} & 0 & 0 & \cdots & 0\\
+0 & \rho_{2,2} & 0 & \cdots & 0 \\
+0 & 0 & \rho_{3,3} & \cdots & 0 \\
+\vdots & \vdots & \vdots & \vdots & \vdots \\
+0 & 0 & 0 & \cdots & \rho_{\ell,\ell} \\
+a & a & a & \cdots & a \\
+\end{array}
+\right ]
+\cdot
+\left [
+\begin{array}{C}
+\rho_{1,1}^{-1}H(\pmb{\vec{\rho}}_1) \\
+\rho_{2,2}^{-1}H(\pmb{\vec{\rho}}_2) \\
+\rho_{3,3}^{-1}H(\pmb{\vec{\rho}}_3) \\
+\vdots \\
+\rho_{\ell,\ell}^{-1}H(\pmb{\vec{\rho}}_{\ell}) 
+\end{array}
+\right ]</script><p>根据前面多项式的定义可知，$H(\pmb{\vec{\rho}}_1)=H(\rho_{1,1}00\cdots 0),H(\pmb{\vec{\rho}}_2)=H(0\rho_{2,2}0\cdots 0),\cdots ,H(\pmb{\vec{\rho}}_{\ell})=H(000\cdots \rho_{\ell,\ell}),H(\pmb{\vec{\rho}}_{\ell+1})=H(aaa\cdots a)$。最后一行所蕴含的等价关系：</p>
+<script type="math/tex; mode=display">
+a^{-1}H(\pmb{\vec{\rho}}_{\ell+1})
+=\rho_{1,1}^{-1}\cdot H(\pmb{\vec{\rho}}_1)+\rho_{2,2}^{-1}\cdot H(\pmb{\vec{\rho}}_2)+\cdots+\rho_{\ell,\ell}^{-1}\cdot H(\pmb{\vec{\rho}}_{\ell})</script><p>此时，$\mathcal{A}$的目标转化成寻找这样的$a,\rho_{1,1},\rho_{2,2},\cdots,\rho_{\ell,\ell}$，使得$(5)$的等式成立。而根据k-sum problem，$\mathcal{A}$只要通过变换这$\ell+1$个值，从而构造出$\ell+1$个列表，在亚指数时间内就可以找到k-sum problem的一个解，从而找到ROS的一个解。因此，ROS可以在亚指数时间内解决。</p>
+<blockquote>
+<h3 id="Generalised-birthday-attack"><a href="#Generalised-birthday-attack" class="headerlink" title="Generalised birthday attack"></a>Generalised birthday attack</h3><ul>
+<li><p>Input lists $L_0,L_1,\cdots,L_{\ell}$ with random elements</p>
+</li>
+<li><p>Find elements in the list $x_0,x_1,\cdots,x_{\ell}$ in the lists such that：</p>
+<script type="math/tex; mode=display">
+x_0+x_1+\cdots + x_{\ell}=0</script></li>
+</ul>
+</blockquote>
+<h3 id="ROS多项式时间攻击：On-the-in-security-of-ROS-EUROCRYPT-2021"><a href="#ROS多项式时间攻击：On-the-in-security-of-ROS-EUROCRYPT-2021" class="headerlink" title="ROS多项式时间攻击：On the (in)security of ROS [EUROCRYPT 2021]"></a>ROS多项式时间攻击：On the (in)security of ROS [EUROCRYPT 2021]</h3><p>实际上，ROS相对于k-sum更加灵活。如果把ROS描述成另一种形式，则在多项式时间内有可行的解决方法。ROS的矩阵：</p>
+<script type="math/tex; mode=display">
+\left [
+\begin{array}{C}
+H(\pmb{\vec{\rho}}_1) \\
+H(\pmb{\vec{\rho}}_2) \\
+H(\pmb{\vec{\rho}}_3) \\
+\vdots \\
+H(\pmb{\vec{\rho}}_{\ell}) \\
+H(\pmb{\vec{\rho}}_{\ell+1}) \\
+\end{array}
+\right ]
+=\left [
+\begin{array}{c}
+\pmb{\vec{\rho}}_1 \\
+\pmb{\vec{\rho}}_2 \\
+\pmb{\vec{\rho}}_3 \\
+\vdots \\
+\pmb{\vec{\rho}}_{\ell} \\
+\pmb{\vec{\rho}}_{\ell+1} 
+\end{array}
+\right ]
+\cdot
+\left [
+\begin{array}{C}
+H(\pmb{\vec{\rho}}_1) \\
+H(\pmb{\vec{\rho}}_2) \\
+H(\pmb{\vec{\rho}}_3) \\
+\vdots \\
+H(\pmb{\vec{\rho}}_{\ell}) 
+\end{array}
+\right ]</script><p>只考虑前$\ell$个约束，有下面这样一个矩阵，将此时的$\pmb{c}$向量记作$\pmb{c}^{(0)}=(c_1^{(0)},c_2^{(0)},\cdots,c_{\ell}^{(0)}),c_i^{(0)}=H(\vec{\pmb{\rho}_i}^{(0)})$：</p>
+<script type="math/tex; mode=display">
+\left [
+\begin{array}{C}
+H(\pmb{\vec{\rho}}_1^{(0)}) \\
+H(\pmb{\vec{\rho}}_2^{(0)}) \\
+H(\pmb{\vec{\rho}}_3^{(0)}) \\
+\vdots \\
+H(\pmb{\vec{\rho}}_{\ell}^{(0)}) 
+\end{array}
+\right ]
+=\left [
+\begin{array}{cccccc}
+1 & 0 & 0 & \cdots & 0\\
+0 & 1 & 0 & \cdots & 0 \\
+0 & 0 & 1 & \cdots & 0 \\
+\vdots & \vdots & \vdots & \vdots & \vdots \\
+0 & 0 & 0 & \cdots & 1 
+\end{array}
+\right ]
+\cdot
+\left [
+\begin{array}{C}
+H(\pmb{\vec{\rho}}_1^{(0)}) \\
+H(\pmb{\vec{\rho}}_2^{(0)}) \\
+H(\pmb{\vec{\rho}}_3^{(0)}) \\
+\vdots \\
+H(\pmb{\vec{\rho}}_{\ell}^{(0)}) 
+\end{array}
+\right ]</script><p>如果改变$\pmb{c}$向量：</p>
+<script type="math/tex; mode=display">
+\left [
+\begin{array}{C}
+H(\pmb{\vec{\rho}}_1^{(1)}) \\
+H(\pmb{\vec{\rho}}_2^{(1)}) \\
+H(\pmb{\vec{\rho}}_3^{(1)}) \\
+\vdots \\
+H(\pmb{\vec{\rho}}_{\ell}^{(1)}) 
+\end{array}
+\right ]
+=\left [
+\begin{array}{cccccc}
+2 & 0 & 0 & \cdots & 0\\
+0 & 2 & 0 & \cdots & 0 \\
+0 & 0 & 2 & \cdots & 0 \\
+\vdots & \vdots & \vdots & \vdots & \vdots \\
+0 & 0 & 0 & \cdots & 2 
+\end{array}
+\right ]
+\cdot
+\left [
+\begin{array}{C}
+2^{-1}H(\pmb{\vec{\rho}}_1^{(1)}) \\
+2^{-1}H(\pmb{\vec{\rho}}_2^{(1)}) \\
+2^{-1}H(\pmb{\vec{\rho}}_3^{(1)}) \\
+\vdots \\
+2^{-1}H(\pmb{\vec{\rho}}_{\ell}^{(1)}) 
+\end{array}
+\right ]</script><p>前$\ell$个约束条件仍然满足，将此时的$\pmb{c}$向量记作$\pmb{c}^{(1)}=(c_1^{(1)},c_2^{(1)},\cdots,c_{\ell}^{(1)}),c_i^{(1)}=2^{-1}H(\vec{\pmb{\rho}_i})$。实际上，我们可以把上面两个矩阵结合起来，构造一个新的矩阵，$\pmb{c}=(c_1^{(b_1)},c_2^{(b_2)},\cdots,c_{\ell}^{(b_{\ell})}),b_i\in\{0,1\}$。例如：</p>
+<script type="math/tex; mode=display">
+\left [
+\begin{array}{C}
+H(\pmb{\vec{\rho}}_1^{(0)}) \\
+H(\pmb{\vec{\rho}}_2^{(1)}) \\
+H(\pmb{\vec{\rho}}_3^{(0)}) \\
+\vdots \\
+H(\pmb{\vec{\rho}}_{\ell}^{(1)}) \\
+H(\pmb{\vec{\rho}}_{\ell+1}) \\
+\end{array}
+\right ]
+=\left [
+\begin{array}{cccccc}
+1 & 0 & 0 & \cdots & 0\\
+0 & 2 & 0 & \cdots & 0 \\
+0 & 0 & 1 & \cdots & 0 \\
+\vdots & \vdots & \vdots & \vdots & \vdots \\
+0 & 0 & 0 & \cdots & 2 \\
+\rho_{\ell+1,1} & \rho_{\ell+1,2} & \rho_{\ell+1,3} & \cdots & \rho_{\ell+1,\ell} \\
+\end{array}
+\right ]
+\cdot
+\left [
+\begin{array}{C}
+H(\pmb{\vec{\rho}}_1^{(0)}) \\
+2^{-1}H(\pmb{\vec{\rho}}_2^{(1)}) \\
+H(\pmb{\vec{\rho}}_3^{(0)}) \\
+\vdots \\
+2^{-1}H(\pmb{\vec{\rho}}_{\ell}^{(1)}) 
+\end{array}
+\right ]</script><p>第$\ell+1$个约束的关系可以写为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+H(\pmb{\vec{\rho}}_{\ell+1})=\left\langle \vec{\pmb{\rho}}_{\ell+1},\pmb{c} \right\rangle=\rho_{\ell+1,1}c_1^{(b_1)}+ \rho_{\ell+1,2}c_2^{(b_2)} + \rho_{\ell+1,3}c_3^{(b_{3})} +\cdots + \rho_{\ell+1,\ell}c_{\ell}^{(b_{\ell})} \\
+\end{aligned}</script><p>等式右边相对于$(1)$中的多项式定义，少了常数项$\rho_{\ell+1,0}$，补上这一常数项后移项：</p>
+<script type="math/tex; mode=display">
+H(\pmb{\vec{\rho}}_{\ell+1})+\rho_{\ell+1,0}=\rho_{\ell+1,1}c_1^{(b_1)}+ \rho_{\ell+1,2}c_2^{(b_2)} + \rho_{\ell+1,3}c_3^{(b_{3})} +\cdots + \rho_{\ell+1,\ell}c_{\ell}^{(b_{\ell})}+\rho_{\ell+1,0}=\pmb{\rho}_{\ell+1}(\pmb{c})\\</script><p>按照$(1)$的定义，$\pmb{\rho}_{\ell+1}$是一个以变量$x_1,x_2,\cdots,x_{\ell}$的一阶多变量多项式，$\pmb{\rho}_{\ell+1}(\pmb{c})$是在$\pmb{c}=(c_1^{(b_1)},c_2^{(b_2)},\cdots,c_{\ell}^{(b_{\ell})})$上求值的结果。但实际上，$\pmb{\rho}_{\ell+1}$还表示成另一种求和的形式，$\ell$个一阶单变量单项式$f_1,f_2,\cdots,f_{\ell}$的相加：</p>
+<script type="math/tex; mode=display">
+\pmb{\rho}_{\ell+1}=f_1(x_1)+f_2(x_2)+f_3(x_3)+\cdots+f_{\ell}(x_{\ell})</script><p>那么：</p>
+<script type="math/tex; mode=display">
+H(\pmb{\vec{\rho}}_{\ell+1})+\rho_{\ell+1,0}=f_1(c_1^{(b_1)})+f_2(c_2^{(b_2)})+f_3(c_3^{(b_3)})+\cdots+f_{\ell}(c_{\ell}^{(b_{\ell})})</script><p>如果能找到一种$f_1,f_2,\cdots, f_{\ell}$的构造，并选择合适的$\pmb{c}$向量让$(13)$成立，就能解决ROS问题。困难的地方在于等式左右边各项都相关联，调整$f_1,f_2,\cdots, f_{\ell}$会导致多项式系数变化，从而导致$H(\pmb{\vec{\rho}}_{\ell+1})$变化，而$H(\pmb{\vec{\rho}}_{\ell+1})$的值具有随机性和单向性。</p>
+<p>我们假设已经选定$f_1,f_2,\cdots, f_{\ell}$，再通过调整$\pmb{c}$向量来让等式成立。选定$f_1,f_2,\cdots, f_{\ell}$意味着多项式系数是固定的常数，等式左边$H(\pmb{\vec{\rho}}_{\ell+1})+\rho_{\ell+1,0}$的值已经固定，而$\pmb{c}$向量的调整并不会破坏让前面$\ell$个约束。</p>
+<p>从另一个角度考虑，将任意一个十进制数用二进制表示，表示一系列2次幂相加的形式，例如：</p>
+<script type="math/tex; mode=display">
+75=(1001011)_2=2^6\cdot 1+2^5\cdot 0+2^4\cdot 0+2^3\cdot 1+2^2\cdot 0 + 2^1\cdot 1+2^0\cdot 1</script><p>如果能让$f_i(x_i)$在$x_i=c_i^{(0)}$处等于0，在$x_i=c_i^{(1)}$处等于$2^{i-1}$，则有：</p>
+<script type="math/tex; mode=display">
+75=f_7(c_7^{(1)})+f_6(c_6^{(0)})+f_5(c_5^{(0)})+f_4(c_4^{(1)})+f_{3}(c_{3}^{(0)})+f_{2}(c_{2}^{(1)})+f_{1}(c_{1}^{(1)})</script><p>符合这样条件的$f_i(x_i)$构造类似于拉格朗日插值：</p>
+<script type="math/tex; mode=display">
+f_i(x_i)=2^{i-1}\cdot \frac{x_i-c_i^{(0)}}{c_i^{(1)}-c_i^{(0)}}</script><p>因此，确定了$\pmb{c}^{(0)}$和$\pmb{c}^{(1)}$，$f_i(x_i)$确定，所有的系数$\rho_{\ell+1,0},\rho_{\ell+1,1},\rho_{\ell+1,2},\rho_{\ell+1,3},\cdots,\rho_{\ell+1,\ell}$确定，$H(\pmb{\vec{\rho}}_{\ell+1})$确定，$H(\pmb{\vec{\rho}}_{\ell+1})+\rho_{\ell+1,0}$确定。将$H(\pmb{\vec{\rho}}_{\ell+1})+\rho_{\ell+1,0}$表示成二进制，从$\pmb{c}^{(0)}$和$\pmb{c}^{(1)}$中对应选择上标的分量，组成最终的$\pmb{c}$向量。</p>
+<p>综上所述，ROS攻击中，敌手的操作共分为4步：</p>
+<ul>
+<li><p>令$\pmb{\rho}_i^{(0)}=x_i,\pmb{\rho}_i^{(1)}=2x_i$，分别计算系数向量：$\vec{\pmb{\rho}_1}^{(0)},\vec{\pmb{\rho}_2}^{(0)},\cdots,\vec{\pmb{\rho}_{\ell}}^{(0)}$和$\vec{\pmb{\rho}_1}^{(1)},\vec{\pmb{\rho}_2}^{(1)},\cdots,\vec{\pmb{\rho}_{\ell}}^{(1)}$</p>
+</li>
+<li><p>计算哈希$c_i^{(b)}=2^{-b}H(\vec{\pmb{\rho}}_i^{(b)}),b\in\{0,1\},1\leq i\leq \ell$，组成两个向量$\pmb{c}^{(0)}=\left(c_1^{(0)},c_2^{(0)},\cdots,c_{\ell}^{(0)}\right)$和$\pmb{c}^{(1)}=\left(c_1^{(1)},c_2^{(1)},\cdots,c_{\ell}^{(1)}\right)$</p>
+</li>
+<li><p>利用$\pmb{c}^{(0)}$和$\pmb{c}^{(1)}$，按照$(17)$插值出$f_i(x_i),1\leq i \leq \ell$，计算出具体的多项式$\pmb{\rho}_{\ell+1}=\sum_{i=1}^{\ell}f_i(x_i)$，其系数记为$\pmb{\vec{\rho}}_{\ell+1}=(\rho_{\ell+1,1},\rho_{\ell+1,2},\rho_{\ell+1,3},\cdots ,\rho_{\ell+1,\ell})$以及常数项$\rho_{\ell+1,0}$</p>
+</li>
+<li><p>计算$H(\pmb{\vec{\rho}}_{\ell+1})+\rho_{\ell+1,0}$的值，分解成$\ell$长度的二进制比特串（不足$\ell$用0填充）$(b_{\ell}\cdots b_{2} b_{1})_2$，即：</p>
+<script type="math/tex; mode=display">
+H(\pmb{\vec{\rho}}_{\ell+1})+\rho_{\ell+1,0}=\sum_{i=1}^{\ell} 2^{i-1} b_i</script></li>
+<li><p>输出ROS的解：$\pmb{c}=\left(c_1^{(b_1)},c_2^{(b_2)},\cdots,c_{\ell}^{(b_{\ell})}\right)$，以及$\ell+1$个多项式$\pmb{\rho}_1^{(b_1)},\pmb{\rho}_2^{(b_2)},\cdots,\pmb{\rho}_{\ell}^{(b_{\ell})},\pmb{\rho}_{\ell+1}$</p>
+</li>
+</ul>
+<p>验证输出正确性：</p>
+<ul>
+<li><p>前$\ell$个约束，$f_i(x_i),1\leq i \leq \ell$：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\langle \vec{\pmb{\rho}_i}^{(b_i)}, \pmb{c}\rangle &=2^{b_i}c_i^{(b_i)}\\
+&=2^{b_i}\cdot 2^{-b_i}H(\vec{\pmb{\rho}}_i^{(b_i)})\\
+&=H(\vec{\pmb{\rho}}_i^{(b_i)})
+\end{aligned}</script></li>
+<li><p>第$\ell+1$个约束：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\langle \vec{\pmb{\rho}}_{\ell+1}, \pmb{c}\rangle &=\sum_{j=1}^{\ell}f_j(c^{(b_j)})-\rho_{\ell+1,0}\\
+&=2^{\ell-1}\cdot b_{\ell}+2^{\ell-2}\cdot b_{\ell-1}+\cdots +2^{0}\cdot b_1 -\rho_{\ell+1,0}\\
+&=\sum_{i=1}^{\ell} 2^{i-1} b_i -\rho_{\ell+1,0}\\
+&=H(\pmb{\vec{\rho}}_{\ell+1})+\rho_{\ell+1,0}-\rho_{\ell+1,0}\\
+&=H(\pmb{\vec{\rho}}_{\ell+1})
+\end{aligned}</script><p>因此，输出的是ROS的一组解。</p>
+</li>
+</ul>
+<h3 id="COSi的ROS攻击"><a href="#COSi的ROS攻击" class="headerlink" title="COSi的ROS攻击"></a>COSi的ROS攻击</h3><p>应用在CoSi上的ROS攻击和k-sum攻击一样，也是一种并行攻击，要求敌手开启$\ell&gt;\log p$条签名会话。同时利用敌手可以控制提前看到诚实方的承诺$R$，再发送设计好的全局$\bar{R}$，得到$\ell$个使用了$\bar{R}$的签名份额$s$。$\ell$条会话结束后，敌手能够用已知信息伪造全局签名。其攻击过程和k-sum攻击流程相同，不同的地方在于$\bar{R}$的选择上，k-sum攻击中$\bar{R}$的选择依赖指数级别的广义生日攻击，而ROS攻击通过构造特殊的多项式来计算，是多项式时间级别的攻击。</p>
+<p>在一个$P_1$和$P_2$交互的两方签名中，$P_1$是敌手，$P_2$是诚实方。设$\mathbb{G}$的阶为$p$，其中一个生成元为$G$。敌手私钥$sk_1$，公钥$pk_1={sk_1}G$，诚实方私钥$sk_2$，公钥$pk_2={sk_2}G$。</p>
+<ul>
+<li><p>虚线框内为协议正常执行流程：$P_2$选择随机$r_i$，然后将$R_i={r_i}G$发送给$P_1$。$P_1$用同样的方式生成$R_i^{\prime}$后，计算$h_i=R_i^{\prime}\cdot R_i$，将$h_i$发送给$P_2$。$P_2$用$h_i$生成挑战$c_i=H(h_i,m)$和签名份额$s_i=r_i+c_i\cdot sk_2$.</p>
+</li>
+<li><p>$P_1$攻击过程：$P_1$在每次交互中，当收到$P_2$发送的nonce后，选择设计好的$\bar{R_i}^{(b_i)},b_i\in\{0,1\}$，从而获得挑战者$\ell$个在Response阶段的$s_i=r_i+c_i^{(b_i)}\cdot sk_2 $值，其中$c_i^{(b_i)}$是用$P_1$发送的错误$\bar{R_i}^{(b_i)}$上生成的挑战，满足$c_i^{(b_i)}=H(\bar{R_i}^{(b_i)},m)$.</p>
+</li>
+</ul>
+<div align="center">
+    <img src="https://cdn.staticaly.com/gh/Jiangjiang-jiang/picture@master/blog/grobner/959a94daaa09ba6595314dd1d480856.png" width="400" height="300"" /></img>
+</div>
+
+<h4 id="攻击过程分析"><a href="#攻击过程分析" class="headerlink" title="攻击过程分析"></a>攻击过程分析</h4><p>定义一个常数项为0的随机多项式：$g(x_1,x_2,\cdots,x_\ell)=a_1x_1+a_2x_2+\cdots+a_{\ell}x_{\ell},a_i\in \mathbb{Z}_p$。如果单个Schnorr签名$(R_i,s_i)$能通过验证，那么应该满足：</p>
+<script type="math/tex; mode=display">
+R_i=s_iG-c_i\cdot pk\\
+c_i=H(R_i,m_i)</script><p>两边同时乘上$a_i$并求和：</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^{\ell}a_iR_i=\sum_{i=1}^{\ell}a_is_iG-\sum_{i=1}^{\ell}a_ic_i\cdot pk\\</script><p>即：</p>
+<script type="math/tex; mode=display">
+g(R_1,R_2,\cdots,R_\ell)=g(s_1,s_2,\cdots,s_{\ell})G-g(c_1,c_2,\cdots,c_{\ell})\cdot pk</script><p>能通过验证。$P_1$收到来自诚实方的签名份额$s_i=r_i+c_i^{(b_i)}\cdot sk_2$，每个签名份额能通过验证，那么有：</p>
+<script type="math/tex; mode=display">
+g(R_1,R_2,\cdots,R_\ell)=g(s_1,s_2,\cdots,s_{\ell})G-g(c_1^{(b_1)},c_2^{(b_2)},\cdots,c_{\ell}^{(b_\ell)})\cdot pk_2</script><p>成立。而$P_1$最终伪造的签名通过验证，需要满足：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\bar{R}_{\ell+1}&=s_{\ell+1}G-c_{\ell+1}\cdot (pk_1+pk_2)\\
+c_{\ell+1}&=H(\bar{R}_{\ell+1},m_{\ell+1})
+\end{aligned}</script><p>$P_1$为了使得输出的伪造签名$(\bar{R}_{\ell+1},s_{\ell+1})$通过验证，令$\bar{R}_{\ell+1},c_{\ell+1},s_{\ell+1}$分别为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\bar{R}_{\ell+1}&=g(R_1,R_2,\cdots,R_\ell)\\
+c_{\ell+1}&=g(c_1^{(b_1)},c_2^{(b_2)},\cdots,c_{\ell}^{(b_\ell)})\\
+s_{\ell+1}&=g(s_1,s_2,\cdots,s_{\ell})+c_{\ell+1}\cdot sk_1\\
+\end{aligned}</script><p>剩下的问题转化为$P_1$需要找到这样的多项式$g$和$c_1^{(b_1)},c_2^{(b_2)},\cdots,c_{\ell}^{(b_\ell)}$，满足：</p>
+<script type="math/tex; mode=display">
+c_{\ell+1}=g(c_1^{(b_1)},c_2^{(b_2)},\cdots,c_{\ell}^{(b_\ell)})=H(\bar{R}_{\ell+1},m_{\ell+1})</script><p>我们将这个问题转化为ROS问题。在第$i$个会话中，$P_1$收到来自$P_2$的$R_i$后，随机选择两个$r_i^{(0)},r_i^{(1)}$，分别计算$\bar{R_i}^{(0)}=r_{i}^{(0)}G+R_i$和$\bar{R_i}^{(1)}=r_{i}^{(1)}G+R_i$。再由$\bar{R_i}^{(0)}$和$\bar{R_i}^{(1)}$得到$c_i^{(0)}$和$c_i^{(1)}$：</p>
+<script type="math/tex; mode=display">
+H(\bar{R}_i^{(0)},m_{i})=c_i^{(0)}\\
+H(\bar{R}_i^{(1)},m_{i})=c_i^{(1)}</script><p>$P_1$假设存在$g=\sum_{i=1}^{\ell}\rho_{\ell+1,i}x_i$，利用已知的信息来构造出下面的矩阵：</p>
+<script type="math/tex; mode=display">
+\left [
+\begin{array}{C}
+H(\bar{R}_1^{(b_1)},m_{1}) \\
+H(\bar{R}_2^{(b_2)},m_{2}) \\
+H(\bar{R}_3^{(b_3)},m_{3}) \\
+\vdots \\
+H(\bar{R}_{\ell}^{(b_{\ell})},m_{\ell}) \\
+H(\bar{R}_{\ell+1},m_{\ell+1})
+\end{array}
+\right ]
+=\left [
+\begin{array}{cccccc}
+\rho_{1,1} & \rho_{1,2} & \rho_{1,3} & \cdots & \rho_{1,\ell}\\
+\rho_{2,1} & \rho_{2,2} & \rho_{2,3} & \cdots & \rho_{2,\ell} \\
+\rho_{3,1} & \rho_{3,2} & \rho_{3,3} & \cdots & \rho_{3,\ell} \\
+\vdots & \vdots & \vdots & \vdots & \vdots \\
+\rho_{\ell,1} & \rho_{\ell,2} & \rho_{\ell,3} & \cdots & \rho_{\ell,\ell} \\
+\rho_{\ell+1,1} & \rho_{\ell+1,2} & \rho_{\ell+1,3} & \cdots & \rho_{\ell+1,\ell} \\
+\end{array}
+\right ]
+\cdot
+\left [
+\begin{array}{C}
+c_1^{(b_1)} \\
+c_2^{(b_2)} \\
+c_3^{(b_3)} \\
+\vdots \\
+c_{\ell}^{(b_{\ell})} 
+\end{array}
+\right ]</script><p>ROS中前$\ell$个$H(\vec{\pmb{\rho}_i})$看作是$H(\vec{\pmb{\rho}_i})=H(\bar{R}_i^{(b_i)},m_{i})=H(\sum_{j=1}^{\ell}\bar{R}_j^{(b_j)}\rho_{i,j},m_j)$，第$\ell+1$个$H(\vec{\pmb{\rho}}_{\ell+1})=H(\sum_{j=1}^{\ell}R_j^{(b_j)}\rho_{\ell+1,j},m_{\ell+1})$。在这个场景下，ROS问题描述为：$P_1$需要找到$\ell+1$个这样的多项式${\pmb{\rho}_1,\pmb{\rho}_2,\cdots,\pmb{\rho}_{\ell},\pmb{\rho}_{\ell+1}}$，以及向量$\pmb{c}=(c_1^{(b_1)},c_2^{(b_2)}\dots,c_{\ell}^{(b_\ell)})$，使得对所有$i\in[1,\ell+1]$，都有</p>
+<script type="math/tex; mode=display">
+H(\vec{\pmb{\rho}_i})=\langle \vec{\pmb{\rho}_i}, \pmb{c}\rangle</script><p>成立。如果$\rho_{1,1}=\rho_{2,2}=\cdots=\rho_{\ell,\ell}=1$，前$\ell$行的其它$\rho_{i,j}=0,i\not =j$，那么前$\ell$行表示的约束显然成立，最后一个约束写为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+c_{\ell+1}&=H(\sum_{j=1}^{\ell}R_j^{(b_j)}\rho_{\ell+1,j},m_{\ell+1})\\
+&=H(\bar{R}_{\ell+1},m_{\ell+1})\\
+&=\rho_{\ell+1,1}c_1^{(b_1)}+ \rho_{\ell+1,2} c_2^{(b_2)} +\rho_{\ell+1,3} c_3^{(b_3)}+ \cdots + \rho_{\ell+1,\ell}c_{\ell}^{(b_{\ell})}\\
+&=g(c_1^{(b_1)},c_2^{(b_2)},\cdots,c_{\ell}^{(b_\ell)})\\
+\end{aligned}</script><p>同时加上常数项$\rho_{\ell+1,0}$：</p>
+<script type="math/tex; mode=display">
+H(\bar{R}_{\ell+1},m_{\ell+1})+\rho_{\ell+1,0}=\pmb{\rho}_{\ell+1}(c_1^{(b_1)},c_2^{(b_2)},\cdots,c_\ell^{(b_\ell)})</script><p>根据ROS攻击，插值计算$\pmb{\rho}_{\ell+1}$：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\pmb{\rho}_{\ell+1}(x_1,x_2,\cdots,x_\ell)&=\sum_{i=1}^{\ell}2^{i-1}\cdot \frac{x_i-c_i^{(0)}}{c_i^{(1)}-c_i^{(0)}}\\
+&=\sum_{i=1}^{\ell}\frac{2^{i-1}x_i}{c_i^{(1)}-c_i^{(0)}}-\sum_{i=1}^{\ell}\frac{2^{i-1}c_i^{(0)}}{c_i^{(1)}-c_i^{(0)}}\\
+&=\sum_{i=1}^{\ell}\rho_{\ell+1,i}x_i+\rho_{\ell+1,0}
+\end{aligned}</script><p>因此，$P_1$可以确定多项式$g=\sum_{i=1}^{\ell}\rho_{\ell+1,i}x_i$，从而计算出$\bar{R}_{\ell+1}=g(R_1,R_2,\cdots,R_\ell)$。$P_1$令$d_{\ell+1}=H(\bar{R}_{\ell+1},m_{\ell+1})+\rho_{\ell+1,0}$，分解$d_{\ell+1}=\sum_{i=1}^{\ell}2^{i-1}b_i$，得到所有的$b_i,i\in [1,\ell]$。</p>
+<p>综上所述，$P_1$具体的攻击流程如下：</p>
+<ul>
+<li><p>开启$\ell$个签名会话，每个会话签名不同消息$m_1,m_2,\cdots,m_{\ell}\in\{0,1\}^{*}$。</p>
+</li>
+<li><p>获取$P_2$在每个会话发送的$R_{i}$，$R_{i}=r_iG$</p>
+</li>
+<li><p>$P_1$对第$i$个会话进行如下操作：</p>
+<ul>
+<li>随机选择两个$r_{i}^{(0)},r_{i}^{(1)}$，分别计算$\bar{R_i}^{(0)}=r_{i}^{(0)}G+R_i$和$\bar{R_i}^{(1)}=r_{i}^{(1)}G+R_i$</li>
+<li>计算$c_i^{(0)}=H(\bar{R_i}^{(0)},m_i)$和$c_i^{(1)}=H(\bar{R_i}^{(1)},m_i)$</li>
+</ul>
+</li>
+<li><p>选择多项式$g=\sum_{i=1}^{\ell}2^{i-1}x_i/(c_i^{(1)}-c_i^{(0)})$，计算第$\ell+1$个会话的$\bar{R}_{\ell+1}=g(R_1,R_2,\cdots,R_{\ell})$，挑战$c_{\ell+1}=H(\bar{R}_{\ell+1},m_{\ell+1})$</p>
+</li>
+<li>计算$d_{\ell+1}=c_{\ell+1}-g(c_1^{(0)},c_2^{(0)},\cdots, c_{\ell}^{(0)})$，将$d_{\ell+1}$分解成二进制：$d_{\ell+1}=\sum_{i=1}^{\ell}2^{i-1}b_i$</li>
+<li>在第$i$个会话中发送$\bar{R_i}^{(b_i)}$，收到来自$P_2$的签名份额$s_i=r_i+c_i^{(b_i)}\cdot sk_2$</li>
+<li>伪造签名$s_{\ell+1}=g(s_1,s_2,\cdots,s_{\ell})+c_{\ell+1}\cdot sk_1$，输出$(\bar{R}_{\ell+1},s_{\ell+1})$</li>
+</ul>
+<p>伪造的签名能通过验证：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+s_{\ell+1}G-c_{\ell+1}\cdot (pk_1+pk_2)&=(g(s_1,s_2,\cdots,s_{\ell})+c_{\ell+1}\cdot sk_1)G-c_{\ell+1}(pk_1+pk_2) \\
+&=g(s_1,s_2,\cdots,s_{\ell})G-c_{\ell+1}\cdot pk_2 \\
+&=\sum_{i=1}^{\ell}\frac{2^{i-1}s_i}{c_i^{(1)}-c_i^{(0)}}G-c_{\ell+1}\cdot pk_2 \\
+&=\sum_{i=1}^{\ell}2^{i-1}\frac{r_i+c_i^{(b_i)}\cdot sk_2}{c_i^{(1)}-c_i^{(0)}}G-c_{\ell+1}\cdot pk_2 \\
+&=\sum_{i=1}^{\ell}\frac{2^{i-1}r_i}{c_i^{(1)}-c_i^{(0)}}G+\sum_{i=1}^{\ell}\frac{2^{i-1}c_i^{(b_i)}}{c_i^{(1)}-c_i^{(0)}}pk_2-c_{\ell+1}\cdot pk_2 \\
+&=\sum_{i=1}^{\ell}\frac{2^{i-1}}{c_i^{(1)}-c_i^{(0)}}R_i+\left(\sum_{i=1}^{\ell}\frac{2^{i-1}c_i^{(b_i)}}{c_i^{(1)}-c_i^{(0)}}-c_{\ell+1}\right)\cdot pk_2 \\
+&=\sum_{i=1}^{\ell}\frac{2^{i-1}}{c_i^{(1)}-c_i^{(0)}}R_i+\left(\sum_{i=1}^{\ell}\frac{2^{i-1}(c_i^{(b_i)}-c_i^{(0)})}{c_i^{(1)}-c_i^{(0)}}+\sum_{i=1}^{\ell}\frac{2^{i-1}c_i^{(0)}}{c_i^{(1)}-c_i^{(0)}}-c_{\ell+1}\right)\cdot pk_2 \\
+&=\sum_{i=1}^{\ell}\frac{2^{i-1}}{c_i^{(1)}-c_i^{(0)}}R_i+\left(\sum_{i=1}^{\ell}2^{i-1}b_i+\sum_{i=1}^{\ell}\frac{2^{i-1}c_i^{(0)}}{c_i^{(1)}-c_i^{(0)}}-c_{\ell+1}\right)\cdot pk_2 \\
+&=\sum_{i=1}^{\ell}\frac{2^{i-1}}{c_i^{(1)}-c_i^{(0)}}R_i+\left(d_{\ell+1}+g(c_1^{(0)},c_2^{(0)},\cdots, c_{\ell}^{(0)})-c_{\ell+1}\right)\cdot pk_2 \\
+&=\sum_{i=1}^{\ell}\frac{2^{i-1}}{c_i^{(1)}-c_i^{(0)}}R_i=g(R_1,R_2,\cdots, R_{\ell})=\bar{R}_{\ell+1}
+\end{aligned}</script><p>代码实现CoSi的ROS攻击：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"># public parameters: secp256k1
+Zq &#x3D; GF(0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f)
+E &#x3D; EllipticCurve(Zq, [0, 7])
+G &#x3D; E.lift_x(0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798)
+p &#x3D; G.order()
+Zp &#x3D; GF(p)
+
+# adversary: generate public key
+x1 &#x3D; Zp.random_element()
+X1 &#x3D; G * int(x1)
+
+# server: generate public key
+x2 &#x3D; Zp.random_element()
+X2 &#x3D; G * int(x2)
+
+# adversary: open &#39;ell&#39; sessions
+ell &#x3D; 256
+
+def random_oracle(hinput, _table&#x3D;dict()):
+    if hinput not in _table:
+        _table[hinput] &#x3D; Zp.random_element()
+    return _table[hinput]
+
+def verify_random_oracle(m, R, c):
+    assert random_oracle((R, m)) &#x3D;&#x3D; c, &quot;random oracle fails&quot;
+    return True
+
+def verify_sig(m, R, c, s, X):
+    assert G * int(s) &#x3D;&#x3D; X * int(c) + R, &quot;verification equation fails&quot;
+    return True
+
+def inner_product(coefficients, values):
+    return sum(y*int(x) for x, y in zip(coefficients, values))
+
+# server: generate commitments
+r2 &#x3D; [Zp.random_element() for i in range(ell)]
+R2 &#x3D; [G * int(r_i) for r_i in r2]
+
+# adversary: generate challenges
+r1 &#x3D; [Zp.random_element() for i in range(ell)]
+R1 &#x3D; [G * int(r_i) for r_i in r1]
+
+R &#x3D; [sum(i) for i in zip(R1, R2)]
+c &#x3D; [[random_oracle((R_i, b)) for b in range(2)] for R_i in R]
+g_func &#x3D; lambda x: sum([int(Zp(2)^i &#x2F; (c[i][1] - c[i][0]))*x[i] for i in range(ell)])
+
+forged_R &#x3D; g_func(R2)
+forged_message &#x3D; &quot;message&quot;
+forged_c &#x3D; random_oracle((forged_R, forged_message))
+bits &#x3D; [int(b) for b in bin(forged_c-g_func([c[i][0] for i in range(ell)]))[2:].rjust(256, &#39;0&#39;)][::-1]
+chosen_c &#x3D; [c[i][b] for (i, b) in enumerate(bits)]
+
+# server: generate the responses
+s &#x3D; [r2[i] + chosen_c[i]*x2 for i in range(ell)]
+
+# attacker: generate the forged response
+forged_s &#x3D; g_func(s)+forged_c*x1
+
+## check all previous signatures were valid
+print(all(
+# l signatures generated honestly
+[verify_sig(m_i, R_i, c_i, s_i, X2) for (m_i, R_i, c_i, s_i) in zip(bits, R2, chosen_c, s)] + [verify_random_oracle(m_i, R_i, c_i) for (m_i, R_i, c_i) in zip(bits, R, chosen_c)]+
+# final signature
+[verify_sig(forged_message, forged_R, forged_c, forged_s, X1+X2)] + [verify_random_oracle(forged_message, forged_R, forged_c)]
+))<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+    </div>
+
+</div>
+				
+					<div>
+    <ul class="post-copyright">
+      <li class="post-copyright-author">
+
+      <strong>本文作者:  </strong><a href="https://qsang.xin">姜姜酱</a>
+      </li>
+      <li class="post-copyright-link">
+      <strong>本文链接:  </strong>
+	  <a href="https://qsang.xin/2023/05/23/Onthe-in-securityofROS/" target="_blank" title="aa">https://qsang.xin/2023/05/23/Onthe-in-securityofROS/</a>
+      </li>
+      <li class="post-copyright-license">
+        <strong>版权声明:   </strong>
+        本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+        许可协议。转载请注明出处!
+      </li>
+    </ul>
+<div>
+				
+                <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="footer">
+    <span>Copyright © 2022 姜姜酱</span>
+
+	<span id="busuanzi_container_site_pv">
+    本站访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+	<span>@QSANG</a></span>
+</div>
+
+<link rel="stylesheet" href="/css/a11y-dark.min.css">
+
+
+<script src="/js/highlight.min.js"></script>
+
+
+<script src="/js/highlightjs-line-numbers.js"></script>
+
+
+<script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+</script>
+
+            </div>
+        </div>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
